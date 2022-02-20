@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ParticleLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:ParticleLibrary.Particle">
+            <summary>
+            Base class for all particles. Inherit this class to create your own particle.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.#ctor">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Particle.Texture">
+            <summary>
+            Texture path for a particle. Override this to specify a custom path.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Particle.VisualPosition">
+            <summary>
+            The visual position taking into account Main.screenPosition;
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.color">
+            <summary>
+            The color of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.frame">
+            <summary>
+            The frame of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.texture">
+            <summary>
+            The texture for this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.SpawnAction">
+            <summary>
+            Method to run when this particle is spawned.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.DeathAction">
+            <summary>
+            Method to run when this particle is despawned.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.tileCollide">
+            <summary>
+            Whether this particle should collide with tiles.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.scale">
+            <summary>
+            The scale of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.rotation">
+            <summary>
+            The rotation of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.opacity">
+            <summary>
+            The opacity of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.gravity">
+            <summary>
+            The gravity to apply to this particle's movement.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.timeLeft">
+            <summary>
+            The amount of ticks (frames) this particle has left in its lifetime.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.ai">
+            <summary>
+            An array of floats used to pass data to the particle on spawn.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.oldPos">
+            <summary>
+            An array of old positions for this particle. Only used when instantiated in SetDefaults().
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.oldRot">
+            <summary>
+            An array of old rotations for this particle. Only used when instantiated in SetDefaults().
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.oldCen">
+            <summary>
+            An array of old centers, taking into account the width and height of this particle. Only used when instantiated in SetDefaults().
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.oldVel">
+            <summary>
+            An array of old velocities for this particle. Only used when instantiated in SetDefaults().
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.SetDefaults">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.PreAI">
+            <summary>
+            This method runs before the particle is updated.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.AI">
+            <summary>
+            This method runs as the particle is updated.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.PostAI">
+            <summary>
+            This method runs after the particle is updated.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.PreDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
+            <summary>
+            This method runs before Draw. Return false to keep the Particle Manager from drawing your particle.
+            </summary>
+            <param name="spriteBatch">Provided SpriteBatch.</param>
+            <param name="drawPos">Draw position of the particle. This factors in Main.screenPosition.</param>
+            <param name="lightColor">The light color of the tile beneath this particle.</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:ParticleLibrary.Particle.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
+            <summary>
+            This method runs if PreDraw returns true.
+            <param name="spriteBatch">Provided SpriteBatch.</param>
+            <param name="drawPos">Draw position of the particle. This factors in Main.screenPosition.</param>
+            <param name="lightColor">The light color of the tile beneath this particle.</param>
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.PostDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
+            <summary>
+            This method runs after Draw is called.
+            <param name="spriteBatch">Provided SpriteBatch.</param>
+            <param name="drawPos">Draw position of the particle. This factors in Main.screenPosition.</param>
+            <param name="lightColor">The light color of the tile beneath this particle.</param>
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Particle.Kill">
+            <summary>
+            Kills a particle.
+            </summary>
+        </member>
+        <member name="T:ParticleLibrary.ParticleLibrary">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:ParticleLibrary.ParticleManager">
+            <summary>
+            This class manages the particle system.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.ParticleManager.particles">
+            <summary>
+            A list that contains all active particles.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.OnModLoad">
+            <summary>
+            Runs after the library is loaded.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.Unload">
+            <summary>
+            Runs when the library is unloaded.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.Dispose">
+            <summary>
+            Disposes the current list of particles.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="Position">The position to create a particle at.</param>
+            <param name="Velocity">The velocity to pass to the particle.</param>
+            <param name="Type">The type of particle. Use new MyParticle() to pass a type.</param>
+            <param name="Color">The color to use when drawing the particle.</param>
+            <param name="Scale">The scale to use when drawing the particle.</param>
+            <param name="AI0"></param>
+            <param name="AI1"></param>
+            <param name="AI2"></param>
+            <param name="AI3"></param>
+            <param name="AI4"></param>
+            <param name="AI5"></param>
+            <param name="AI6"></param>
+            <param name="AI7"></param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+    </members>
+</doc>

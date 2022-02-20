@@ -1,14 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Embers
 {
-	public class ParticleLibraryDetours : ModSystem
+	internal class ParticleLibraryDetours : ModSystem
 	{
 		public override void OnModLoad()
 		{

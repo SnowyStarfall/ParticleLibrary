@@ -8,29 +8,37 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary
 {
+	/// <summary>
+	/// This class manages the particle system.
+	/// </summary>
 	public class ParticleManager : ModSystem
 	{
+		/// <summary>
+		/// A list that contains all active particles.
+		/// </summary>
 		public static List<Particle> particles;
-		public static Vector2 screenSize;
+		/// <summary>
+		/// Runs after the library is loaded.
+		/// </summary>
 		public override void OnModLoad()
 		{
 			particles = new List<Particle>(6000);
-			screenSize = Main.ScreenSize.ToVector2();
 			On.Terraria.Main.DrawDust += DrawParticles;
-			Main.OnResolutionChanged += UpdateSceenSize;
 		}
+		/// <summary>
+		/// Runs when the library is unloaded.
+		/// </summary>
 		public override void Unload()
 		{
 			particles.Clear();
 			particles = null;
 		}
+		/// <summary>
+		/// Disposes the current list of particles.
+		/// </summary>
 		public static void Dispose()
 		{
 			particles.Clear();
-		}
-		public static void UpdateSceenSize(Vector2 obj)
-		{
-			screenSize = Main.ScreenSize.ToVector2();
 		}
 		private void DrawParticles(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
@@ -41,48 +49,72 @@ namespace ParticleLibrary
 			Main.spriteBatch.End();
 			orig(self);
 		}
-		public static void PreUpdate()
+		internal static void PreUpdate()
 		{
-			for (int i = 0; i < particles?.Count; i++)
-				particles[i].PreAI();
+			if (Main.hasFocus)
+				for (int i = 0; i < particles?.Count; i++)
+					particles[i].PreAI();
 		}
-		public static void Update(SpriteBatch spriteBatch)
+		internal static void Update(SpriteBatch spriteBatch)
 		{
-			for (int i = 0; i < particles?.Count; i++)
+			if (Main.hasFocus)
 			{
-				Particle particle = particles[i];
-
-				particle.oldDirection = particle.direction;
-				if (particle.tileCollide && !Collision.SolidCollision(particles[i].position + new Vector2(particles[i].width / 2f, particles[i].height / 2f) * particles[i].scale, 1, 1) || !particle.tileCollide)
+				for (int i = 0; i < particles?.Count; i++)
 				{
-					particle.velocity.Y += particles[i].gravity;
-					particle.position += particles[i].velocity;
-					UpdateOldPos(particle);
-				}
+					Particle particle = particles[i];
 
-				particle.direction = particle.velocity.X >= 0f ? 1 : -1;
-				particle.lavaWet = Collision.LavaCollision(particle.position, particle.width, particle.height);
-				particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
+					particle.oldDirection = particle.direction;
+					if (particle.tileCollide && !Collision.SolidCollision(particles[i].position + new Vector2(particles[i].width / 2f, particles[i].height / 2f) * particles[i].scale, 1, 1) || !particle.tileCollide)
+					{
+						particle.velocity.Y += particles[i].gravity;
+						particle.position += particles[i].velocity;
+						UpdateOldPos(particle);
+					}
 
-				particle.AI();
-				bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-				if (draw)
-					particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-				if (particle.timeLeft-- == 0 || !particles[i].active)
-				{
-					particle.DeathAction?.Invoke();
-					particles.RemoveAt(i);
+					particle.direction = particle.velocity.X >= 0f ? 1 : -1;
+					particle.lavaWet = Collision.LavaCollision(particle.position, particle.width, particle.height);
+					particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
+
+					particle.AI();
+					bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+					if (draw)
+						particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+					if (particle.timeLeft-- == 0 || !particles[i].active)
+					{
+						particle.DeathAction?.Invoke();
+						particles.RemoveAt(i);
+					}
 				}
 			}
 		}
-		public static void PostUpdate(SpriteBatch spriteBatch)
+		internal static void PostUpdate(SpriteBatch spriteBatch)
 		{
-			for (int i = 0; i < particles?.Count; i++)
+			if (Main.hasFocus)
 			{
-				particles[i].PostAI();
-				particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				for (int i = 0; i < particles?.Count; i++)
+				{
+					particles[i].PostAI();
+					particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				}
 			}
 		}
+		/// <summary>
+		/// Spawns a new particle at the desired position.
+		/// </summary>
+		/// <param name="Position">The position to create a particle at.</param>
+		/// <param name="Velocity">The velocity to pass to the particle.</param>
+		/// <param name="Type">The type of particle. Use new MyParticle() to pass a type.</param>
+		/// <param name="Color">The color to use when drawing the particle.</param>
+		/// <param name="Scale">The scale to use when drawing the particle.</param>
+		/// <param name="AI0"></param>
+		/// <param name="AI1"></param>
+		/// <param name="AI2"></param>
+		/// <param name="AI3"></param>
+		/// <param name="AI4"></param>
+		/// <param name="AI5"></param>
+		/// <param name="AI6"></param>
+		/// <param name="AI7"></param>
+		/// <exception cref="NullReferenceException"></exception>
 		public static void NewParticle(Vector2 Position, Vector2 Velocity, Particle Type, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
 		{
 			if (Type.texture == null)
@@ -101,7 +133,7 @@ namespace ParticleLibrary
 				particles?.Add(Type);
 			}
 		}
-		public static void UpdateOldPos(Particle particle)
+		internal static void UpdateOldPos(Particle particle)
 		{
 			if (particle.oldPos != null)
 			{
