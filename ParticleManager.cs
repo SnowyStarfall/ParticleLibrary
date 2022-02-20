@@ -11,7 +11,7 @@ namespace ParticleLibrary
 	/// <summary>
 	/// This class manages the particle system.
 	/// </summary>
-	public class ParticleManager : ModSystem
+	public class ParticleManager
 	{
 		/// <summary>
 		/// A list that contains all active particles.
@@ -20,15 +20,15 @@ namespace ParticleLibrary
 		/// <summary>
 		/// Runs after the library is loaded.
 		/// </summary>
-		public override void OnModLoad()
+		public static void Load()
 		{
 			particles = new List<Particle>(6000);
-			On.Terraria.Main.DrawDust += DrawParticles;
+			On.Terraria.Main.DrawDust += ParticleManager.DrawParticles;
 		}
 		/// <summary>
 		/// Runs when the library is unloaded.
 		/// </summary>
-		public override void Unload()
+		public static void Unload()
 		{
 			particles.Clear();
 			particles = null;
@@ -40,7 +40,7 @@ namespace ParticleLibrary
 		{
 			particles.Clear();
 		}
-		private void DrawParticles(On.Terraria.Main.orig_DrawDust orig, Main self)
+		private static void DrawParticles(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
 			PreUpdate();

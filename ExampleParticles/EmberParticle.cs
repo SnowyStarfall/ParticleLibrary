@@ -14,8 +14,6 @@ namespace ParticleLibrary.ExampleParticles
 		public int timeLeftMax;
 		public float size = 0f;
 
-		public bool Active { get => active; set => active = value; }
-
 		public override void SetDefaults()
 		{
 			width = 1;
@@ -60,13 +58,13 @@ namespace ParticleLibrary.ExampleParticles
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D circle = ModContent.Request<Texture2D>("Embers/Textures/Circle").Value;
-			Texture2D ember = ModContent.Request<Texture2D>("Embers/Particles/EmberParticle").Value;
-			Texture2D glow = ModContent.Request<Texture2D>("Embers/Textures/SoftGlow").Value;
+			Texture2D circle = ModContent.GetTexture("Embers/Textures/Circle");
+			Texture2D ember = ModContent.GetTexture("Embers/Particles/EmberParticle");
+			Texture2D glow = ModContent.GetTexture("Embers/Textures/SoftGlow");
 
-			Color bright = Color.Multiply(new(240, 149, 46, 0), opacity);
-			Color mid = Color.Multiply(new(187, 63, 25, 0), opacity);
-			Color dark = Color.Multiply(new(131, 23, 37, 0), opacity);
+			Color bright = Color.Multiply(new Color(240, 149, 46, 0), opacity);
+			Color mid = Color.Multiply(new Color(187, 63, 25, 0), opacity);
+			Color dark = Color.Multiply(new Color(131, 23, 37, 0), opacity);
 
 			Color emberColor = Color.Multiply(Color.Lerp(bright, dark, (float)(timeLeftMax - timeLeft) / timeLeftMax), opacity);
 			Color glowColor = Color.Multiply(Color.Lerp(mid, dark, (float)(timeLeftMax - timeLeft) / timeLeftMax), 1f);

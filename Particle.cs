@@ -25,7 +25,7 @@ namespace ParticleLibrary
 		/// <summary>
 		/// The visual position taking into account Main.screenPosition;
 		/// </summary>
-		public override Vector2 VisualPosition => position - Main.screenPosition;
+		public Vector2 VisualPosition => position - Main.screenPosition;
 		/// <summary>
 		/// The color of this particle.
 		/// </summary>
@@ -103,7 +103,7 @@ namespace ParticleLibrary
 			if (texture == null)
 			{
 				string filePath = Texture == string.Empty || Texture == null ? GetType().Namespace.Replace(".", "/") + "/" + GetType().Name : Texture;
-				texture = ModContent.Request<Texture2D>(filePath).Value;
+				texture = ModContent.GetTexture(filePath);
 				if (texture == null)
 					throw new NullReferenceException($"Texture was null for {GetType().Name}.");
 			}

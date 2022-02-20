@@ -1,17 +1,16 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Embers
+namespace ParticleLibrary
 {
-	internal class ParticleLibraryDetours : ModSystem
+	internal class ParticleLibraryDetours
 	{
-		public override void OnModLoad()
+		public static void Load()
 		{
 			On.Terraria.Main.DrawDust += Main_DrawDust;
 		}
-		public override void Unload()
+		public static void Unload()
 		{
 			On.Terraria.Main.DrawDust -= Main_DrawDust;
 		}
