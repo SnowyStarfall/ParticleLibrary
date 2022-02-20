@@ -29,7 +29,7 @@ namespace ParticleLibrary.ExampleParticles
 			// You can pass in a number to determine how long until it starts its ember movement.
 			if (ai[0] <= 0)
 			{
-				float sineX = (float)Math.Sin(Main.GlobalTimeWrappedHourly * speedX);
+				float sineX = (float)Math.Sin(Main.GlobalTime * speedX);
 
 				// Makes the particle change directions or speeds.
 				// Timer is used for keeping track of the current cycle
@@ -38,7 +38,7 @@ namespace ParticleLibrary.ExampleParticles
 
 				// Adds the wind velocity to the particle.
 				// It adds less the faster it is already going.
-				velocity += new Vector2(Main.windSpeedCurrent * (Main.windPhysicsStrength * 3f) * MathHelper.Lerp(1f, 0.1f, Math.Abs(velocity.X) / 6f), 0f);
+				velocity += new Vector2(Main.windSpeed * (Main.windSpeed * 3f) * MathHelper.Lerp(1f, 0.1f, Math.Abs(velocity.X) / 6f), 0f);
 				// Add the sine component to the velocity.
 				// This is scaled by the mult, which changes every cycle.
 				velocity += new Vector2(sineX * mult, -Main.rand.NextFloat(1f, 2f) / 100f);

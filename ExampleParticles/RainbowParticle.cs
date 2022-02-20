@@ -51,7 +51,7 @@ namespace ParticleLibrary.ExampleParticles
 			Texture2D tex = GetTexture("ParticleLibrary/Particles/RainbowParticle1");
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 			if (alpha < 0f) alpha = 0f;
-			float amount = MathHelper.Lerp(0f, 1f, Main.GlobalTimeWrappedHourly * 64f % 360 / 360);
+			float amount = MathHelper.Lerp(0f, 1f, Main.GlobalTime * 64f % 360 / 360);
 			Color hsl = Main.hslToRgb(amount, 1f, 0.75f);
 			Color color = Color.Multiply(new Color(hsl.R, hsl.G, hsl.B, 0), alpha);
 			spriteBatch.Draw(GetTexture("ParticleLibrary/Particles/RainbowParticle2"), position - Main.screenPosition, new Rectangle(0, 0, 142, 42), color, ai[3].InRadians().AngleLerp((ai[3] + 90f).InRadians(), (120f - timeLeft) / 120f), new Vector2(71, 21), 0.75f * scale, SpriteEffects.None, 0f);
