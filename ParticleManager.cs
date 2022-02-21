@@ -34,18 +34,6 @@ namespace ParticleLibrary
 			On.Terraria.Main.DrawDust -= DrawParticles;
 		}
 		/// <summary>
-		/// </summary>
-		public override void OnWorldLoad()
-		{
-			Dispose();
-		}
-		/// <summary>
-		/// </summary>
-		public override void OnWorldUnload()
-		{
-			Dispose();
-		}
-		/// <summary>
 		/// Disposes the current list of particles.
 		/// </summary>
 		public static void Dispose()

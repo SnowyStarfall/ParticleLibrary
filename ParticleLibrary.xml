@@ -166,19 +166,11 @@
             A list that contains all active particles.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnModLoad">
+        <member name="M:ParticleLibrary.ParticleManager.Load">
             <summary>
             </summary>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.Unload">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnWorldLoad">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnWorldUnload">
             <summary>
             </summary>
         </member>
