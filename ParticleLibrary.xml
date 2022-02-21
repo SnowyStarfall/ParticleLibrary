@@ -156,14 +156,6 @@
             <summary>
             </summary>
         </member>
-        <member name="M:ParticleLibrary.ParticleLibrary.Load">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleLibrary.Unload">
-            <summary>
-            </summary>
-        </member>
         <member name="T:ParticleLibrary.ParticleManager">
             <summary>
             This class manages the particle system.
@@ -174,14 +166,12 @@
             A list that contains all active particles.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnModLoad">
+        <member name="M:ParticleLibrary.ParticleManager.Load">
             <summary>
-            Runs after the library is loaded.
             </summary>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.Unload">
             <summary>
-            Runs when the library is unloaded.
             </summary>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.Dispose">
@@ -198,7 +188,7 @@
             <param name="Type">The type of particle. Use new MyParticle() to pass a type.</param>
             <param name="Color">The color to use when drawing the particle.</param>
             <param name="Scale">The scale to use when drawing the particle.</param>
-            <param name="AI0"></param>
+            <param name="AI0">Value to pass to the particle's AI array.</param>
             <param name="AI1"></param>
             <param name="AI2"></param>
             <param name="AI3"></param>
