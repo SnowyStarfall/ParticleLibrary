@@ -10,5 +10,9 @@ namespace ParticleLibrary
 		{
 			ParticleLibraryConfig.Instance = null;
 		}
+		public override void PreSaveAndQuit()
+		{
+			ParticleManager.Dispose();
+		}
 	}
 }
