@@ -156,6 +156,14 @@
             <summary>
             </summary>
         </member>
+        <member name="M:ParticleLibrary.ParticleLibrary.Load">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.ParticleLibrary.Unload">
+            <summary>
+            </summary>
+        </member>
         <member name="T:ParticleLibrary.ParticleManager">
             <summary>
             This class manages the particle system.

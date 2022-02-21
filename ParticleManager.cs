@@ -32,6 +32,7 @@ namespace ParticleLibrary
 		{
 			particles.Clear();
 			particles = null;
+			On.Terraria.Main.DrawDust -= DrawParticles;
 		}
 		/// <summary>
 		/// Disposes the current list of particles.
