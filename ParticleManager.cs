@@ -18,7 +18,6 @@ namespace ParticleLibrary
 		/// </summary>
 		public static List<Particle> particles;
 		/// <summary>
-		/// Runs after the library is loaded.
 		/// </summary>
 		public override void OnModLoad()
 		{
@@ -26,7 +25,6 @@ namespace ParticleLibrary
 			On.Terraria.Main.DrawDust += DrawParticles;
 		}
 		/// <summary>
-		/// Runs when the library is unloaded.
 		/// </summary>
 		public override void Unload()
 		{
@@ -58,18 +56,17 @@ namespace ParticleLibrary
 		}
 		internal static void Update(SpriteBatch spriteBatch)
 		{
-			if (Main.hasFocus)
+			for (int i = 0; i < particles?.Count; i++)
 			{
-				for (int i = 0; i < particles?.Count; i++)
+				Particle particle = particles[i];
+				if (Main.hasFocus)
 				{
-					Particle particle = particles[i];
-
 					particle.oldDirection = particle.direction;
 					if (particle.tileCollide && !Collision.SolidCollision(particles[i].position + new Vector2(particles[i].width / 2f, particles[i].height / 2f) * particles[i].scale, 1, 1) || !particle.tileCollide)
 					{
 						particle.velocity.Y += particles[i].gravity;
 						particle.position += particles[i].velocity;
-						UpdateOldPos(particle);
+						UpdateArrays(particle);
 					}
 
 					particle.direction = particle.velocity.X >= 0f ? 1 : -1;
@@ -77,9 +74,12 @@ namespace ParticleLibrary
 					particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
 
 					particle.AI();
-					bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-					if (draw)
-						particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				}
+				bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				if (draw)
+					particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				if (Main.hasFocus)
+				{
 					if (particle.timeLeft-- == 0 || !particles[i].active)
 					{
 						particle.DeathAction?.Invoke();
@@ -90,13 +90,11 @@ namespace ParticleLibrary
 		}
 		internal static void PostUpdate(SpriteBatch spriteBatch)
 		{
-			if (Main.hasFocus)
+			for (int i = 0; i < particles?.Count; i++)
 			{
-				for (int i = 0; i < particles?.Count; i++)
-				{
+				if (Main.hasFocus)
 					particles[i].PostAI();
-					particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-				}
+				particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
 			}
 		}
 		/// <summary>
@@ -107,7 +105,7 @@ namespace ParticleLibrary
 		/// <param name="Type">The type of particle. Use new MyParticle() to pass a type.</param>
 		/// <param name="Color">The color to use when drawing the particle.</param>
 		/// <param name="Scale">The scale to use when drawing the particle.</param>
-		/// <param name="AI0"></param>
+		/// <param name="AI0">Value to pass to the particle's AI array.</param>
 		/// <param name="AI1"></param>
 		/// <param name="AI2"></param>
 		/// <param name="AI3"></param>
@@ -134,7 +132,7 @@ namespace ParticleLibrary
 				particles?.Add(Type);
 			}
 		}
-		internal static void UpdateOldPos(Particle particle)
+		internal static void UpdateArrays(Particle particle)
 		{
 			if (particle.oldPos != null)
 			{

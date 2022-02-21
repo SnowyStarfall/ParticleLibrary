@@ -14,8 +14,6 @@ namespace ParticleLibrary.ExampleParticles
 		public int timeLeftMax;
 		public float size = 0f;
 
-		public bool Active { get => active; set => active = value; }
-
 		public override void SetDefaults()
 		{
 			width = 1;
