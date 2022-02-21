@@ -1,3 +1,8 @@
-ParticleLibrary is a library that aims to improve upon the existing Dusts system in Terraria by creating a new system focused around control and fidelity.
-Modders are encouraged to improve upon the system and open a PR to the repo on GitHub.
-Modders and Players are encourages to report bugs and talk about improvements in our server: https://discord.gg/bhCuppRdVF
+ParticleLibrary is a library that aims to improve upon the existing Dusts system in Terraria by creating a Particle system focused on control and fidelity.
+
+Modders who do not plan to modify the library should rely on the library as a mod reference, as this is the safest dependency route.
+Modders who plan to modify the library are highly encouraged to open a PR to the repo on GitHub once the changes are tested and verified as safe.
+
+Modders and Players are encouraged to report bugs and talk about improvements in our server.
+GitHub: https://github.com/SnowyStarfall/ParticleLibrary
+Discord: https://discord.gg/bhCuppRdVF in the Particle Library category

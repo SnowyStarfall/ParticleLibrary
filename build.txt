@@ -1,9 +1,9 @@
-displayName = ParticleLibrary
+displayName = [c/9ebae2:Pa][c/dafaf4:rtic][c/9ebae2:le][c/e8a272:Li][c/fad3a0:bra][c/e8a272:ry]
 author = SnowyStarfall
-version = 0.1
+version = 1.0.0.0
 homepage = https://github.com/SnowyStarfall/ParticleLibrary
 hideCode = true
 hideResources = true
 includeSource = false
-buildIgnore = *.csproj, *.user, *.md, obj\*, bin\*, .vs\*, .vscode\*, .git\*, .github\*, *.ymlm *.editorconfig, Properties\*, *.gitignore, Textures\*, ExampleParticles\*
+buildIgnore = *.csproj, *.user, *.md, obj\*, bin\*, .vs\*, .vscode\*, .git\*, .github\*, *.ymlm *.editorconfig, Properties\*, *.gitignore, *.gitattributes, Textures\*, ExampleParticles\*, *.dll, *.xml
 includePDB = true
