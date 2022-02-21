@@ -6,14 +6,9 @@ namespace ParticleLibrary
 	/// </summary>
 	public class ParticleLibrary : Mod
 	{
-		public override void Load()
-		{
-			ParticleManager.Load();
-		}
 		public override void Unload()
 		{
-			ParticleManager.Unload();
+			ParticleLibraryConfig.Instance = null;
 		}
-		
 	}
 }

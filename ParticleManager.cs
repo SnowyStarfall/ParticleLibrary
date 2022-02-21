@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary
@@ -21,8 +22,8 @@ namespace ParticleLibrary
 		/// </summary>
 		public static void Load()
 		{
-			particles = new List<Particle>(6000);
-			On.Terraria.Main.DrawDust += ParticleManager.DrawParticles;
+			particles = new List<Particle>(ParticleLibraryConfig.Instance.MaxParticles);
+			On.Terraria.Main.DrawDust += DrawParticles;
 		}
 		/// <summary>
 		/// </summary>
@@ -75,9 +76,13 @@ namespace ParticleLibrary
 
 					particle.AI();
 				}
-				bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-				if (draw)
-					particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
+				{
+					bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+					if (draw)
+						particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				}
+
 				if (Main.hasFocus)
 				{
 					if (particle.timeLeft-- == 0 || !particles[i].active)
@@ -94,7 +99,8 @@ namespace ParticleLibrary
 			{
 				if (Main.hasFocus)
 					particles[i].PostAI();
-				particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
+					particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
 			}
 		}
 		/// <summary>
@@ -116,6 +122,10 @@ namespace ParticleLibrary
 		/// <exception cref="NullReferenceException"></exception>
 		public static void NewParticle(Vector2 Position, Vector2 Velocity, Particle Type, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
 		{
+			if (particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
+				particles.TrimExcess();
+			if (particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
+				return;
 			if (Type.texture == null)
 				throw new NullReferenceException($"Texture was null for {Type.GetType().Name}.");
 			Type.position = Position;
@@ -124,9 +134,7 @@ namespace ParticleLibrary
 			Type.scale = Scale;
 			Type.active = true;
 			Type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
-			if (particles?.Count > 6000)
-				particles.TrimExcess();
-			if (particles?.Count < 6000)
+			if (particles?.Count < ParticleLibraryConfig.Instance.MaxParticles)
 			{
 				Type.SpawnAction?.Invoke();
 				particles?.Add(Type);
