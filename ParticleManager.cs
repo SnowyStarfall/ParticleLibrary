@@ -63,7 +63,7 @@ namespace ParticleLibrary
 		}
 		internal static void PreUpdate()
 		{
-			if (Main.hasFocus)
+			if (Main.hasFocus && !Main.gamePaused)
 				for (int i = 0; i < particles?.Count; i++)
 					particles[i].PreAI();
 		}
@@ -72,7 +72,7 @@ namespace ParticleLibrary
 			for (int i = 0; i < particles?.Count; i++)
 			{
 				Particle particle = particles[i];
-				if (Main.hasFocus)
+				if (Main.hasFocus && !Main.gamePaused)
 				{
 					particle.oldDirection = particle.direction;
 					if (particle.tileCollide && !Collision.SolidCollision(particles[i].position + new Vector2(particles[i].width / 2f, particles[i].height / 2f) * particles[i].scale, 1, 1) || !particle.tileCollide)
@@ -95,7 +95,7 @@ namespace ParticleLibrary
 						particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
 				}
 
-				if (Main.hasFocus)
+				if (Main.hasFocus && !Main.gamePaused)
 				{
 					if (particle.timeLeft-- == 0 || !particles[i].active)
 					{
@@ -109,7 +109,7 @@ namespace ParticleLibrary
 		{
 			for (int i = 0; i < particles?.Count; i++)
 			{
-				if (Main.hasFocus)
+				if (Main.hasFocus && !Main.gamePaused)
 					particles[i].PostAI();
 				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
 					particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
