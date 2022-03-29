@@ -23,6 +23,7 @@ namespace ParticleLibrary
 		public static void Load()
 		{
 			particles = new List<Particle>(ParticleLibraryConfig.Instance.MaxParticles);
+			On.Terraria.Dust.UpdateDust += UpdateParticles;
 			On.Terraria.Main.DrawDust += DrawParticles;
 		}
 		/// <summary>
@@ -31,6 +32,7 @@ namespace ParticleLibrary
 		{
 			particles.Clear();
 			particles = null;
+			On.Terraria.Dust.UpdateDust -= UpdateParticles;
 			On.Terraria.Main.DrawDust -= DrawParticles;
 		}
 		/// <summary>
@@ -40,12 +42,27 @@ namespace ParticleLibrary
 		{
 			particles.Clear();
 		}
+		private static void UpdateParticles(On.Terraria.Dust.orig_UpdateDust orig)
+		{
+			PreUpdate();
+			Update();
+			PostUpdate();
+			orig();
+		}
 		private static void DrawParticles(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-			PreUpdate();
-			Update(Main.spriteBatch);
-			PostUpdate(Main.spriteBatch);
+			for (int i = 0; i < particles.Count; i++)
+			{
+				Particle particle = particles[i];
+				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
+				{
+					bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+					if (draw)
+						particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+					particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+				}
+			}
 			Main.spriteBatch.End();
 			orig(self);
 		}
@@ -55,7 +72,7 @@ namespace ParticleLibrary
 				for (int i = 0; i < particles?.Count; i++)
 					particles[i].PreAI();
 		}
-		internal static void Update(SpriteBatch spriteBatch)
+		internal static void Update()
 		{
 			for (int i = 0; i < particles?.Count; i++)
 			{
@@ -75,16 +92,7 @@ namespace ParticleLibrary
 					particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
 
 					particle.AI();
-				}
-				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
-				{
-					bool draw = particle.PreDraw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-					if (draw)
-						particle.Draw(spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
-				}
 
-				if (Main.hasFocus && !Main.gamePaused)
-				{
 					if (particle.timeLeft-- == 0 || !particles[i].active)
 					{
 						particle.DeathAction?.Invoke();
@@ -93,14 +101,12 @@ namespace ParticleLibrary
 				}
 			}
 		}
-		internal static void PostUpdate(SpriteBatch spriteBatch)
+		internal static void PostUpdate()
 		{
 			for (int i = 0; i < particles?.Count; i++)
 			{
 				if (Main.hasFocus && !Main.gamePaused)
 					particles[i].PostAI();
-				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
-					particles[i].PostDraw(spriteBatch, particles[i].VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
 			}
 		}
 		/// <summary>
