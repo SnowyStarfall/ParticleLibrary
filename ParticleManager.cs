@@ -70,12 +70,11 @@ namespace ParticleLibrary
 				Particle particle = particles[i];
 				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
 				{
-					bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+					bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
 					if (draw)
-						particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
+						particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+					particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
 				}
-				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
-					particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particles[i].position.X / 16), (int)(particles[i].position.Y / 16)));
 			}
 			Main.spriteBatch.End();
 			orig(self);
