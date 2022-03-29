@@ -33,6 +33,7 @@ namespace ParticleLibrary
 		{
 			particles.Clear();
 			particles = null;
+			On.Terraria.Dust.UpdateDust -= UpdateParticles;
 			On.Terraria.Main.DrawDust -= DrawParticles;
 		}
 		/// <summary>
