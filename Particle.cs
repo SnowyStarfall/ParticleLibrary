@@ -103,9 +103,8 @@ namespace ParticleLibrary
 			if (texture == null)
 			{
 				string filePath = Texture == string.Empty || Texture == null ? GetType().Namespace.Replace(".", "/") + "/" + GetType().Name : Texture;
-				texture = ModContent.GetTexture(filePath);
-				if (texture == null)
-					throw new NullReferenceException($"Texture was null for {GetType().Name}.");
+				try { texture = ModContent.GetTexture(filePath); }
+				catch (Exception) { texture = ParticleLibrary.emptyPixel; }
 			}
 		}
 		/// <summary>

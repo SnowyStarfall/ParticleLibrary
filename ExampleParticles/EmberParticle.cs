@@ -58,9 +58,9 @@ namespace ParticleLibrary.ExampleParticles
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D circle = ModContent.GetTexture("Embers/Textures/Circle");
-			Texture2D ember = ModContent.GetTexture("Embers/Particles/EmberParticle");
-			Texture2D glow = ModContent.GetTexture("Embers/Textures/SoftGlow");
+			Texture2D circle = ModContent.GetTexture("ParticleLibrary/Textures/Circle");
+			Texture2D ember = ModContent.GetTexture("ParticleLibrary/Particles/EmberParticle");
+			Texture2D glow = ModContent.GetTexture("ParticleLibrary/Textures/SoftGlow");
 
 			Color bright = Color.Multiply(new Color(240, 149, 46, 0), opacity);
 			Color mid = Color.Multiply(new Color(187, 63, 25, 0), opacity);

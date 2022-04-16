@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ParticleLibrary
 {
@@ -6,6 +7,11 @@ namespace ParticleLibrary
 	/// </summary>
 	public class ParticleLibrary : Mod
 	{
+		public static Texture2D emptyPixel;
+		public override void Load()
+		{
+			emptyPixel = ModContent.GetTexture("ParticleLibrary/EmptyPixel");
+		}
 		public override void Unload()
 		{
 			ParticleLibraryConfig.Instance = null;

@@ -30,7 +30,6 @@ namespace ParticleLibrary
 		/// </summary>
 		public static void Unload()
 		{
-			particles.Clear();
 			particles = null;
 			On.Terraria.Dust.UpdateDust -= UpdateParticles;
 			On.Terraria.Main.DrawDust -= DrawParticles;
@@ -110,13 +109,42 @@ namespace ParticleLibrary
 			}
 		}
 		/// <summary>
+		/// Creates a new instance of a particle Type.
+		/// </summary>
+		/// <typeparam name="T">The particle.</typeparam>
+		/// <returns>A new instance of this particle</returns>
+		public static Particle NewInstance<T>() where T : Particle
+		{
+			return Activator.CreateInstance<T>();
+		}
+		/// <summary>
 		/// Spawns a new particle at the desired position.
 		/// </summary>
-		/// <param name="Position">The position to create a particle at.</param>
-		/// <param name="Velocity">The velocity to pass to the particle.</param>
-		/// <param name="Type">The type of particle. Use new MyParticle() to pass a type.</param>
-		/// <param name="Color">The color to use when drawing the particle.</param>
-		/// <param name="Scale">The scale to use when drawing the particle.</param>
+		/// <typeparam name="T">The particle.</typeparam>
+		/// <param name="Position">The particle's position.</param>
+		/// <param name="Velocity">The particle's velocity.</param>
+		/// <param name="Color">The particle's color.</param>
+		/// <param name="Scale">The particle's size.</param>
+		/// <param name="AI0">Value to pass to the particle's AI array.</param>
+		/// <param name="AI1"></param>
+		/// <param name="AI2"></param>
+		/// <param name="AI3"></param>
+		/// <param name="AI4"></param>
+		/// <param name="AI5"></param>
+		/// <param name="AI6"></param>
+		/// <param name="AI7"></param>
+		public static void NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0) where T : Particle
+		{
+			Particle Particle = Activator.CreateInstance<T>();
+			NewParticle(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7);
+		}
+		/// <summary>
+		/// Spawns a new particle at the desired position.
+		/// </summary>
+		/// <param name="Position">The particle's position.</param>
+		/// <param name="Velocity">The particle's velocity.</param>
+		/// <param name="Color">The particle's color.</param>
+		/// <param name="Scale">The particle's size.</param>
 		/// <param name="AI0">Value to pass to the particle's AI array.</param>
 		/// <param name="AI1"></param>
 		/// <param name="AI2"></param>
@@ -126,25 +154,25 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static void NewParticle(Vector2 Position, Vector2 Velocity, Particle Type, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
+		public static void NewParticle(Vector2 Position, Vector2 Velocity, Particle particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
 		{
+			Particle type = (Particle)Activator.CreateInstance(particle.GetType());
+
 			if (particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
 				particles.TrimExcess();
 			if (particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
 				return;
-			if (Type.texture == null)
-				throw new NullReferenceException($"Texture was null for {Type.GetType().Name}.");
-			Type.position = Position;
-			Type.velocity = Velocity;
-			Type.color = Color;
-			Type.scale = Scale;
-			Type.active = true;
-			Type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
-			if (particles?.Count < ParticleLibraryConfig.Instance.MaxParticles)
-			{
-				Type.SpawnAction?.Invoke();
-				particles?.Add(Type);
-			}
+			if (type.texture == null)
+				throw new NullReferenceException($"Texture was null for {type.GetType().Name}.");
+
+			type.position = Position;
+			type.velocity = Velocity;
+			type.color = Color;
+			type.scale = Scale;
+			type.active = true;
+			type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
+			type.SpawnAction?.Invoke();
+			particles?.Add(type);
 		}
 		internal static void UpdateArrays(Particle particle)
 		{
