@@ -158,6 +158,6 @@ namespace ParticleLibrary
 		/// <summary>
 		/// Kills a particle.
 		/// </summary>
-		public void Kill() => ParticleManager.particles.Remove(this);
+		public void Kill() => ParticleManager.particles?.Remove(this);
 	}
 }
