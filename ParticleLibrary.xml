@@ -223,6 +223,7 @@
             </summary>
             <param name="Position">The particle's position.</param>
             <param name="Velocity">The particle's velocity.</param>
+            <param name="Particle">The particle type.</param>
             <param name="Color">The particle's color.</param>
             <param name="Scale">The particle's size.</param>
             <param name="AI0">Value to pass to the particle's AI array.</param>
