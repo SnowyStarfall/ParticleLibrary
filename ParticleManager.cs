@@ -39,7 +39,7 @@ namespace ParticleLibrary
 		/// </summary>
 		public static void Dispose()
 		{
-			particles.Clear();
+			particles?.Clear();
 		}
 		private static void UpdateParticles(On.Terraria.Dust.orig_UpdateDust orig)
 		{
@@ -50,19 +50,22 @@ namespace ParticleLibrary
 		}
 		private static void DrawParticles(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-			for (int i = 0; i < particles.Count; i++)
+			if (Main.netMode != NetmodeID.Server)
 			{
-				Particle particle = particles[i];
-				if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+				for (int i = 0; i < particles?.Count; i++)
 				{
-					bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
-					if (draw)
-						particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
-					particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+					Particle particle = particles[i];
+					if (particle != null)
+					{
+						bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+						if (draw)
+							particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+						particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+					}
 				}
+				Main.spriteBatch.End();
 			}
-			Main.spriteBatch.End();
 			orig(self);
 		}
 		internal static void PreUpdate()
