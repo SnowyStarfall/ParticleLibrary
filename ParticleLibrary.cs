@@ -11,12 +11,19 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			ParticleManager.Load();
+			EmitterManager.Load();
 			emptyPixel = ModContent.GetTexture("ParticleLibrary/EmptyPixel");
 		}
 		public override void Unload()
 		{
 			ParticleManager.Unload();
+			EmitterManager.Unload();
+			emptyPixel = null;
 			ParticleLibraryConfig.Instance = null;
+		}
+		public override void PreUpdateEntities()
+		{
+			EmitterManager.PreUpdateWorld();
 		}
 		public override void PreSaveAndQuit()
 		{

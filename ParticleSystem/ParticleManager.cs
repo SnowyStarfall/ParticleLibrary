@@ -14,6 +14,8 @@ namespace ParticleLibrary
 	/// </summary>
 	public class ParticleManager
 	{
+		public delegate Particle NewParticleCreated(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0);
+		public static event NewParticleCreated OnNewParticle;
 		/// <summary>
 		/// A list that contains all active particles.
 		/// </summary>
@@ -60,8 +62,8 @@ namespace ParticleLibrary
 					{
 						bool draw = particle.PreDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
 						if (draw)
-							particle.Draw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
-						particle.PostDraw(Main.spriteBatch, particle.VisualPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+							particle.Draw(Main.spriteBatch, particle.position - Main.screenPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+						particle.PostDraw(Main.spriteBatch, particle.position - Main.screenPosition, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
 					}
 				}
 				Main.spriteBatch.End();
@@ -82,10 +84,25 @@ namespace ParticleLibrary
 				if (Main.hasFocus && !Main.gamePaused)
 				{
 					particle.oldDirection = particle.direction;
-					if (particle.tileCollide && !Collision.SolidCollision(particles[i].position + new Vector2(particles[i].width / 2f, particles[i].height / 2f) * particles[i].scale, 1, 1) || !particle.tileCollide)
+					if (particle.tileCollide)
 					{
-						particle.velocity.Y += particles[i].gravity;
-						particle.position += particles[i].velocity;
+						particle.velocity.Y += particle.gravity;
+						Vector2 oldVelocity = particle.velocity;
+						if (Collision.SolidCollision(particle.Center, particle.width, particle.height))
+						{
+							particle.velocity = Collision.TileCollision(particle.Center, particle.velocity, particle.width, particle.height);
+							particle.TileCollision(oldVelocity);
+						}
+						particle.position += particle.velocity;
+						UpdateArrays(particle);
+					}
+					else
+					{
+						particle.velocity.Y += particle.gravity;
+						Vector2 oldVelocity = particle.velocity;
+						if (Collision.SolidCollision(particle.Center, particle.width, particle.height))
+							particle.TileCollision(oldVelocity);
+						particle.position += particle.velocity;
 						UpdateArrays(particle);
 					}
 
@@ -136,10 +153,10 @@ namespace ParticleLibrary
 		/// <param name="AI5"></param>
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
-		public static void NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0) where T : Particle
+		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0) where T : Particle
 		{
 			Particle Particle = Activator.CreateInstance<T>();
-			NewParticle(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7);
+			return NewParticle(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7);
 		}
 		/// <summary>
 		/// Spawns a new particle at the desired position.
@@ -157,14 +174,14 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static void NewParticle(Vector2 Position, Vector2 Velocity, Particle particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
+		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0)
 		{
 			Particle type = (Particle)Activator.CreateInstance(particle.GetType());
 
 			if (particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
 				particles.TrimExcess();
 			if (particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
-				return;
+				return null;
 			if (type.texture == null)
 				throw new NullReferenceException($"Texture was null for {type.GetType().Name}.");
 
@@ -176,6 +193,9 @@ namespace ParticleLibrary
 			type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
 			type.SpawnAction?.Invoke();
 			particles?.Add(type);
+
+			OnNewParticle?.Invoke(Position, Velocity, type, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7);
+			return type;
 		}
 		internal static void UpdateArrays(Particle particle)
 		{

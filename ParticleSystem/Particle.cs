@@ -9,7 +9,7 @@ namespace ParticleLibrary
 	/// <summary>
 	/// Base class for all particles. Inherit this class to create your own particle.
 	/// </summary>
-	public class Particle : Entity
+	public abstract class Particle : Entity
 	{
 		/// <summary>
 		/// </summary>
@@ -77,19 +77,19 @@ namespace ParticleLibrary
 		/// </summary>
 		public float[] ai;
 		/// <summary>
-		/// An array of old positions for this particle. Only used when instantiated in SetDefaults().
+		/// An array of old positions for this particle. Only used when instantiated.
 		/// </summary>
 		public Vector2[] oldPos;
 		/// <summary>
-		/// An array of old rotations for this particle. Only used when instantiated in SetDefaults().
+		/// An array of old rotations for this particle. Only used when instantiated.
 		/// </summary>
 		public float[] oldRot;
 		/// <summary>
-		/// An array of old centers, taking into account the width and height of this particle. Only used when instantiated in SetDefaults().
+		/// An array of old centers, taking into account the width and height of this particle. Only used when instantiated.
 		/// </summary>
 		public Vector2[] oldCen;
 		/// <summary>
-		/// An array of old velocities for this particle. Only used when instantiated in SetDefaults().
+		/// An array of old velocities for this particle. Only used when instantiated.
 		/// </summary>
 		public Vector2[] oldVel;
 
@@ -148,16 +148,25 @@ namespace ParticleLibrary
 		}
 		/// <summary>
 		/// This method runs after Draw is called.
-		/// <param name="spriteBatch">Provided SpriteBatch.</param>
-		/// <param name="drawPos">Draw position of the particle. This factors in Main.screenPosition.</param>
-		/// <param name="lightColor">The light color of the tile beneath this particle.</param>
 		/// </summary>
 		public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 drawPos, Color lightColor)
 		{
 		}
 		/// <summary>
+		/// Runs when the particle collides with a tile.
+		/// </summary>
+		/// <param name="oldVelocity">The old velocity of the particle.</param>
+		public virtual void TileCollision(Vector2 oldVelocity)
+		{
+		}
+		/// <summary>
 		/// Kills a particle.
 		/// </summary>
-		public void Kill() => ParticleManager.particles?.Remove(this);
+		public void Kill(bool deathAction = true)
+		{
+			if (deathAction)
+				DeathAction?.Invoke();
+			ParticleManager.particles?.Remove(this);
+		}
 	}
 }
