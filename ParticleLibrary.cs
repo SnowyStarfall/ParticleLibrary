@@ -3,8 +3,6 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary
 {
-	/// <summary>
-	/// </summary>
 	public class ParticleLibrary : Mod
 	{
 		/// <summary>
@@ -14,6 +12,7 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			EmptyPixel = ModContent.Request<Texture2D>("ParticleLibrary/EmptyPixel").Value;
+			
 		}
 		public override void Unload()
 		{

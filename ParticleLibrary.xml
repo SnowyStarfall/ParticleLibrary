@@ -4,6 +4,126 @@
         <name>ParticleLibrary</name>
     </assembly>
     <members>
+        <member name="T:ParticleLibrary.EmitterSystem.Emitter">
+            <summary>
+            Base class for all emitters. Inherit this class to create your own emitter.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.Assembly">
+            <summary>
+            Originating mod.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.Type">
+            <summary>
+            Originating type.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.Data">
+            <summary>
+            Custom string Data for this emitter.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.Save">
+            <summary>
+            Whether this emitter should save when the world is exited.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.CullDistance">
+            <summary>
+            Minumum distance before AI is run. Measured by distance from Main.localPlayer to Emitter.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterSystem.Emitter.#ctor">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterSystem.Emitter.SetDefaults">
+            <summary>
+            Runs on instantiation.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterSystem.Emitter.AI">
+            <summary>
+            Runs on PreUpdateWorld.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterSystem.Emitter.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Runs on DrawDust.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterSystem.Emitter.Kill">
+            <summary>
+            Kills this emitter.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.EmitterManager.emitters">
+            <summary>
+            List of emitters.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.NewInstance``1">
+            <summary>
+            Creates a new instance of an emitter Type.
+            </summary>
+            <typeparam name="T">The emitter.</typeparam>
+            <returns>A new instance of this emitter</returns>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.NewEmitter``1(Microsoft.Xna.Framework.Vector2,System.String,System.Single)">
+            <summary>
+            Spawns a new emitter at the desired position.
+            </summary>
+            <typeparam name="T">The emitter.</typeparam>
+            <param name="Position">The emitter's position.</param>
+            <param name="Data">Custom string data.</param>
+            <param name="CullDistance">The maximum distance before the emitter no longer runs.</param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.NewEmitter(Microsoft.Xna.Framework.Vector2,ParticleLibrary.EmitterSystem.Emitter,System.String,System.Single)">
+            <summary>
+            Spawns a new emitter at the desired position.
+            </summary>
+            <param name="Position">The emitter's position.</param>
+            <param name="Emitter">The emitter type.</param>
+            <param name="Data">Defaults to "ModName: EmitterName". If the mod can't be found by the Assembly name, then defaults to "AssemblyName: EmitterName".</param>
+            <param name="CullDistance">Defaults to the largest screen dimension.</param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.Remove(ParticleLibrary.EmitterSystem.Emitter)">
+            Search Utilities
+            <summary>
+            Kills a specified emitter.
+            </summary>
+            <param name="emitter"></param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.Remove(System.String)">
+            <summary>
+            Kills all emitters with matching data.
+            </summary>
+            <param name="Data"></param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.Remove(System.Predicate{ParticleLibrary.EmitterSystem.Emitter})">
+            <summary>
+            Kills all emitters that fulfill the conditions.
+            </summary>
+            <param name="predicate"></param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.Find(System.String)">
+            <summary>
+            Returns an emitter with matching data.
+            </summary>
+            <param name="Data"></param>
+        </member>
+        <member name="M:ParticleLibrary.EmitterManager.Find(System.Predicate{ParticleLibrary.EmitterSystem.Emitter})">
+            <summary>
+            Returns all emitters that fulfill the conditions.
+            </summary>
+            <param name="predicate"></param>
+        </member>
+        <member name="F:ParticleLibrary.ParticleLibrary.EmptyPixel">
+            <summary>
+            Empty 1x1 texture
+            </summary>
+        </member>
         <member name="T:ParticleLibrary.Particle">
             <summary>
             Base class for all particles. Inherit this class to create your own particle.
@@ -85,22 +205,22 @@
         </member>
         <member name="F:ParticleLibrary.Particle.oldPos">
             <summary>
-            An array of old positions for this particle. Only used when instantiated in SetDefaults().
+            An array of old positions for this particle. Only used when instantiated.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.oldRot">
             <summary>
-            An array of old rotations for this particle. Only used when instantiated in SetDefaults().
+            An array of old rotations for this particle. Only used when instantiated.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.oldCen">
             <summary>
-            An array of old centers, taking into account the width and height of this particle. Only used when instantiated in SetDefaults().
+            An array of old centers, taking into account the width and height of this particle. Only used when instantiated.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.oldVel">
             <summary>
-            An array of old velocities for this particle. Only used when instantiated in SetDefaults().
+            An array of old velocities for this particle. Only used when instantiated.
             </summary>
         </member>
         <member name="M:ParticleLibrary.Particle.SetDefaults">
@@ -134,9 +254,6 @@
         <member name="M:ParticleLibrary.Particle.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
             <summary>
             This method runs if PreDraw returns true.
-            <param name="spriteBatch">Provided SpriteBatch.</param>
-            <param name="drawPos">Draw position of the particle. This factors in Main.screenPosition.</param>
-            <param name="lightColor">The light color of the tile beneath this particle.</param>
             </summary>
         </member>
         <member name="M:ParticleLibrary.Particle.PostDraw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
@@ -147,18 +264,15 @@
             <param name="lightColor">The light color of the tile beneath this particle.</param>
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Particle.Kill">
+        <member name="M:ParticleLibrary.Particle.TileCollision(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Runs when the particle collides with a tile.
+            </summary>
+            <param name="oldVelocity">The old velocity of the particle.</param>
+        </member>
+        <member name="M:ParticleLibrary.Particle.Kill(System.Boolean)">
             <summary>
             Kills a particle.
-            </summary>
-        </member>
-        <member name="T:ParticleLibrary.ParticleLibrary">
-            <summary>
-            </summary>
-        </member>
-        <member name="F:ParticleLibrary.ParticleLibrary.EmptyPixel">
-            <summary>
-            Empty 1x1 texture
             </summary>
         </member>
         <member name="T:ParticleLibrary.ParticleManager">
