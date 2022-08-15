@@ -1119,6 +1119,9 @@ namespace ParticleLibrary.Debug
 		}
 		public override void MouseDown(UIMouseEvent evt)
 		{
+			if (!Visible)
+				return;
+
 			if ((InfoPanel.ContainsPoint(Main.MouseScreen) || MainPanel.ContainsPoint(Main.MouseScreen)) && !scrollBar.ContainsPoint(Main.MouseScreen))
 			{
 				base.MouseDown(evt);
@@ -1127,6 +1130,9 @@ namespace ParticleLibrary.Debug
 		}
 		public override void MouseUp(UIMouseEvent evt)
 		{
+			if (!Visible)
+				return;
+
 			if ((InfoPanel.ContainsPoint(Main.MouseScreen) || MainPanel.ContainsPoint(Main.MouseScreen)) && !scrollBar.ContainsPoint(Main.MouseScreen))
 			{
 				base.MouseUp(evt);
