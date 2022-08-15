@@ -1,4 +1,5 @@
 ﻿
+using log4net.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Debug;
@@ -187,14 +188,14 @@ namespace ParticleLibrary
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeWalls);
-			Main.spriteBatch.Begin();
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
 		private void DrawParticlesBeforeNonSolidTiles(On.Terraria.Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeNonSolidTiles);
-			Main.spriteBatch.Begin();
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
 		}
@@ -215,13 +216,13 @@ namespace ParticleLibrary
 			{
 				Main.spriteBatch.End();
 				Draw(x => x.layer == Layer.BeforeNPCsBehindTiles);
-				Main.spriteBatch.Begin();
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 			else
 			{
 				Main.spriteBatch.End();
 				Draw(x => x.layer == Layer.BeforeNPCs);
-				Main.spriteBatch.Begin();
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 			orig(self, behindTiles);
 		}
@@ -239,22 +240,21 @@ namespace ParticleLibrary
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeItems);
-			Main.spriteBatch.Begin();
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
 		private void DrawParticlesBeforeRain(On.Terraria.Main.orig_DrawRain orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeRain);
-			Main.spriteBatch.Begin();
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
 		private void DrawParticlesBeforeGore(On.Terraria.Main.orig_DrawGore orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeGore);
-
-			Main.spriteBatch.Begin();
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
 		private void DrawParticlesBeforeDust(On.Terraria.Main.orig_DrawDust orig, Main self)
