@@ -89,7 +89,6 @@
             <param name="CullDistance">Defaults to the largest screen dimension.</param>
         </member>
         <member name="M:ParticleLibrary.EmitterManager.Remove(ParticleLibrary.EmitterSystem.Emitter)">
-            Search Utilities
             <summary>
             Kills a specified emitter.
             </summary>
@@ -129,10 +128,6 @@
             Base class for all particles. Inherit this class to create your own particle.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Particle.#ctor">
-            <summary>
-            </summary>
-        </member>
         <member name="P:ParticleLibrary.Particle.Texture">
             <summary>
             Texture path for a particle. Override this to specify a custom path.
@@ -141,6 +136,106 @@
         <member name="P:ParticleLibrary.Particle.VisualPosition">
             <summary>
             The visual position taking into account Main.screenPosition;
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeSurfaceBackground">
+            <summary>
+            The surface background. You will have to do parallaxing yourself for now.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeWalls">
+            <summary>
+            Walls.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeNonSolidTiles">
+            <summary>
+            Trees, flowers, rocks, etc.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeNPCsBehindTiles">
+            <summary>
+            Worm enemies.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeTiles">
+            <summary>
+            Tiles.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforePlayersBehindNPCs">
+            <summary>
+            Player details drawn behind NPCs.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeNPCs">
+            <summary>
+            NPCs.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeProjectiles">
+            <summary>
+            Projectiles.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforePlayers">
+            <summary>
+            Players.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeItems">
+            <summary>
+            Items dropped in world.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeRain">
+            <summary>
+            Rain.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeGore">
+            <summary>
+            Gore.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeDust">
+            <summary>
+            Dust.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeWater">
+            <summary>
+            Water. Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeUI">
+            <summary>
+            Before UI.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.AfterUI">
+            <summary>
+            After UI.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.BeforeMainMenu">
+            <summary>
+            Before Main Menu.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.Layer.AfterMainMenu">
+            <summary>
+            After Main Menu.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.layer">
+            <summary>
+            Where the particle should be drawn.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.AnchorPosition">
+            <summary>
+            The reference position used for this particle when calculating its position. Defaults to (0, 0).
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.color">
@@ -173,14 +268,39 @@
             Whether this particle should collide with tiles.
             </summary>
         </member>
-        <member name="F:ParticleLibrary.Particle.scale">
+        <member name="P:ParticleLibrary.Particle.Scale">
             <summary>
             The scale of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.scaleVelocity">
+            <summary>
+            How much the scale increases each frame.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.scaleAcceleration">
+            <summary>
+            How much the scale velocity increases each frame.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.rotation">
             <summary>
             The rotation of this particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.rotationVelocity">
+            <summary>
+            How much the rotation changes each frame.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.rotationAcceleration">
+            <summary>
+            How much the rotation velocity changes each frame.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Particle.velocityAcceleration">
+            <summary>
+            How much the velocity changes each frame.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.opacity">
@@ -221,10 +341,6 @@
         <member name="F:ParticleLibrary.Particle.oldVel">
             <summary>
             An array of old velocities for this particle. Only used when instantiated.
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.Particle.SetDefaults">
-            <summary>
             </summary>
         </member>
         <member name="M:ParticleLibrary.Particle.PreAI">
@@ -277,28 +393,12 @@
         </member>
         <member name="T:ParticleLibrary.ParticleManager">
             <summary>
-            This class manages the particle system.
+            This class manages the particle system. New instances of this class can be created.
             </summary>
         </member>
         <member name="F:ParticleLibrary.ParticleManager.particles">
             <summary>
             A list that contains all active particles.
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnModLoad">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.Unload">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnWorldLoad">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.ParticleManager.OnWorldUnload">
-            <summary>
             </summary>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.Dispose">
@@ -313,11 +413,10 @@
             <typeparam name="T">The particle.</typeparam>
             <returns>A new instance of this particle</returns>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>
-            <typeparam name="T">The particle.</typeparam>
             <param name="Position">The particle's position.</param>
             <param name="Velocity">The particle's velocity.</param>
             <param name="Color">The particle's color.</param>
@@ -330,8 +429,29 @@
             <param name="AI5"></param>
             <param name="AI6"></param>
             <param name="AI7"></param>
+            <param name="Layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="Position">The particle's position.</param>
+            <param name="Velocity">The particle's velocity.</param>
+            <param name="Color">The particle's color.</param>
+            <param name="Scale">The particle's size.</param>
+            <param name="AI0">Value to pass to the particle's AI array.</param>
+            <param name="AI1"></param>
+            <param name="AI2"></param>
+            <param name="AI3"></param>
+            <param name="AI4"></param>
+            <param name="AI5"></param>
+            <param name="AI6"></param>
+            <param name="AI7"></param>
+            <param name="Layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>
@@ -348,6 +468,27 @@
             <param name="AI5"></param>
             <param name="AI6"></param>
             <param name="AI7"></param>
+            <param name="Layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="Position">The particle's position.</param>
+            <param name="Velocity">The particle's velocity.</param>
+            <param name="Particle">The particle type.</param>
+            <param name="Color">The particle's color.</param>
+            <param name="Scale">The particle's size.</param>
+            <param name="AI0">Value to pass to the particle's AI array.</param>
+            <param name="AI1"></param>
+            <param name="AI2"></param>
+            <param name="AI3"></param>
+            <param name="AI4"></param>
+            <param name="AI5"></param>
+            <param name="AI6"></param>
+            <param name="AI7"></param>
+            <param name="Layer">When the particle is drawn.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
     </members>

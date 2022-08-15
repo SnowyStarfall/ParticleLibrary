@@ -2,3 +2,12 @@
 
 # CA2211: Non-constant fields should not be visible
 dotnet_diagnostic.CA2211.severity = silent
+
+# RCS1138: Add summary to documentation comment.
+dotnet_diagnostic.RCS1138.severity = silent
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = silent
+
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = silent

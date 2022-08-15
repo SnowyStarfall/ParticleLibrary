@@ -36,10 +36,10 @@ namespace ParticleLibrary.EmitterSystem
 		/// Minumum distance before AI is run. Measured by distance from Main.localPlayer to Emitter.
 		/// </summary>
 		public float CullDistance = MathHelper.Max(Main.screenWidth, Main.screenHeight);
-		
+
 		/// <summary>
 		/// </summary>
-		public Emitter()
+		protected Emitter()
 		{
 			SetDefaults();
 			Assembly = GetType().Assembly.GetName().Name;

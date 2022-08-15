@@ -12,7 +12,6 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			EmptyPixel = ModContent.Request<Texture2D>("ParticleLibrary/EmptyPixel").Value;
-			
 		}
 		public override void Unload()
 		{

@@ -19,5 +19,11 @@ namespace ParticleLibrary
 		[Range(0, 50000)]
 		[Increment(100)]
 		public int MaxParticles;
+
+		[Header("Debug")]
+		[Label("Debug UI")]
+		[Tooltip("Whether the Debug UI is enabled. Currently a WIP. Emitter debugging is not fully functional. The UI IS and WILL BE buggy. Texture errors are normal.")]
+		[DefaultValue(false)]
+		public bool DebugUI;
 	}
 }
