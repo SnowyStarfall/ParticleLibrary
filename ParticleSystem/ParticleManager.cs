@@ -120,9 +120,9 @@ namespace ParticleLibrary
 						particle.velocity += particle.velocityAcceleration;
 						particle.velocity.Y += particle.gravity;
 						Vector2 oldVelocity = particle.velocity;
-						if (Collision.SolidCollision(particle.Center, particle.width, particle.height, true))
+						if (Collision.SolidCollision(particle.position, particle.width, particle.height, true))
 						{
-							particle.velocity = Collision.TileCollision(particle.Center, particle.velocity, particle.width, particle.height);
+							particle.velocity = Collision.TileCollision(particle.position, particle.velocity, particle.width, particle.height);
 							particle.TileCollision(oldVelocity);
 						}
 						if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
@@ -135,7 +135,7 @@ namespace ParticleLibrary
 						particle.velocity += particle.velocityAcceleration;
 						particle.velocity.Y += particle.gravity;
 						Vector2 oldVelocity = particle.velocity;
-						if (Collision.SolidCollision(particle.Center, particle.width, particle.height))
+						if (Collision.SolidCollision(particle.position, particle.width, particle.height))
 							particle.TileCollision(oldVelocity);
 						if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
 							particles[i].velocity = Vector2.Zero;
