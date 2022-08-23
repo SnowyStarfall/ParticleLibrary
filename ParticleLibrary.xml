@@ -140,7 +140,7 @@
         </member>
         <member name="F:ParticleLibrary.Particle.Layer.BeforeSurfaceBackground">
             <summary>
-            The surface background. You will have to do parallaxing yourself for now.
+            ** (Broken) ** The surface background. You will have to do parallaxing yourself for now.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.Layer.BeforeWalls">
