@@ -30,9 +30,9 @@ namespace ParticleLibrary
 		public enum Layer
 		{
 			/// <summary>
-			/// The surface background. You will have to do parallaxing yourself for now.
+			/// ** (Broken) ** The surface background. You will have to do parallaxing yourself for now.
 			/// </summary>
-			BeforeSurfaceBackground,
+			//BeforeSurfaceBackground,
 			/// <summary>
 			/// Walls.
 			/// </summary>

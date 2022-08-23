@@ -32,7 +32,7 @@ namespace ParticleLibrary
 		{
 			particles = new List<Particle>(ParticleLibraryConfig.Instance.MaxParticles);
 			On.Terraria.Dust.UpdateDust += UpdateParticles;
-			On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
+			//On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
 			On.Terraria.Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
 			On.Terraria.Main.DoDraw_Tiles_NonSolid += DrawParticlesBeforeNonSolidTiles;
 			On.Terraria.Main.DrawPlayers_BehindNPCs += DrawParticlesBeforePlayersBehindNPCs;
@@ -177,13 +177,13 @@ namespace ParticleLibrary
 		#endregion
 
 		#region Drawing
-		private void DrawParticlesBeforeSurfaceBackground(On.Terraria.Main.orig_DrawSurfaceBG orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeSurfaceBackground);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-			orig(self);
-		}
+		//private void DrawParticlesBeforeSurfaceBackground(On.Terraria.Main.orig_DrawSurfaceBG orig, Main self)
+		//{
+		//	Main.spriteBatch.End();
+		//	Draw(x => x.layer == Layer.BeforeSurfaceBackground);
+		//	Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+		//	orig(self);
+		//}
 		private void DrawParticlesBeforeWalls(On.Terraria.Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
 			Main.spriteBatch.End();
