@@ -132,6 +132,10 @@ namespace ParticleLibrary
 		public Action DeathAction;
 
 		/// <summary>
+		/// Whether this particle should be exempt from the particle limit.
+		/// </summary>
+		public bool important;
+		/// <summary>
 		/// Whether this particle should collide with tiles.
 		/// </summary>
 		public bool tileCollide;

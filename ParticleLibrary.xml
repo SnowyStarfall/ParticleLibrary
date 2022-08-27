@@ -263,6 +263,11 @@
             Method to run when this particle is despawned.
             </summary>
         </member>
+        <member name="F:ParticleLibrary.Particle.important">
+            <summary>
+            Whether this particle should be exempt from the particle limit.
+            </summary>
+        </member>
         <member name="F:ParticleLibrary.Particle.tileCollide">
             <summary>
             Whether this particle should collide with tiles.
@@ -401,6 +406,13 @@
             A list that contains all active particles.
             </summary>
         </member>
+        <member name="F:ParticleLibrary.ParticleManager.importantParticles">
+            <summary>
+            A list that contains all active important particles.
+            Important particles are exempt fron the client-side particle limitation.
+            Use only when absolutely necessary.
+            </summary>
+        </member>
         <member name="M:ParticleLibrary.ParticleManager.Dispose">
             <summary>
             Disposes the current list of particles.
@@ -413,7 +425,7 @@
             <typeparam name="T">The particle.</typeparam>
             <returns>A new instance of this particle</returns>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>
@@ -432,7 +444,7 @@
             <param name="Layer">When the particle is drawn.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>
@@ -451,7 +463,7 @@
             <param name="Layer">When the particle is drawn.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>
@@ -471,7 +483,7 @@
             <param name="Layer">When the particle is drawn.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
-        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer)">
+        <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
             <summary>
             Spawns a new particle at the desired position.
             </summary>

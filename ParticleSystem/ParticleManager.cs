@@ -20,17 +20,24 @@ namespace ParticleLibrary
 	/// </summary>
 	public class ParticleManager : ModSystem
 	{
-		public delegate Particle NewParticleCreated(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0);
+		public delegate Particle NewParticleCreated(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false);
 		public static event NewParticleCreated OnNewParticle;
 
 		/// <summary>
 		/// A list that contains all active particles.
 		/// </summary>
 		public static List<Particle> particles;
+		/// <summary>
+		/// A list that contains all active important particles.
+		/// Important particles are exempt fron the client-side particle limitation.
+		/// Use only when absolutely necessary.
+		/// </summary>
+		public static List<Particle> importantParticles;
 
 		public override void OnModLoad()
 		{
-			particles = new List<Particle>(ParticleLibraryConfig.Instance.MaxParticles);
+			particles = new(ParticleLibraryConfig.Instance.MaxParticles);
+			importantParticles = new();
 			On.Terraria.Dust.UpdateDust += UpdateParticles;
 			//On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
 			On.Terraria.Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
@@ -81,22 +88,28 @@ namespace ParticleLibrary
 
 		private void UpdateParticles()
 		{
-			PreUpdate();
-			Update();
-			PostUpdate();
+			if (!Main.gamePaused)
+			{
+				PreUpdate();
+				Update();
+				PostUpdate();
+			}
 		}
-
 		internal static void PreUpdate()
 		{
-			if (Main.hasFocus && !Main.gamePaused)
+			for (int i = 0; i < particles?.Count; i++)
 			{
-				for (int i = 0; i < particles?.Count; i++)
-				{
-					if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].PreAI();
-					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].velocity = Vector2.Zero;
-				}
+				if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
+					particles[i].PreAI();
+				if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+					particles[i].velocity = Vector2.Zero;
+			}
+			for (int i = 0; i < importantParticles?.Count; i++)
+			{
+				if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
+					importantParticles[i].PreAI();
+				if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+					importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 
@@ -105,57 +118,110 @@ namespace ParticleLibrary
 			for (int i = 0; i < particles?.Count; i++)
 			{
 				Particle particle = particles[i];
-				if (Main.hasFocus && !Main.gamePaused)
+				particle.oldDirection = particle.direction;
+
+				particle.rotationVelocity += particle.rotationAcceleration;
+				particle.rotation += particle.rotationVelocity;
+
+				particle.scaleVelocity += particle.scaleAcceleration;
+				particle.scale += particle.scaleVelocity;
+
+				if (particle.tileCollide)
 				{
-					particle.oldDirection = particle.direction;
-
-					particle.rotationVelocity += particle.rotationAcceleration;
-					particle.rotation += particle.rotationVelocity;
-
-					particle.scaleVelocity += particle.scaleAcceleration;
-					particle.scale += particle.scaleVelocity;
-
-					if (particle.tileCollide)
+					particle.velocity += particle.velocityAcceleration;
+					particle.velocity.Y += particle.gravity;
+					Vector2 oldVelocity = particle.velocity;
+					if (Collision.SolidCollision(particle.position, particle.width, particle.height, true))
 					{
-						particle.velocity += particle.velocityAcceleration;
-						particle.velocity.Y += particle.gravity;
-						Vector2 oldVelocity = particle.velocity;
-						if (Collision.SolidCollision(particle.position, particle.width, particle.height, true))
-						{
-							particle.velocity = Collision.TileCollision(particle.position, particle.velocity, particle.width, particle.height);
-							particle.TileCollision(oldVelocity);
-						}
-						if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-							particles[i].velocity = Vector2.Zero;
-						particle.position += particle.velocity;
-						UpdateArrays(particle);
+						particle.velocity = Collision.TileCollision(particle.position, particle.velocity, particle.width, particle.height);
+						particle.TileCollision(oldVelocity);
 					}
-					else
+					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+						particles[i].velocity = Vector2.Zero;
+					particle.position += particle.velocity;
+					UpdateArrays(particle);
+				}
+				else
+				{
+					particle.velocity += particle.velocityAcceleration;
+					particle.velocity.Y += particle.gravity;
+					Vector2 oldVelocity = particle.velocity;
+					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
+						particle.TileCollision(oldVelocity);
+					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+						particles[i].velocity = Vector2.Zero;
+					particle.position += particle.velocity;
+					UpdateArrays(particle);
+				}
+
+				particle.direction = particle.velocity.X >= 0f ? 1 : -1;
+				particle.lavaWet = Collision.LavaCollision(particle.position, particle.width, particle.height);
+				particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
+
+				if ((!UISystem.Instance.DebugUIElement.Instance.FreezeAI && ParticleLibraryConfig.Instance.DebugUI) || !ParticleLibraryConfig.Instance.DebugUI)
+				{
+					particle.AI();
+
+					if (particle.timeLeft-- == 0 || !particles[i].active)
 					{
-						particle.velocity += particle.velocityAcceleration;
-						particle.velocity.Y += particle.gravity;
-						Vector2 oldVelocity = particle.velocity;
-						if (Collision.SolidCollision(particle.position, particle.width, particle.height))
-							particle.TileCollision(oldVelocity);
-						if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-							particles[i].velocity = Vector2.Zero;
-						particle.position += particle.velocity;
-						UpdateArrays(particle);
+						particle.DeathAction?.Invoke();
+						particles.RemoveAt(i);
+						i--;
 					}
+				}
+			}
+			for (int i = 0; i < importantParticles?.Count; i++)
+			{
+				Particle particle = particles[i];
+				particle.oldDirection = particle.direction;
 
-					particle.direction = particle.velocity.X >= 0f ? 1 : -1;
-					particle.lavaWet = Collision.LavaCollision(particle.position, particle.width, particle.height);
-					particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
+				particle.rotationVelocity += particle.rotationAcceleration;
+				particle.rotation += particle.rotationVelocity;
 
-					if ((!UISystem.Instance.DebugUIElement.Instance.FreezeAI && ParticleLibraryConfig.Instance.DebugUI) || !ParticleLibraryConfig.Instance.DebugUI)
+				particle.scaleVelocity += particle.scaleAcceleration;
+				particle.scale += particle.scaleVelocity;
+
+				if (particle.tileCollide)
+				{
+					particle.velocity += particle.velocityAcceleration;
+					particle.velocity.Y += particle.gravity;
+					Vector2 oldVelocity = particle.velocity;
+					if (Collision.SolidCollision(particle.position, particle.width, particle.height, true))
 					{
-						particle.AI();
+						particle.velocity = Collision.TileCollision(particle.position, particle.velocity, particle.width, particle.height);
+						particle.TileCollision(oldVelocity);
+					}
+					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+						importantParticles[i].velocity = Vector2.Zero;
+					particle.position += particle.velocity;
+					UpdateArrays(particle);
+				}
+				else
+				{
+					particle.velocity += particle.velocityAcceleration;
+					particle.velocity.Y += particle.gravity;
+					Vector2 oldVelocity = particle.velocity;
+					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
+						particle.TileCollision(oldVelocity);
+					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+						importantParticles[i].velocity = Vector2.Zero;
+					particle.position += particle.velocity;
+					UpdateArrays(particle);
+				}
 
-						if (particle.timeLeft-- == 0 || !particles[i].active)
-						{
-							particle.DeathAction?.Invoke();
-							particles.RemoveAt(i);
-						}
+				particle.direction = particle.velocity.X >= 0f ? 1 : -1;
+				particle.lavaWet = Collision.LavaCollision(particle.position, particle.width, particle.height);
+				particle.wet = Collision.WetCollision(particle.position, particle.width, particle.height);
+
+				if ((!UISystem.Instance.DebugUIElement.Instance.FreezeAI && ParticleLibraryConfig.Instance.DebugUI) || !ParticleLibraryConfig.Instance.DebugUI)
+				{
+					particle.AI();
+
+					if (particle.timeLeft-- == 0 || !particles[i].active)
+					{
+						particle.DeathAction?.Invoke();
+						importantParticles.RemoveAt(i);
+						i--;
 					}
 				}
 			}
@@ -165,13 +231,17 @@ namespace ParticleLibrary
 		{
 			for (int i = 0; i < particles?.Count; i++)
 			{
-				if (Main.hasFocus && !Main.gamePaused)
-				{
-					if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].PostAI();
-					if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].velocity = Vector2.Zero;
-				}
+				if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
+					particles[i].PostAI();
+				if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+					particles[i].velocity = Vector2.Zero;
+			}
+			for (int i = 0; i < importantParticles?.Count; i++)
+			{
+				if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
+					importantParticles[i].PostAI();
+				if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
+					importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 		#endregion
@@ -289,7 +359,7 @@ namespace ParticleLibrary
 		}
 		private void Draw(Predicate<Particle> predicate)
 		{
-			if (Main.netMode != NetmodeID.Server && particles.Count > 0)
+			if (Main.netMode != NetmodeID.Server)
 			{
 				for (int i = 0; i < particles?.Count; i++)
 				{
@@ -334,10 +404,10 @@ namespace ParticleLibrary
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust) where T : Particle
+		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false) where T : Particle
 		{
 			Particle Particle = Activator.CreateInstance<T>();
-			return NewParticle(Position, Velocity, Particle, Color, new Vector2(Scale), AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer);
+			return NewParticle(Position, Velocity, Particle, Color, new Vector2(Scale), AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
 		}
 		/// <summary>
 		/// Spawns a new particle at the desired position.
@@ -356,10 +426,10 @@ namespace ParticleLibrary
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust) where T : Particle
+		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false) where T : Particle
 		{
 			Particle Particle = Activator.CreateInstance<T>();
-			return NewParticle(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer);
+			return NewParticle(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
 		}
 		/// <summary>
 		/// Spawns a new particle at the desired position.
@@ -379,9 +449,9 @@ namespace ParticleLibrary
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust)
+		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false)
 		{
-			return NewParticle(Position, Velocity, Particle, Color, new Vector2(Scale), AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer);
+			return NewParticle(Position, Velocity, Particle, Color, new Vector2(Scale), AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
 		}
 		/// <summary>
 		/// Spawns a new particle at the desired position.
@@ -401,13 +471,13 @@ namespace ParticleLibrary
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust)
+		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false)
 		{
 			Particle type = (Particle)Activator.CreateInstance(Particle.GetType());
 
-			if (particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
+			if (!Important && particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
 				particles.TrimExcess();
-			if (particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
+			if (!Important && particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
 				return null;
 			if (type.texture == null)
 				throw new NullReferenceException($"Texture was null for {type.GetType().Name}.");
@@ -419,10 +489,15 @@ namespace ParticleLibrary
 			type.active = true;
 			type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
 			type.layer = Layer;
+			type.important = Important;
 			type.SpawnAction?.Invoke();
-			particles?.Add(type);
 
-			OnNewParticle?.Invoke(Position, Velocity, type, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7);
+			if (Important)
+				importantParticles?.Add(type);
+			else
+				particles?.Add(type);
+
+			OnNewParticle?.Invoke(Position, Velocity, type, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
 			return type;
 		}
 
