@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static ParticleLibrary.ParticleManager;
 
@@ -132,7 +133,7 @@ namespace ParticleLibrary
 		public Action DeathAction;
 
 		/// <summary>
-		/// Whether this particle should be exempt from the particle limit.
+		/// Whether this particle should be exempt from the particle limit. Use only when necesssary.
 		/// </summary>
 		public bool important;
 		/// <summary>
@@ -208,7 +209,7 @@ namespace ParticleLibrary
 
 		private void SetPrivateDefaults()
 		{
-			if (texture == null)
+			if (Main.netMode != NetmodeID.Server && texture == null)
 			{
 				string filePath = Texture?.Length == 0 || Texture == null ? GetType().Namespace.Replace(".", "/") + "/" + GetType().Name : Texture;
 				try { texture = ModContent.Request<Texture2D>(filePath).Value; }
@@ -282,7 +283,7 @@ namespace ParticleLibrary
 		{
 			if (deathAction)
 				DeathAction?.Invoke();
-			ParticleManager.particles?.Remove(this);
+			particles?.Remove(this);
 		}
 	}
 }

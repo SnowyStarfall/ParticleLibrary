@@ -59,6 +59,7 @@ namespace ParticleLibrary
 		public override void Unload()
 		{
 			particles = null;
+			importantParticles = null;
 		}
 
 		public override void OnWorldLoad()
@@ -77,6 +78,7 @@ namespace ParticleLibrary
 		public static void Dispose()
 		{
 			particles.Clear();
+			importantParticles.Clear();
 		}
 
 		#region Updating
@@ -85,7 +87,6 @@ namespace ParticleLibrary
 			UpdateParticles();
 			orig();
 		}
-
 		private void UpdateParticles()
 		{
 			if (!Main.gamePaused)
@@ -95,6 +96,7 @@ namespace ParticleLibrary
 				PostUpdate();
 			}
 		}
+
 		internal static void PreUpdate()
 		{
 			for (int i = 0; i < particles?.Count; i++)
@@ -172,7 +174,7 @@ namespace ParticleLibrary
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
 			{
-				Particle particle = particles[i];
+				Particle particle = importantParticles[i];
 				particle.oldDirection = particle.direction;
 
 				particle.rotationVelocity += particle.rotationAcceleration;
@@ -217,7 +219,7 @@ namespace ParticleLibrary
 				{
 					particle.AI();
 
-					if (particle.timeLeft-- == 0 || !particles[i].active)
+					if (particle.timeLeft-- == 0 || !importantParticles[i].active)
 					{
 						particle.DeathAction?.Invoke();
 						importantParticles.RemoveAt(i);
@@ -374,6 +376,19 @@ namespace ParticleLibrary
 						Main.spriteBatch.End();
 					}
 				}
+				for (int i = 0; i < importantParticles?.Count; i++)
+				{
+					Particle particle = importantParticles[i];
+					if (particle != null && predicate.Invoke(particle))
+					{
+						Vector2 offset = particle.layer == Layer.BeforeWater ? new Vector2(Main.offScreenRange, Main.offScreenRange) : Vector2.Zero;
+						Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+						if (particle.PreDraw(Main.spriteBatch, particle.VisualPosition + offset, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16))))
+							particle.Draw(Main.spriteBatch, particle.VisualPosition + offset, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+						particle.PostDraw(Main.spriteBatch, particle.VisualPosition + offset, Lighting.GetColor((int)(particle.position.X / 16), (int)(particle.position.Y / 16)));
+						Main.spriteBatch.End();
+					}
+				}
 			}
 		}
 		#endregion
@@ -403,6 +418,7 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
+		/// <param name="Important">Whether the particle should ignore the particle limit.</param>
 		/// <exception cref="NullReferenceException"></exception>
 		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false) where T : Particle
 		{
@@ -425,6 +441,7 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
+		/// <param name="Important">Whether the particle should ignore the particle limit.</param>
 		/// <exception cref="NullReferenceException"></exception>
 		public static Particle NewParticle<T>(Vector2 Position, Vector2 Velocity, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false) where T : Particle
 		{
@@ -448,6 +465,7 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
+		/// <param name="Important">Whether the particle should ignore the particle limit.</param>
 		/// <exception cref="NullReferenceException"></exception>
 		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, float Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false)
 		{
@@ -470,6 +488,7 @@ namespace ParticleLibrary
 		/// <param name="AI6"></param>
 		/// <param name="AI7"></param>
 		/// <param name="Layer">When the particle is drawn.</param>
+		/// <param name="Important">Whether the particle should ignore the particle limit.</param>
 		/// <exception cref="NullReferenceException"></exception>
 		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false)
 		{
@@ -479,8 +498,6 @@ namespace ParticleLibrary
 				particles.TrimExcess();
 			if (!Important && particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
 				return null;
-			if (type.texture == null)
-				throw new NullReferenceException($"Texture was null for {type.GetType().Name}.");
 
 			type.position = Position;
 			type.velocity = Velocity;

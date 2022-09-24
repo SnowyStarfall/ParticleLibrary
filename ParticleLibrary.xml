@@ -265,7 +265,7 @@
         </member>
         <member name="F:ParticleLibrary.Particle.important">
             <summary>
-            Whether this particle should be exempt from the particle limit.
+            Whether this particle should be exempt from the particle limit. Use only when necesssary.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Particle.tileCollide">
@@ -442,6 +442,7 @@
             <param name="AI6"></param>
             <param name="AI7"></param>
             <param name="Layer">When the particle is drawn.</param>
+            <param name="Important">Whether the particle should ignore the particle limit.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
@@ -461,6 +462,7 @@
             <param name="AI6"></param>
             <param name="AI7"></param>
             <param name="Layer">When the particle is drawn.</param>
+            <param name="Important">Whether the particle should ignore the particle limit.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
@@ -481,6 +483,7 @@
             <param name="AI6"></param>
             <param name="AI7"></param>
             <param name="Layer">When the particle is drawn.</param>
+            <param name="Important">Whether the particle should ignore the particle limit.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
         <member name="M:ParticleLibrary.ParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,ParticleLibrary.Particle.Layer,System.Boolean)">
@@ -501,6 +504,7 @@
             <param name="AI6"></param>
             <param name="AI7"></param>
             <param name="Layer">When the particle is drawn.</param>
+            <param name="Important">Whether the particle should ignore the particle limit.</param>
             <exception cref="T:System.NullReferenceException"></exception>
         </member>
     </members>
