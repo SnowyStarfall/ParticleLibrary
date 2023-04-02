@@ -75,24 +75,31 @@ namespace ParticleLibrary.Debug
 			return (int)Math.Ceiling(Radius.X > Radius.Y ? Radius.X : radius.Y * Math.PI);
 		}
 
-		private GraphicsDeviceManager graphics;
+		private readonly GraphicsDeviceManager graphics;
 		private VertexPositionColor[] vertices;
 		private BasicEffect effect;
 
 		private Vector2 position;
-		public Vector2 Position { get => position; set { position = value; InitializeVertices(); } }
+		public Vector2 Position
+		{
+			get { return position; }
+			set { position = value; InitializeVertices(); }
+		}
 
 		private Vector2 radius;
 		public Vector2 Radius
 		{
-			get => radius; set { radius = new Vector2(value.X < 1 ? 1 : value.X, value.Y < 1 ? 1 : value.Y); InitializeVertices(); }
+			get { return radius; }
+			set { radius = new Vector2(value.X < 1 ? 1 : value.X, value.Y < 1 ? 1 : value.Y); InitializeVertices(); }
 		}
+
 		private Color color;
 		public Color Color
 		{
 			get { return color; }
 			set { color = value; InitializeVertices(); }
 		}
+
 		public int Points
 		{
 			get { return CalculatePointCount(); }

@@ -25,13 +25,13 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			emitters = new();
-			On.Terraria.Main.DrawDust += DrawEmitters;
+			Terraria.On_Main.DrawDust += DrawEmitters;
 		}
 
 		public override void Unload()
 		{
 			emitters = null;
-			On.Terraria.Main.DrawDust -= DrawEmitters;
+			Terraria.On_Main.DrawDust -= DrawEmitters;
 		}
 
 		public override void LoadWorldData(TagCompound tag)
@@ -65,7 +65,7 @@ namespace ParticleLibrary
 			}
 		}
 
-		private void DrawEmitters(On.Terraria.Main.orig_DrawDust orig, Main self)
+		private void DrawEmitters(Terraria.On_Main.orig_DrawDust orig, Main self)
 		{
 			if (Main.netMode != NetmodeID.Server)
 			{

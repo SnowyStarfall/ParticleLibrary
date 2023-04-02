@@ -120,10 +120,7 @@ namespace ParticleLibrary.Debug
 			// Set Debug Drawer
 			Main.QueueMainThreadAction(() => Debug = new BasicDebugDrawer(Main.graphics.GraphicsDevice));
 
-			On.Terraria.Dust.UpdateDust += Dust_UpdateDust;
-
-			Width.Set(Main.screenWidth, 0f);
-			Height.Set(Main.screenHeight, 0f);
+			On_Dust.UpdateDust += Dust_UpdateDust;
 
 			#region Textures
 			Asset<Texture2D> box = ModContent.Request<Texture2D>("ParticleLibrary/Debug/Box", AssetRequestMode.ImmediateLoad);
@@ -193,7 +190,7 @@ namespace ParticleLibrary.Debug
 			clearParticle.Width.Set(18f, 0f);
 			clearParticle.Height.Set(18f, 0f);
 			clearParticle.visible = true;
-			clearParticle.OnClick += (e, l) => TrackedParticle = null;
+			clearParticle.OnLeftClick += (e, l) => TrackedParticle = null;
 
 			velocityDropdown = new UICustomImageButton(box, minus, highlight, plus, isSmall: true);
 			velocityDropdown.Width.Set(18f, 0f);
@@ -268,12 +265,12 @@ namespace ParticleLibrary.Debug
 			spawnDropper.Width.Set(18f, 0f);
 			spawnDropper.Height.Set(18f, 0f);
 			spawnDropper.visible = true;
-			spawnDropper.OnMouseDown += (e, l) =>
+			spawnDropper.OnLeftMouseDown += (e, l) =>
 			{
 				if (spawnDropper.enabled)
 					spawnDropperDragging = true;
 			};
-			spawnDropper.OnClick += (e, l) =>
+			spawnDropper.OnLeftClick += (e, l) =>
 			{
 				nX.visible = !nX.visible;
 				nY.visible = !nY.visible;
@@ -292,7 +289,7 @@ namespace ParticleLibrary.Debug
 			squareSetting.Width.Set(18f, 0f);
 			squareSetting.Height.Set(18f, 0f);
 			squareSetting.visible = true;
-			squareSetting.OnClick += (e, l) =>
+			squareSetting.OnLeftClick += (e, l) =>
 			{
 				if (area == AreaType.Point)
 				{
@@ -363,7 +360,7 @@ namespace ParticleLibrary.Debug
 				panel.Height.Set(26f, 0f);
 				panel.BackgroundColor = Color.White * 0.25f;
 				panel.BorderColor = Color.White * 0.25f;
-				panel.OnClick += (e, l) =>
+				panel.OnLeftClick += (e, l) =>
 				{
 					for (int k = 0; k < layerDropdown._items.Count; k++)
 					{
@@ -536,6 +533,11 @@ namespace ParticleLibrary.Debug
 			Append(nY);
 			Append(SpawnPanel);
 			Append(layerPanel);
+
+			Recalculate();
+			CalculatedStyle style = GetDimensions();
+			Width.Set(style.Width, 0f);
+			Height.Set(style.Height, 0f);
 			#endregion
 		}
 
@@ -564,7 +566,7 @@ namespace ParticleLibrary.Debug
 
 			DragCalculation();
 		}
-		private void Dust_UpdateDust(On.Terraria.Dust.orig_UpdateDust orig)
+		private void Dust_UpdateDust(On_Dust.orig_UpdateDust orig)
 		{
 			if (spawnPosition != Vector2.Zero && selectedParticles.Count > 0)
 			{
@@ -612,12 +614,14 @@ namespace ParticleLibrary.Debug
 
 			base.Draw(spriteBatch);
 
-			DrawDebug(spriteBatch);
+			DrawParticleDebug(spriteBatch);
 			DrawMainPanel(spriteBatch);
 			DrawInfoPanel(spriteBatch);
 			DrawDictPanel(spriteBatch);
 			DrawCountPanel(spriteBatch);
 			DrawSpawnPanel(spriteBatch);
+
+			DrawDebug(spriteBatch);
 		}
 		internal void DrawMainPanel(SpriteBatch spriteBatch)
 		{
@@ -1117,25 +1121,25 @@ namespace ParticleLibrary.Debug
 
 			Recalculate();
 		}
-		public override void MouseDown(UIMouseEvent evt)
+		public override void LeftMouseDown(UIMouseEvent evt)
 		{
 			if (!Visible)
 				return;
 
 			if ((InfoPanel.ContainsPoint(Main.MouseScreen) || MainPanel.ContainsPoint(Main.MouseScreen)) && !scrollBar.ContainsPoint(Main.MouseScreen))
 			{
-				base.MouseDown(evt);
+				base.LeftMouseDown(evt);
 				DragStart(evt);
 			}
 		}
-		public override void MouseUp(UIMouseEvent evt)
+		public override void LeftMouseUp(UIMouseEvent evt)
 		{
 			if (!Visible)
 				return;
 
 			if ((InfoPanel.ContainsPoint(Main.MouseScreen) || MainPanel.ContainsPoint(Main.MouseScreen)) && !scrollBar.ContainsPoint(Main.MouseScreen))
 			{
-				base.MouseUp(evt);
+				base.LeftMouseUp(evt);
 				DragEnd(evt);
 			}
 		}
@@ -1158,6 +1162,15 @@ namespace ParticleLibrary.Debug
 
 		#region Debugging
 		internal void DrawDebug(SpriteBatch spriteBatch)
+		{
+			DrawHollowSquare(new Vector2(Left.Pixels, Top.Pixels), new Vector2(Width.Pixels, Height.Pixels), Color.Green, 1f);
+
+			foreach (var child in Children)
+			{
+				DrawHollowSquare(new Vector2(child.Left.Pixels, child.Top.Pixels), new Vector2(child.Width.Pixels, child.Height.Pixels), Color.Green, 1f);
+			}
+		}
+		internal void DrawParticleDebug(SpriteBatch spriteBatch)
 		{
 			for (int i = 0; i < ParticleManager.particles.Count; i++)
 			{
@@ -1398,7 +1411,7 @@ namespace ParticleLibrary.Debug
 				this.highlight = highlight.Value;
 				this.noTick = noTick?.Value;
 
-				OnClick += OnButtonClick;
+				OnLeftClick += OnButtonClick;
 			}
 
 			protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -1486,7 +1499,7 @@ namespace ParticleLibrary.Debug
 				UISystem.Instance.DebugUIElement.Instance.DrawPanel(spriteBatch, handle, Color.White, new Vector2(handleRect.X, handleRect.Y), new Vector2(handleRect.Width, handleRect.Height), 4, 2);
 			}
 
-			public override void MouseDown(UIMouseEvent evt)
+			public override void LeftMouseDown(UIMouseEvent evt)
 			{
 				CalculatedStyle dimensions = GetDimensions();
 				Vector2 position = new(dimensions.X, dimensions.Y);
@@ -1502,7 +1515,7 @@ namespace ParticleLibrary.Debug
 				}
 			}
 
-			public override void MouseUp(UIMouseEvent evt)
+			public override void LeftMouseUp(UIMouseEvent evt)
 			{
 				if (handleRect.Contains((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y))
 				{
@@ -1543,9 +1556,9 @@ namespace ParticleLibrary.Debug
 				spriteBatch.DrawString(MouseText.Value, text, position + new Vector2(6f), Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
 			}
 
-			public override void MouseDown(UIMouseEvent evt)
+			public override void LeftMouseDown(UIMouseEvent evt)
 			{
-				base.MouseDown(evt);
+				base.LeftMouseDown(evt);
 
 				selected = !selected;
 
@@ -1661,11 +1674,11 @@ namespace ParticleLibrary.Debug
 				}
 			}
 
-			public override void MouseDown(UIMouseEvent evt)
+			public override void LeftMouseDown(UIMouseEvent evt)
 			{
 				if (visible)
 				{
-					base.MouseDown(evt);
+					base.LeftMouseDown(evt);
 					dragging = true;
 					origin = Main.MouseWorld;
 				}
@@ -1760,9 +1773,9 @@ namespace ParticleLibrary.Debug
 					value = (int)MathHelper.Lerp(min, max, FillPercent);
 			}
 
-			public override void MouseDown(UIMouseEvent evt)
+			public override void LeftMouseDown(UIMouseEvent evt)
 			{
-				base.MouseDown(evt);
+				base.LeftMouseDown(evt);
 
 				if (handleRect.Contains(new Point((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y)))
 				{
@@ -1867,9 +1880,9 @@ namespace ParticleLibrary.Debug
 				Main.instance.DrawWindowsIMEPanel(position, 0.5f);
 			}
 
-			public override void MouseDown(UIMouseEvent evt)
+			public override void LeftMouseDown(UIMouseEvent evt)
 			{
-				base.MouseDown(evt);
+				base.LeftMouseDown(evt);
 
 				isWritingText = true;
 			}
