@@ -25,7 +25,7 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			emitters = new();
-			On_Main.DrawDust += DrawEmitters;
+			On.Terraria.Main.DrawDust += DrawEmitters;
 		}
 
 		public override void Unload()
@@ -64,7 +64,7 @@ namespace ParticleLibrary
 			}
 		}
 
-		private void DrawEmitters(Terraria.On_Main.orig_DrawDust orig, Main self)
+		private void DrawEmitters(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
 			if (Main.netMode != NetmodeID.Server)
 			{

@@ -39,24 +39,24 @@ namespace ParticleLibrary
 		{
 			particles = new(ParticleLibraryConfig.Instance.MaxParticles);
 			importantParticles = new();
-			On_Dust.UpdateDust += UpdateParticles;
+			On.Terraria.Dust.UpdateDust += UpdateParticles;
 			Main.QueueMainThreadAction(() =>
 			{
 				//On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
-				On_Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
-				On_Main.DoDraw_Tiles_NonSolid += DrawParticlesBeforeNonSolidTiles;
-				On_Main.DrawPlayers_BehindNPCs += DrawParticlesBeforePlayersBehindNPCs;
-				On_Main.DrawNPCs += DrawParticlesBeforeNPCs;
-				On_Main.DoDraw_Tiles_Solid += DrawParticlesBeforeSolidTiles;
-				On_Main.DrawProjectiles += DrawParticlesBeforeProjectiles;
-				On_Main.DrawPlayers_AfterProjectiles += DrawParticlesBeforePlayers;
-				On_Main.DrawItems += DrawParticlesBeforeItems;
-				On_Main.DrawRain += DrawParticlesBeforeRain;
-				On_Main.DrawGore += DrawParticlesBeforeGore;
-				On_Main.DrawDust += DrawParticlesBeforeDust;
-				On_Main.DrawWaters += DrawParticlesBeforeWater;
-				On_Main.DrawInterface += DrawParticlesBeforeInterface;
-				On_Main.DrawMenu += DrawParticlesBeforeAndAfterMainMenu;
+				On.Terraria.Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
+				On.Terraria.Main.DoDraw_Tiles_NonSolid += DrawParticlesBeforeNonSolidTiles;
+				On.Terraria.Main.DrawPlayers_BehindNPCs += DrawParticlesBeforePlayersBehindNPCs;
+				On.Terraria.Main.DrawNPCs += DrawParticlesBeforeNPCs;
+				On.Terraria.Main.DoDraw_Tiles_Solid += DrawParticlesBeforeSolidTiles;
+				On.Terraria.Main.DrawProjectiles += DrawParticlesBeforeProjectiles;
+				On.Terraria.Main.DrawPlayers_AfterProjectiles += DrawParticlesBeforePlayers;
+				On.Terraria.Main.DrawItems += DrawParticlesBeforeItems;
+				On.Terraria.Main.DrawRain += DrawParticlesBeforeRain;
+				On.Terraria.Main.DrawGore += DrawParticlesBeforeGore;
+				On.Terraria.Main.DrawDust += DrawParticlesBeforeDust;
+				On.Terraria.Main.DrawWaters += DrawParticlesBeforeWater;
+				On.Terraria.Main.DrawInterface += DrawParticlesBeforeInterface;
+				On.Terraria.Main.DrawMenu += DrawParticlesBeforeAndAfterMainMenu;
 			});
 		}
 
@@ -87,7 +87,7 @@ namespace ParticleLibrary
 		}
 
 		#region Updating
-		private void UpdateParticles(Terraria.On_Dust.orig_UpdateDust orig)
+		private void UpdateParticles(On.Terraria.Dust.orig_UpdateDust orig)
 		{
 			UpdateParticles();
 			orig();
@@ -261,7 +261,7 @@ namespace ParticleLibrary
 		//	Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
 		//	orig(self);
 		//}
-		private void DrawParticlesBeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
+		private void DrawParticlesBeforeWalls(On.Terraria.Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeWalls);
@@ -269,7 +269,7 @@ namespace ParticleLibrary
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
+		private void DrawParticlesBeforeNonSolidTiles(On.Terraria.Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeNonSolidTiles);
@@ -278,20 +278,20 @@ namespace ParticleLibrary
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+		private void DrawParticlesBeforeSolidTiles(On.Terraria.Main.orig_DoDraw_Tiles_Solid orig, Main self)
 		{
 			Draw(x => x.layer == Layer.BeforeTiles);
 
 			orig(self);
 		}
 
-		private void DrawParticlesBeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
+		private void DrawParticlesBeforePlayersBehindNPCs(On.Terraria.Main.orig_DrawPlayers_BehindNPCs orig, Main self)
 		{
 			Draw(x => x.layer == Layer.BeforePlayersBehindNPCs);
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeNPCs(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+		private void DrawParticlesBeforeNPCs(On.Terraria.Main.orig_DrawNPCs orig, Main self, bool behindTiles)
 		{
 			if (behindTiles)
 			{
@@ -308,19 +308,19 @@ namespace ParticleLibrary
 			orig(self, behindTiles);
 		}
 
-		private void DrawParticlesBeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
+		private void DrawParticlesBeforeProjectiles(On.Terraria.Main.orig_DrawProjectiles orig, Main self)
 		{
 			Draw(x => x.layer == Layer.BeforeProjectiles);
 			orig(self);
 		}
 
-		private void DrawParticlesBeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+		private void DrawParticlesBeforePlayers(On.Terraria.Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
 		{
 			Draw(x => x.layer == Layer.BeforePlayers);
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeItems(On_Main.orig_DrawItems orig, Main self)
+		private void DrawParticlesBeforeItems(On.Terraria.Main.orig_DrawItems orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeItems);
@@ -328,7 +328,7 @@ namespace ParticleLibrary
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeRain(On_Main.orig_DrawRain orig, Main self)
+		private void DrawParticlesBeforeRain(On.Terraria.Main.orig_DrawRain orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeRain);
@@ -336,7 +336,7 @@ namespace ParticleLibrary
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeGore(On_Main.orig_DrawGore orig, Main self)
+		private void DrawParticlesBeforeGore(On.Terraria.Main.orig_DrawGore orig, Main self)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeGore);
@@ -344,13 +344,13 @@ namespace ParticleLibrary
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeDust(On_Main.orig_DrawDust orig, Main self)
+		private void DrawParticlesBeforeDust(On.Terraria.Main.orig_DrawDust orig, Main self)
 		{
 			Draw(x => x.layer == Layer.BeforeDust);
 			orig(self);
 		}
 
-		private void DrawParticlesBeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+		private void DrawParticlesBeforeWater(On.Terraria.Main.orig_DrawWaters orig, Main self, bool isBackground)
 		{
 			Main.spriteBatch.End();
 			Draw(x => x.layer == Layer.BeforeWater);
@@ -358,14 +358,14 @@ namespace ParticleLibrary
 			orig(self, isBackground);
 		}
 
-		private void DrawParticlesBeforeInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
+		private void DrawParticlesBeforeInterface(On.Terraria.Main.orig_DrawInterface orig, Main self, GameTime gameTime)
 		{
 			Draw(x => x.layer == Layer.BeforeUI);
 			orig(self, gameTime);
 			Draw(x => x.layer == Layer.AfterUI);
 		}
 
-		private void DrawParticlesBeforeAndAfterMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
+		private void DrawParticlesBeforeAndAfterMainMenu(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			if (Main.gameMenu && Main.hasFocus)
 				UpdateParticles();
