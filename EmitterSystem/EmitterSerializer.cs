@@ -10,7 +10,7 @@ namespace ParticleLibrary.EmitterSystem
 {
 	internal class EmitterSerializer : TagSerializable
 	{
-		public static Func<TagCompound, EmitterSerializer> DESERIALIZER = DeserializeData;
+		public static Func<TagCompound, EmitterSerializer> DESERIALIZER;
 		public Emitter emitter;
 		public EmitterSerializer(Emitter emitter)
 		{

@@ -1,4 +1,5 @@
 ﻿
+using log4net;
 using log4net.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,6 +64,7 @@ namespace ParticleLibrary
 		{
 			particles = null;
 			importantParticles = null;
+			OnNewParticle = null;
 		}
 
 		public override void OnWorldLoad()

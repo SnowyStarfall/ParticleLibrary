@@ -29,6 +29,11 @@ namespace ParticleLibrary.Debug
 			}
 		}
 
+		public override void Unload()
+		{
+			Instance = null;
+		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));

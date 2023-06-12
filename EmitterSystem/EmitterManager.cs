@@ -25,13 +25,13 @@ namespace ParticleLibrary
 		public override void Load()
 		{
 			emitters = new();
-			Terraria.On_Main.DrawDust += DrawEmitters;
+			On_Main.DrawDust += DrawEmitters;
 		}
 
 		public override void Unload()
 		{
 			emitters = null;
-			Terraria.On_Main.DrawDust -= DrawEmitters;
+			OnNewEmitter = null;
 		}
 
 		public override void LoadWorldData(TagCompound tag)
@@ -43,8 +43,7 @@ namespace ParticleLibrary
 
 		public override void SaveWorldData(TagCompound tag)
 		{
-			if (emitters == null)
-				emitters = new();
+			emitters ??= new();
 
 			List<EmitterSerializer> e = emitters.ConvertAll<EmitterSerializer>((o) => new(o));
 			e.RemoveAll(x => x == null);

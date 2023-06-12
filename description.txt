@@ -1,12 +1,41 @@
-Built for 1.4 Alpha version of tModLoader.
-ParticleLibrary is a library that aims to improve upon the existing Dusts system in Terraria by creating a Particle system focused on control and fidelity.
-Note that this mod does not change gameplay unless explicitly used by other mods.
+[h1] Particle Library [/h1]
+ParticleLibrary is a library that aims to improve upon the existing Dust and Particle systems in Terraria by creating a Particle system focused on control and fidelity.
+[b] Note that this mod does not change gameplay unless explicitly used by other mods. [/b]
 
-Modders who do not plan to modify the library should rely on the library as a strong mod reference, as this is the safest dependency route.
-Modders who plan to modify the library are highly encouraged to open a PR to the repo on GitHub once the changes are tested and verified as safe.
+[h1] Particles [/h1]
+Particles are modeled to feel much like Projectiles. They have AI and Draw methods. They also have a Layer, which determines their place in the draw order.
 
+[h1] Emitters [/h1]
+Emitters are much like Particles, however they are designed to be stationary. They can optionally save and load with the world, and they have AI and Draw methods. They can also store data in the form of a string.
+
+[h1] Usage & Installation [/h1]
+[b] Please note that this library uses the GPU v3.0 license. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
+[olist]
+    [*]Download ParticleLibrary from the Mod Browser in-game.
+    [*]Go to the GitHub here:
+          Terraria 1.3: https://github.com/SnowyStarfall/ParticleLibrary/tree/main
+          Terraria 1.4: https://github.com/SnowyStarfall/ParticleLibrary/tree/1.4
+    [*]Download the ParticleLibrary DLL and XML files.
+    [*]Place them somewhere on your PC.
+    [*]In Visual Studio, right-click your csproj and hover over Add, then click Add COM Reference.
+    [*]Navigate to the DLL from before and select it.
+    [*]Open your mod's build.txt.
+    [*]In your modReferences, add ParticleLibrary
+          modReferences = ParticleLibrary
+[/olist]
+Modders who only wish to use the library should depend on it via a strong mod reference.
+Modders who wish to modify the library should open a PR to the repository on GitHub once changes are complete.
+
+[h1] Credits & Contribution [/h1]
 Modders and Players are encouraged to report bugs and talk about improvements in our server.
 GitHub: https://github.com/SnowyStarfall/ParticleLibrary
 Discord: https://discord.gg/bhCuppRdVF in the Particle Library category
 
-Mod icon by Maskano: https://mobile.twitter.com/maskanomask
+Mod icon by [url=https://mobile.twitter.com/maskanomask] Maskano [/url]
+
+If your mod uses ParticleLibrary, feel free to contact me via my Discord server and I will add it to this list. It must be a released mod.
+
+Mods that use ParticleLibrary:
+- Mod of Redemption
+- Shadows of Abaddon
+- Stellamod

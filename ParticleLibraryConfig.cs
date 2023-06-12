@@ -6,10 +6,12 @@ namespace ParticleLibrary
 	public class ParticleLibraryConfig : ModConfig
 	{
 		public static ParticleLibraryConfig Instance;
-		public ParticleLibraryConfig()
+
+		public override void OnLoaded()
 		{
 			Instance = this;
 		}
+
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header("Particles")]

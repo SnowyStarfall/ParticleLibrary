@@ -1,0 +1,26 @@
+Configs: {
+	ParticleLibraryConfig: {
+		DebugUI: {
+			Tooltip: Whether the Debug UI is enabled. Currently a WIP. Emitter debugging is not fully functional. The UI IS and WILL BE buggy. Texture errors are normal.
+			Label: Debug UI
+		}
+
+		Headers: {
+			Debug: Debug Header
+			Particles: Particles Header
+		}
+
+		MaxParticles: {
+			Tooltip:
+				'''
+				Maximum particles allowed at once.
+				Note: Performance is tested with 6000 as max.
+				Any higher cannot guarantee a (mostly) lag-free experience.
+				A value of 0 will disable the system.
+				'''
+			Label: Max Particles
+		}
+
+		DisplayName: Particle Library Config
+	}
+}
