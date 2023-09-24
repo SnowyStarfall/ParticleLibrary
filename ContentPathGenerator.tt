@@ -1,0 +1,245 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+
+<#@ template debug="true" hostSpecific="true" #>
+<#@ import namespace="System.Diagnostics" #>
+
+<#
+    // Paths to the content folders, relative to the .tt file
+	string[] sourceFolders = new string[] { "../ParticleLibrary" }; 
+#>
+
+namespace ParticleLibrary
+{
+    /// <remarks>
+    /// This file originates from Nez, a Monogame library, which includes a T4 template that will auto-generate the content of this file.
+    /// Modified by SnowyStarfall to be more thorough.
+    /// See: https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"
+    /// </remarks>
+    internal class Resources
+    {
+<#
+			// loop through all of our sourceFolders
+			foreach (var sourceFolder in sourceFolders)
+			{
+				List<string> directories = Directory.GetDirectories(Host.ResolvePath(sourceFolder))
+					.OrderBy(s => s)
+					.ToList();
+
+				HashSet<string> definitions = new HashSet<string>();
+
+				// loop through all the directories in our sourceFolder
+				foreach (var dir in directories)
+				{
+					var dirName = new DirectoryInfo(dir).Name.ToLower();
+					if (dirName == "bin" || dirName == "obj" || dirName == ".git" || dirName == ".github" || dirName == ".vs" || dirName == "lib" || dirName == ".config")
+						continue;
+
+					definitions.Add(dirName);
+					// start off the recursive directory printing
+					PrintDirectoryClass(ref definitions, dir, 2, sourceFolder);
+				}
+
+				// handle any files in the root sourceFolder
+				PrintContentFiles(ref definitions, Host.ResolvePath(sourceFolder), 2, sourceFolder);
+			}
+
+#>
+
+    }
+}
+
+<#+
+	// C# reserved keywords
+	private System.Collections.Generic.HashSet<string> Keywords = new System.Collections.Generic.HashSet<string>
+	{
+		"abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate",
+		"do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in",
+		"int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private",
+		"protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this",
+		"throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while"
+	};
+
+	// Blacklisted files and extensions
+	private System.Collections.Generic.HashSet<string> BlacklistedFiles = new System.Collections.Generic.HashSet<string>
+	{
+		".editorconfig", ".gitattributes", ".gitignore", ".config", ".cs", ".tt", ".fx", ".txt", ".csproj", "sln", ".aseprite", ".dll", ".exe", "hjson", "json", "xml", "LICENSE", "md"
+	};
+
+	// Blacklisted directories
+	private System.Collections.Generic.HashSet<string> BlacklistedDirectories = new System.Collections.Generic.HashSet<string>
+	{
+		".vs", ".vscode", "FontCompile", "Properties"
+	};
+
+	bool CheckDirectoryValid( string dir )
+	{
+	    List<string> subDirs = Directory.GetDirectories( dir ).ToList();
+			List<string> subDirs2 = subDirs;
+        List<string> subFiles = Directory.GetFiles( dir ).ToList();
+
+		if( subDirs.Count() > 0 )
+		{
+				for( int i = 0 ; i < subDirs.Count ; i++ )
+				{
+					string subDir = subDirs[i];
+					bool valid = CheckDirectoryValid(subDir);
+					if (valid)
+						return true;
+					else
+					{
+						try
+						{
+							subDirs.Remove(subDir);
+							i--;
+						}
+						catch (Exception e)
+						{
+							Error(e.Message);
+						}
+					}
+				}
+
+
+			if( subFiles.Count() == 0 )
+				return false;
+		}
+
+		if( subFiles.Count() > 0 )
+		{
+			 for( int i = 0 ; i < subFiles.Count() ; i++ )
+			 {
+			 	string file = subFiles[i]; 
+			 	if ( !CheckFileValid( file ) )
+			 	{
+             subFiles.Remove(file);
+             i--;
+          }
+			 }
+		}
+
+		if(subDirs2.Count() == 0 && subFiles.Count() == 0)
+			return false;
+
+		return true;
+	}
+
+	bool CheckFileValid( string file )
+	{
+		bool valid = true;
+		foreach(string s in BlacklistedFiles)
+		{
+			if(file.EndsWith(s))
+				valid = false;
+			if(file.Contains(s))
+				valid = false;
+		}
+
+		return valid;
+	}
+	
+		// recursively creates a class for each directory
+		void PrintDirectoryClass(ref HashSet<string> parentDefinitions, string dir, int depth, string sourceFolder)
+		{
+			bool valid = CheckDirectoryValid(dir);
+			if (!valid)
+				return;
+
+			var dirInfo = new DirectoryInfo(dir);
+			var firstIndent = new string('\t', depth);
+			var className = GenerateClassName(dirInfo.Name);
+
+			foreach (string s in BlacklistedDirectories)
+			{
+				if (dirInfo.Name == s)
+					return;
+			}
+
+			// Add leading symbol to prevent repeated definitions
+			while (parentDefinitions.Contains(className))
+			{
+				className = className.Insert(0, "_");
+			}
+
+			parentDefinitions.Add(className);
+
+			// Keeps track of the currently used defintions to prevent repeated definitions	
+			HashSet<string> definitions = new HashSet<string> { className };
+
+			WriteLine("{0}public static class {1}\n{2}{{", firstIndent, className, firstIndent);
+
+			// handle subdirectories
+			foreach (var subdir in Directory.GetDirectories(dir).OrderBy(s => s))
+				PrintDirectoryClass(ref definitions, subdir, depth + 1, sourceFolder);
+
+			// handle files
+			PrintContentFiles(ref definitions, dir, depth + 1, sourceFolder);
+
+			WriteLine("{0}}}\n", firstIndent);
+		}
+
+
+		// prints a const string for each file in the directory
+		void PrintContentFiles(ref HashSet<string> parentDefinitions, string dir, int depth, string sourceFolder)
+		{
+			var firstIndent = new string('\t', depth);
+			DirectoryInfo directory = new DirectoryInfo(dir);
+
+			foreach (var file in Directory.GetFiles(dir).OrderBy(s => s))
+			{
+
+				// clear out all of the path up to the sourceFolder so we get just the relative path to the Content folder
+				var finalPath = file.Substring(file.IndexOf(sourceFolder) + 3);
+				var fileInfo = new FileInfo(file);
+
+				if (!CheckFileValid(fileInfo.FullName))
+					continue;
+
+				var className = GenerateClassName(fileInfo.Name.Replace(Path.GetExtension(fileInfo.Name), ""));
+
+				finalPath = fileInfo.DirectoryName + "/" + Path.GetFileNameWithoutExtension(fileInfo.Name);
+				finalPath = finalPath.Substring(finalPath.IndexOf(sourceFolder.Substring(3)));
+				if (finalPath[0] == '/' || finalPath[0] == '\\')
+					finalPath = finalPath.Substring(1);
+				finalPath = finalPath.Replace("\\", "/");
+
+				// if file name is reserved insert a leading '@'
+				if (Keywords.Contains(fileInfo.Name))
+					className = className.Insert(0, "@");
+				if (className == directory.Name)
+					className = className.Insert(0, "_");
+				while (parentDefinitions.Contains(className))
+					className = className.Insert(0, "_");
+
+
+				parentDefinitions.Add(className);
+
+				WriteLine("{0}public const string {1} = @\"{2}\";", firstIndent, className, finalPath);
+
+			}
+		}
+    
+	// attempts to generate a proper path name
+	string GenerateClassName( string className )
+	{
+		// handle upper or lower casing the first char in the className
+	    if( char.IsLower( className[0] ) )
+	    	className = char.ToUpper( className[0] ) + className.Substring( 1 );
+
+        // remove invalid characters
+        var regex = new Regex( @"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]" );
+        className = regex.Replace( className, "" );
+
+        // class name doesn't begin with a letter, insert an underscore
+        if( !char.IsLetter( className, 0 ) )
+            className = className.Insert( 0, "_" );
+
+	    return className.Replace( " ", string.Empty );
+	}
+#>

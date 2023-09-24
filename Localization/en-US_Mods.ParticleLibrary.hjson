@@ -24,3 +24,10 @@ Configs: {
 		DisplayName: Particle Library Config
 	}
 }
+
+Items: {
+	Devtool: {
+		DisplayName: Devtool
+		Tooltip: ""
+	}
+}

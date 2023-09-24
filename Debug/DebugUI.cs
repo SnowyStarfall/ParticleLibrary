@@ -1,27 +1,27 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.UI;
-using Terraria;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using ParticleLibrary.Core.Systems.EmitterSystem;
+using ParticleLibrary.Core.Systems.ParticleSystem.Old;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.GameInput;
-using static Terraria.GameContent.FontAssets;
-using System.Collections.Generic;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
-using static ParticleLibrary.Particle;
-using ParticleLibrary.EmitterSystem;
-using Terraria.Graphics.Renderers;
+using System.Reflection;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI;
+using static ParticleLibrary.Core.Systems.ParticleSystem.Old.Particle;
+using static Terraria.GameContent.FontAssets;
 
 namespace ParticleLibrary.Debug
 {
-	internal class DebugUI : UIState
+    internal class DebugUI : UIState
 	{
 		// Instance
 		internal DebugUI Instance;
@@ -576,7 +576,7 @@ namespace ParticleLibrary.Debug
 					for (int i = 0; i < amount.value; i++)
 					{
 						int index = selectedParticles.Count == 1 ? 0 : Main.rand.Next(0, selectedParticles.Count);
-						float radians = (Main.rand.NextFloat(0, 36000) / 100f).InRadians();
+						float radians = MathHelper.ToRadians((Main.rand.NextFloat(0, 36000) / 100f));
 						float xDist = nX.GetDistanceFromCenter();
 						float yDist = nY.GetDistanceFromCenter();
 						Vector2 modifier;
