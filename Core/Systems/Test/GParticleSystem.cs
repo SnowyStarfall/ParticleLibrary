@@ -37,10 +37,14 @@ namespace ParticleLibrary.Core.Systems.Test
 		private DynamicIndexBuffer _indexBuffer;
 
 		private GParticleVertex[] _vertices;
-		private short[] _indices;
+		private int[] _indices;
 
 		private int _currentParticleIndex;
 		private int _currentTime;
+
+		private bool _needDataSet;
+
+		private int _maxParticles = 1000000;
 
 		public GParticleSystem(Texture2D texture)
 		{
@@ -53,11 +57,11 @@ namespace ParticleLibrary.Core.Systems.Test
 			{
 				LoadEffect();
 
-				_vertexBuffer = new(Device, typeof(GParticleVertex), 400000, BufferUsage.WriteOnly);
-				_indexBuffer = new(Device, IndexElementSize.SixteenBits, 600000, BufferUsage.WriteOnly);
+				_vertexBuffer = new(Device, typeof(GParticleVertex), _maxParticles * 4, BufferUsage.WriteOnly);
+				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _maxParticles * 6, BufferUsage.WriteOnly);
 
-				_vertices = new GParticleVertex[400000];
-				_indices = new short[600000];
+				_vertices = new GParticleVertex[_maxParticles * 4];
+				_indices = new int[_maxParticles * 6];
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -83,17 +87,26 @@ namespace ParticleLibrary.Core.Systems.Test
 					_vertexBuffer.Dispose();
 					_indexBuffer.Dispose();
 
-					_vertexBuffer = new(Device, typeof(GParticleVertex), 400000, BufferUsage.WriteOnly);
-					_indexBuffer = new(Device, IndexElementSize.SixteenBits, 600000, BufferUsage.WriteOnly);
+					_vertexBuffer = new(Device, typeof(GParticleVertex), _maxParticles * 4, BufferUsage.WriteOnly);
+					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _maxParticles * 6, BufferUsage.WriteOnly);
 
-					_vertices = new GParticleVertex[400000];
-					_indices = new short[600000];
+					_vertices = new GParticleVertex[_maxParticles * 4];
+					_indices = new int[_maxParticles * 6];
 
 					_currentParticleIndex = 0;
 					_currentTime = 0;
+
+					_needDataSet = false;
 				});
 
 				ReloadEffect();
+			}
+
+			// Batched data transfer
+			if (_needDataSet)
+			{
+				_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
+				_indexBuffer.SetData(_indices, 0, _indices.Length, SetDataOptions.Discard);
 			}
 
 			// Update the system's time
@@ -104,8 +117,6 @@ namespace ParticleLibrary.Core.Systems.Test
 
 		private void On_Main_DrawDust(On_Main.orig_DrawDust orig, Main self)
 		{
-			Main.NewText("Draw:" + _currentParticleIndex);
-
 			orig(self);
 
 			// Safeguard
@@ -115,6 +126,10 @@ namespace ParticleLibrary.Core.Systems.Test
 				return;
 			}
 
+			// Set blend state
+			var previousBlendState = Device.BlendState;
+			Device.BlendState = BlendState.AlphaBlend;
+
 			// Set buffers
 			Device.SetVertexBuffer(_vertexBuffer);
 			Device.Indices = _indexBuffer;
@@ -122,6 +137,9 @@ namespace ParticleLibrary.Core.Systems.Test
 			// Do particle pass
 			_effect.CurrentTechnique.Passes["Particles"].Apply();
 			Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _currentParticleIndex * 4, 0, _currentParticleIndex * 2);
+
+			// Reset blend state
+			Device.BlendState = previousBlendState;
 		}
 
 		private void ResolutionChanged(Vector2 obj)
@@ -172,42 +190,45 @@ namespace ParticleLibrary.Core.Systems.Test
 			_textureParameter.SetValue(_texture);
 		}
 
-		public void AddParticle(Vector2 position, Vector2 velocity)
+		public void AddParticle(Vector2 position, Vector2 velocity, Vector2 scale, Color color)
 		{
+			if (_currentParticleIndex >= _maxParticles)
+				return;
+
 			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X, position.Y, 0f, 1f),
-				Color = new Color(255, 255, 0, 255),
+				Color = color,
 				TexCoord = new Vector2(),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X, position.Y + _texture.Height, 0f, 1f),
-				Color = new Color(255, 0, 255, 255),
+				Position = new Vector4(position.X, position.Y + _texture.Height * scale.Y, 0f, 1f),
+				Color = color,
 				TexCoord = new Vector2(0f, 1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + _texture.Width, position.Y, 0f, 1f),
-				Color = new Color(0, 255, 0, 255),
+				Position = new Vector4(position.X + _texture.Width * scale.X, position.Y, 0f, 1f),
+				Color = color,
 				TexCoord = new Vector2(1f, 0f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + _texture.Width, position.Y + _texture.Height, 0f, 1f),
-				Color = new Color(0, 0, 255, 255),
+				Position = new Vector4(position.X + _texture.Width * scale.X, position.Y + _texture.Height * scale.Y, 0f, 1f),
+				Color = color,
 				TexCoord = new Vector2(1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 
-			short vertexIndex = (short)(_currentParticleIndex * 4);
+			int vertexIndex = _currentParticleIndex * 4;
 
 			// _currentParticleIndex is 0
 			// vertexIndex would be 0
@@ -220,20 +241,17 @@ namespace ParticleLibrary.Core.Systems.Test
 			// indices would be 4, 6, 7, 4, 7, 5
 
 			_indices[_currentParticleIndex * 6] = vertexIndex;
-			_indices[_currentParticleIndex * 6 + 1] = (short)(vertexIndex + 2);
-			_indices[_currentParticleIndex * 6 + 2] = (short)(vertexIndex + 3);
+			_indices[_currentParticleIndex * 6 + 1] = vertexIndex + 2;
+			_indices[_currentParticleIndex * 6 + 2] = vertexIndex + 3;
 			_indices[_currentParticleIndex * 6 + 3] = vertexIndex;
-			_indices[_currentParticleIndex * 6 + 4] = (short)(vertexIndex + 3);
-			_indices[_currentParticleIndex * 6 + 5] = (short)(vertexIndex + 1);
+			_indices[_currentParticleIndex * 6 + 4] = vertexIndex + 3;
+			_indices[_currentParticleIndex * 6 + 5] = vertexIndex + 1;
 
-			_vertexBuffer.SetData(_vertices[(_currentParticleIndex * 4)..(_currentParticleIndex * 4 + 4)], _currentParticleIndex * 4, 4, SetDataOptions.None);
-			_indexBuffer.SetData(_indices[(_currentParticleIndex * 6)..(_currentParticleIndex * 6 + 6)], _currentParticleIndex * 6, 6, SetDataOptions.None);
+			//_vertexBuffer.SetData(_vertices[(_currentParticleIndex * 4)..(_currentParticleIndex * 4 + 4)], _currentParticleIndex * 4, 4, SetDataOptions.None);
+			//_indexBuffer.SetData(_indices[(_currentParticleIndex * 6)..(_currentParticleIndex * 6 + 6)], _currentParticleIndex * 6, 6, SetDataOptions.None);
 
 			_currentParticleIndex++;
-			if (_currentParticleIndex > 99999)
-				_currentParticleIndex = 0;
-
-			Main.NewText("Add:" + _currentParticleIndex);
+			_needDataSet = true;
 		}
 	}
 }
