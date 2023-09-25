@@ -24,13 +24,6 @@ namespace ParticleLibrary.Content.Items
 
 		public Emitter Emitter;
 
-		public GParticleSystem ParticleSystem;
-
-		public Devtool()
-		{
-			ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Debug.Plus, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
-		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 44;
@@ -71,7 +64,7 @@ namespace ParticleLibrary.Content.Items
 					return true;
 				}
 
-				ParticleSystem.AddParticle(Main.MouseWorld, Main.rand.NextVector2Unit() * 2f);
+				GParticleManager.ParticleSystem.AddParticle(Main.MouseWorld, Main.rand.NextVector2Unit() * 2f);
 				return true;
 			}
 

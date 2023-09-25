@@ -19,6 +19,15 @@ namespace ParticleLibrary
 
 		}
 
+		public static class Content
+		{
+			public static class Items
+			{
+				public const string Devtool = @"ParticleLibrary/Content/Items/Devtool";
+			}
+
+		}
+
 		public static class Debug
 		{
 			public const string BlackPanel = @"ParticleLibrary/Debug/BlackPanel";

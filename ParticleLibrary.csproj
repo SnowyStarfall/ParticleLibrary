@@ -29,12 +29,21 @@
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>ContentPathGenerator.cs</LastGenOutput>
 	  </None>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="ContentPathGenerator.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>ContentPathGenerator.tt</DependentUpon>
+	  </Compile>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
