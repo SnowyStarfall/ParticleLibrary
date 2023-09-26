@@ -19,7 +19,9 @@ struct VertexShaderInput
 {
 	float4 Position : POSITION0;
 	float4 TexCoords : TEXCOORD0;
-	float4 Color : COLOR0;
+	
+	float4 StartColor : COLOR0;
+	float4 EndColor : COLOR1;
 	
 	float2 Velocity : NORMAL0;
 	float TimeOfAdd : NORMAL1;
@@ -32,16 +34,22 @@ struct VertexShaderOutput
 	float4 Color : COLOR0;
 };
 
+float4 ComputeColor(float4 start, float4 end, float age)
+{
+	return lerp(start, end, age);
+}
+
 	// Custom vertex shader animates particles entirely on the GPU.
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	
 	float time = Time - input.TimeOfAdd;
+	float age = clamp(time / Lifespan, 0.0, 1.0);
 	
 	output.Position = mul(input.Position + float4(input.Velocity.x * time, input.Velocity.y * time, 0, 0) - float4(ScreenPosition.x, ScreenPosition.y, 0, 0), TransformMatrix);
 	output.TexCoords = input.TexCoords;
-	output.Color = input.Color;
+	output.Color = ComputeColor(input.StartColor, input.EndColor, age);
 	
 	return output;
 }

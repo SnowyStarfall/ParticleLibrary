@@ -203,7 +203,8 @@ namespace ParticleLibrary.Core.Systems.Test
 			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X, position.Y, 0f, 1f),
-				Color = settings.StartColor,
+				StartColor = settings.StartColor,
+				EndColor = settings.EndColor,
 				TexCoord = new Vector2(),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
@@ -211,7 +212,8 @@ namespace ParticleLibrary.Core.Systems.Test
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X, position.Y + size.Y, 0f, 1f),
-				Color = settings.StartColor,
+				StartColor = settings.StartColor,
+				EndColor = settings.EndColor,
 				TexCoord = new Vector2(0f, 1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
@@ -219,7 +221,8 @@ namespace ParticleLibrary.Core.Systems.Test
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X + size.X, position.Y, 0f, 1f),
-				Color = settings.StartColor,
+				StartColor = settings.StartColor,
+				EndColor = settings.EndColor,
 				TexCoord = new Vector2(1f, 0f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
@@ -227,7 +230,8 @@ namespace ParticleLibrary.Core.Systems.Test
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X + size.X, position.Y + size.Y, 0f, 1f),
-				Color = settings.StartColor,
+				StartColor = settings.StartColor,
+				EndColor = settings.EndColor,
 				TexCoord = new Vector2(1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
