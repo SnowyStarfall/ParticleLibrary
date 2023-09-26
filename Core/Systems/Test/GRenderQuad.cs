@@ -15,7 +15,10 @@ namespace ParticleLibrary.Core.Systems.Test
 
 		public GRenderQuad(GRenderVertex topLeft, GRenderVertex bottomLeft, GRenderVertex topRight, GRenderVertex bottomRight)
 		{
-
+			TopLeft = topLeft;
+			BottomLeft = bottomLeft;
+			TopRight = topRight;
+			BottomRight = bottomRight;
 		}
 	}
 }

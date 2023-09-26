@@ -1,4 +1,4 @@
-﻿// View parameters.
+// View parameters.
 matrix TransformMatrix;
 float Time;
 float2 ScreenPosition;
