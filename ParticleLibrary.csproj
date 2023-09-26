@@ -7,20 +7,11 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
-	<ItemGroup>
-	  <Compile Remove="ExampleParticles\EmberParticle.cs" />
-	  <Compile Remove="ExampleParticles\GlowParticle.cs" />
-	  <Compile Remove="ExampleParticles\RainbowParticle.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="ExampleParticles\EmberParticle.cs" />
-	  <None Include="ExampleParticles\GlowParticle.cs" />
-	  <None Include="ExampleParticles\RainbowParticle.cs" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>

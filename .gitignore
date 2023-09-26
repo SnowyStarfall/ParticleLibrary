@@ -5,3 +5,6 @@ obj/
 Properties/
 Properties/launchSettings.json
 Properties/launchSettings.json
+Assets/Effects/fxcompiler_reach.exe
+Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.dll
+Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll

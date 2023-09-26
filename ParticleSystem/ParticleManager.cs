@@ -515,30 +515,30 @@ namespace ParticleLibrary
 		/// <exception cref="NullReferenceException"></exception>
 		public static Particle NewParticle(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false)
 		{
-			Particle type = (Particle)Activator.CreateInstance(Particle.GetType());
+			Particle ??= (Particle)Activator.CreateInstance(Particle.GetType());
 
 			if (!Important && particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
 				particles.TrimExcess();
 			if (!Important && particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
 				return null;
 
-			type.position = Position;
-			type.velocity = Velocity;
-			type.color = Color;
-			type.scale = Scale;
-			type.active = true;
-			type.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
-			type.layer = Layer;
-			type.important = Important;
-			type.SpawnAction?.Invoke();
+			Particle.position = Position;
+			Particle.velocity = Velocity;
+			Particle.color = Color;
+			Particle.scale = Scale;
+			Particle.active = true;
+			Particle.ai = new float[] { AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7 };
+			Particle.layer = Layer;
+			Particle.important = Important;
+			Particle.SpawnAction?.Invoke();
 
 			if (Important)
-				importantParticles?.Add(type);
+				importantParticles?.Add(Particle);
 			else
-				particles?.Add(type);
+				particles?.Add(Particle);
 
-			OnNewParticle?.Invoke(Position, Velocity, type, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
-			return type;
+			OnNewParticle?.Invoke(Position, Velocity, Particle, Color, Scale, AI0, AI1, AI2, AI3, AI4, AI5, AI6, AI7, Layer, Important);
+			return Particle;
 		}
 
 		internal static void UpdateArrays(Particle particle)

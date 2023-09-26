@@ -3,27 +3,32 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
-namespace ParticleLibrary.ExampleParticles
+namespace ParticleLibrary.Examples
 {
-	public class GlowParticle : Particle
+	public class ExampleParticle : Particle
 	{
+		private float _startScale;
+
 		public override void SetDefaults()
 		{
-			width = 128;
-			height = 128;
+			width = 16;
+			height = 16;
 			timeLeft = 120;
 			tileCollide = false;
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
-			scale = (120 - ai[0]) / 120;
-			ai[0]++;
+			Scale = _startScale * (timeLeft / 120f);
+
 			velocity *= 0.96f;
 		}
+
 		public void Spawn()
 		{
-			scale *= 0.125f;
+			Scale *= 0.5f;
+			_startScale = Scale;
 		}
 	}
 }

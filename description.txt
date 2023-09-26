@@ -9,7 +9,7 @@ Particles are modeled to feel much like Projectiles. They have AI and Draw metho
 Emitters are much like Particles, however they are designed to be stationary. They can optionally save and load with the world, and they have AI and Draw methods. They can also store data in the form of a string.
 
 [h1] Usage & Installation [/h1]
-[b] Please note that this library uses the GPU v3.0 license. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
+[b] Please note that this library uses the GPL v3.0 license. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
 [olist]
     [*]Download ParticleLibrary from the Mod Browser in-game.
     [*]Go to the GitHub here:
