@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core.Systems.ParticleSystem;
+using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
 using System.IO;
@@ -206,7 +207,7 @@ namespace ParticleLibrary.Core.Systems.Test
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
 				TexCoord = new Vector2(),
-				Velocity = velocity,
+				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
@@ -215,7 +216,7 @@ namespace ParticleLibrary.Core.Systems.Test
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
 				TexCoord = new Vector2(0f, 1f),
-				Velocity = velocity,
+				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
@@ -224,7 +225,7 @@ namespace ParticleLibrary.Core.Systems.Test
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
 				TexCoord = new Vector2(1f, 0f),
-				Velocity = velocity,
+				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
@@ -233,7 +234,7 @@ namespace ParticleLibrary.Core.Systems.Test
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
 				TexCoord = new Vector2(1f),
-				Velocity = velocity,
+				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
 				TimeOfAdd = _currentTime
 			};
 

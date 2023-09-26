@@ -10,7 +10,7 @@ namespace ParticleLibrary.Core.Systems.ParticleSystem
 		public Color StartColor;
 		public Color EndColor;
 
-		public Vector2 Velocity;
+		public Vector4 Velocity;
 		public float TimeOfAdd;
 
 
@@ -21,8 +21,8 @@ namespace ParticleLibrary.Core.Systems.ParticleSystem
 			new VertexElement(sizeof(float) * 6, VertexElementFormat.Color, VertexElementUsage.Color, 0), // Start Color
 			new VertexElement(sizeof(float) * 7, VertexElementFormat.Color, VertexElementUsage.Color, 1), // End Color
 
-			new VertexElement(sizeof(float) * 8, VertexElementFormat.Vector2, VertexElementUsage.Normal, 0), // Velocity
-			new VertexElement(sizeof(float) * 10, VertexElementFormat.Single, VertexElementUsage.Normal, 1) // TimeOfAdd
+			new VertexElement(sizeof(float) * 8, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0), // Velocity
+			new VertexElement(sizeof(float) * 12, VertexElementFormat.Single, VertexElementUsage.Normal, 1) // TimeOfAdd
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }

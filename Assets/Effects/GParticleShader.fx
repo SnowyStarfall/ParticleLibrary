@@ -23,7 +23,7 @@ struct VertexShaderInput
 	float4 StartColor : COLOR0;
 	float4 EndColor : COLOR1;
 	
-	float2 Velocity : NORMAL0;
+	float4 Velocity : NORMAL0;
 	float TimeOfAdd : NORMAL1;
 };
 
@@ -33,6 +33,14 @@ struct VertexShaderOutput
 	float2 TexCoords : TEXCOORD0;
 	float4 Color : COLOR0;
 };
+
+float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
+{
+	float2 displacement = (velocity * time) + (0.5 * acceleration * pow(time, 2));
+	displacement -= ScreenPosition;
+
+	return position + float4(displacement, 0, 0);
+}
 
 float4 ComputeColor(float4 start, float4 end, float age)
 {
@@ -47,7 +55,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	float time = Time - input.TimeOfAdd;
 	float age = clamp(time / Lifespan, 0.0, 1.0);
 	
-	output.Position = mul(input.Position + float4(input.Velocity.x * time, input.Velocity.y * time, 0, 0) - float4(ScreenPosition.x, ScreenPosition.y, 0, 0), TransformMatrix);
+	output.Position = mul(ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time), TransformMatrix);
 	output.TexCoords = input.TexCoords;
 	output.Color = ComputeColor(input.StartColor, input.EndColor, age);
 	
