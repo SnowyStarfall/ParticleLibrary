@@ -1,7 +1,7 @@
-// View parameters.
 matrix TransformMatrix;
 float Time;
 float2 ScreenPosition;
+float Lifespan;
 
 // Current time in frames.
 texture Texture;

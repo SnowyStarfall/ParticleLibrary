@@ -4,12 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core.Systems.ParticleSystem;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using static ParticleLibrary.Resources;
 
@@ -29,8 +25,12 @@ namespace ParticleLibrary.Core.Systems.Test
 		private EffectParameter _transformMatrixParameter;
 		private EffectParameter _time;
 		private EffectParameter _screenPosition;
+
 		private readonly Texture2D _texture;
 		private EffectParameter _textureParameter;
+
+		private readonly int _lifespan;
+		private EffectParameter _lifespanParameter;
 
 		// Buffers
 		private DynamicVertexBuffer _vertexBuffer;
@@ -46,12 +46,14 @@ namespace ParticleLibrary.Core.Systems.Test
 
 		private int _maxParticles = 1000000;
 
-		public GParticleSystem(Texture2D texture)
+		public GParticleSystem(GParticleSystemSettings settings)
 		{
-			if (texture is null)
-				throw new ArgumentNullException(nameof(texture), "Texture cannot be null.");
+			if (settings.Texture is null)
+				throw new ArgumentNullException(nameof(settings.Texture), "Texture cannot be null.");
 
-			_texture = texture;
+			_texture = settings.Texture;
+			_maxParticles = settings.MaxParticles;
+			_lifespan = settings.Lifespan;
 
 			Main.QueueMainThreadAction(() =>
 			{
@@ -159,70 +161,73 @@ namespace ParticleLibrary.Core.Systems.Test
 
 		private void LoadEffect()
 		{
-			_effect = ModContent.Request<Effect>(Assets.Effects.ParticleShader, AssetRequestMode.ImmediateLoad).Value.Clone();
+			_effect = ModContent.Request<Effect>(Assets.Effects.GParticleShader, AssetRequestMode.ImmediateLoad).Value.Clone();
 
-			_transformMatrixParameter = _effect.Parameters["TransformMatrix"];
-			_time = _effect.Parameters["Time"];
-			_screenPosition = _effect.Parameters["ScreenPosition"];
-			_textureParameter = _effect.Parameters["Texture"];
-
-			ResolutionChanged(Main.ScreenSize.ToVector2());
-			_textureParameter.SetValue(_texture);
+			SetParameters();
 		}
 
 		private void ReloadEffect()
 		{
 			// Create shader
 			string additionalPath = @"";
-			string fileName = "ParticleShader";
+			string fileName = "GParticleShader";
 			string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 			FileStream stream = new(documents + $@"\My Games\Terraria\tModLoader\ModSources\ParticleLibrary\Assets\Effects\{additionalPath}{fileName}.xnb", FileMode.Open, FileAccess.Read);
 			_effect = Main.Assets.CreateUntracked<Effect>(stream, $"{fileName}.xnb", AssetRequestMode.ImmediateLoad).Value;
 
-			// Set parameters
+			SetParameters();
+		}
+
+		private void SetParameters()
+		{
 			_transformMatrixParameter = _effect.Parameters["TransformMatrix"];
 			_time = _effect.Parameters["Time"];
 			_screenPosition = _effect.Parameters["ScreenPosition"];
 			_textureParameter = _effect.Parameters["Texture"];
+			_lifespanParameter = _effect.Parameters["Lifespan"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
 			_textureParameter.SetValue(_texture);
+			_lifespanParameter.SetValue(_lifespan);
 		}
 
-		public void AddParticle(Vector2 position, Vector2 velocity, Vector2 scale, Color color)
+		public void AddParticle(Vector2 position, Vector2 velocity, GParticleSettings settings)
 		{
 			if (_currentParticleIndex >= _maxParticles)
 				return;
 
+			Vector2 size = new(_texture.Width * settings.Scale.X, _texture.Height * settings.Scale.Y);
+			Vector4 random = new(Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon));
+
 			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
 			{
 				Position = new Vector4(position.X, position.Y, 0f, 1f),
-				Color = color,
+				Color = settings.StartColor,
 				TexCoord = new Vector2(),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X, position.Y + _texture.Height * scale.Y, 0f, 1f),
-				Color = color,
+				Position = new Vector4(position.X, position.Y + size.Y, 0f, 1f),
+				Color = settings.StartColor,
 				TexCoord = new Vector2(0f, 1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + _texture.Width * scale.X, position.Y, 0f, 1f),
-				Color = color,
+				Position = new Vector4(position.X + size.X, position.Y, 0f, 1f),
+				Color = settings.StartColor,
 				TexCoord = new Vector2(1f, 0f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime
 			};
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + _texture.Width * scale.X, position.Y + _texture.Height * scale.Y, 0f, 1f),
-				Color = color,
+				Position = new Vector4(position.X + size.X, position.Y + size.Y, 0f, 1f),
+				Color = settings.StartColor,
 				TexCoord = new Vector2(1f),
 				Velocity = velocity,
 				TimeOfAdd = _currentTime

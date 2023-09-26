@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core.Systems.Test
@@ -13,7 +14,8 @@ namespace ParticleLibrary.Core.Systems.Test
 		{
 			Instance = this;
 
-			ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Debug.Plus, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+			GParticleSystemSettings settings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 1000000, 180);
+			ParticleSystem = new(settings);
 		}
 
 		public override void Unload()
@@ -21,6 +23,7 @@ namespace ParticleLibrary.Core.Systems.Test
 			Instance = null;
 		}
 
+		// TODO: Implement AddSystem and system management
 		public static GParticleSystem AddSystem(Texture2D texture)
 		{
 			return null;
