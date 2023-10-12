@@ -12,14 +12,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="ExampleParticles\EmberParticle.cs" />
-	  <Compile Remove="ExampleParticles\GlowParticle.cs" />
-	  <Compile Remove="ExampleParticles\RainbowParticle.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="ExampleParticles\EmberParticle.cs" />
-	  <None Include="ExampleParticles\GlowParticle.cs" />
-	  <None Include="ExampleParticles\RainbowParticle.cs" />
+	  <None Remove="Assets\Textures\Star.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
@@ -45,10 +38,6 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>Settings.settings</DependentUpon>
 	  </Compile>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Assets\Effects\" />
-	  <Folder Include="Assets\Textures\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

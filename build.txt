@@ -5,5 +5,5 @@ homepage = https://github.com/SnowyStarfall/ParticleLibrary
 hideCode = false
 hideResources = true
 includeSource = false
-buildIgnore = *.csproj, *.user, *.md, obj\*, bin\*, .vs\*, .vscode\*, .git\*, .github\*, *.ymlm *.editorconfig, Properties\*, *.gitignore, *.gitattributes, Textures\*, ExampleParticles\*, *.dll, *.xml
+buildIgnore = *.csproj, *.user, *.md, obj\*, bin\*, .vs\*, .vscode\*, .git\*, .github\*, *.ymlm *.editorconfig, Properties\*, *.gitignore, *.gitattributes, Textures\*, *.dll, *.xml
 includePDB = true
