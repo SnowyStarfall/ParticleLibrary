@@ -35,10 +35,11 @@ struct VertexShaderInput
 	float4 EndColor : COLOR1;
 	
 	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
-	float4 Scale : NORMAL1; // XY Size | ZW Scale
-	float4 Rotation : NORMAL2; // XY Corner | Z Rotation | W Velocity
+	float2 Size : NORMAL1;
+	float4 Scale : NORMAL2; // XY Scale | ZW Velocity
+	float4 Rotation : NORMAL3; // XY Corner | Z Rotation | W Velocity
 
-	float3 DepthTime : NORMAL3; // X Depth | Y Velocity | Z Time
+	float3 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
 	float4 Random : COLOR2;
 };
 
@@ -56,9 +57,10 @@ float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, fl
 	return position + float4(displacement, 0, 0);
 }
 
-float2 ComputeSize(float2 size, float2 scale, float time)
+float2 ComputeSize(float2 size, float2 scale, float2 velocity, float time)
 {
-	float2 s = size * scale;
+	//float2 s = size * (scale + (velocity * time));
+	float2 s = size * scale; // TODO: Fix. Bouncing issue return when changing scale over time
 
 	return s;
 }
@@ -97,14 +99,13 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	// Set up our reference variables
 	float time = Time - input.DepthTime.z;
 	float age = clamp(time / Lifespan, 0.0, 1.0);
-	float2 size = ComputeSize(input.Scale.xy, input.Scale.zw, time);
+	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
 	float2x2 rotation = ComputeRotation(input.Rotation.zw, time);
-	float2 rotationoffset = size * input.Rotation.xy;
 	
 	// Calculate the position over time
 	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
 	// Apply rotation over time
-	output.Position.xy += -rotationoffset + mul(rotationoffset, rotation);
+	output.Position.xy += -size + mul(size, rotation);
 	// Apply matrix and offset for screen view
 	output.Position = mul(output.Position - float4(ScreenPosition, 0, 0), TransformMatrix);
 	// Apply depth over time (handled after this function finishes)

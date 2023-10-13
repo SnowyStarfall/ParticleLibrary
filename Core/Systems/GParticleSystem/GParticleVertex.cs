@@ -12,6 +12,7 @@ namespace ParticleLibrary.Core.Systems
 		public Color EndColor;
 
 		public Vector4 Velocity;
+		public Vector2 Size;
 		public Vector4 Scale;
 		public Vector4 Rotation;
 
@@ -27,11 +28,12 @@ namespace ParticleLibrary.Core.Systems
 			new VertexElement(sizeof(float) * 7, VertexElementFormat.Color, VertexElementUsage.Color, 1), // End Color
 
 			new VertexElement(sizeof(float) * 8, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0), // Velocity
-			new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector4, VertexElementUsage.Normal, 1), // Scale
-			new VertexElement(sizeof(float) * 16, VertexElementFormat.Vector4, VertexElementUsage.Normal, 2), // Rotation
+			new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector2, VertexElementUsage.Normal, 1), // Size
+			new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector4, VertexElementUsage.Normal, 2), // Scale
+			new VertexElement(sizeof(float) * 18, VertexElementFormat.Vector4, VertexElementUsage.Normal, 3), // Rotation
 
-			new VertexElement(sizeof(float) * 20, VertexElementFormat.Vector3, VertexElementUsage.Normal, 3), // Depth Time
-			new VertexElement(sizeof(float) * 23, VertexElementFormat.Color, VertexElementUsage.Color, 2) // Random
+			new VertexElement(sizeof(float) * 22, VertexElementFormat.Vector3, VertexElementUsage.Normal, 4), // Depth Time
+			new VertexElement(sizeof(float) * 25, VertexElementFormat.Color, VertexElementUsage.Color, 2) // Random
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }

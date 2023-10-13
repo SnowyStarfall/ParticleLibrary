@@ -219,7 +219,8 @@ namespace ParticleLibrary.Core.Systems.Test
 				EndColor = settings.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Size = new Vector2(_settings.Texture.Width, _settings.Texture.Height),
+				Scale = ParticleUtils.Vec4From2Vec2(settings.Scale, settings.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, -0.5f, settings.Rotation, settings.RotationVelocity),
 
 				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
@@ -234,7 +235,8 @@ namespace ParticleLibrary.Core.Systems.Test
 				EndColor = settings.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Size = new Vector2(_settings.Texture.Width, _settings.Texture.Height),
+				Scale = ParticleUtils.Vec4From2Vec2(settings.Scale, settings.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, 0.5f, settings.Rotation, settings.RotationVelocity),
 
 				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
@@ -249,7 +251,8 @@ namespace ParticleLibrary.Core.Systems.Test
 				EndColor = settings.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Size = new Vector2(_settings.Texture.Width, _settings.Texture.Height),
+				Scale = ParticleUtils.Vec4From2Vec2(settings.Scale, settings.ScaleVelocity),
 				Rotation = new Vector4(0.5f, -0.5f, settings.Rotation, settings.RotationVelocity),
 
 				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
@@ -264,7 +267,8 @@ namespace ParticleLibrary.Core.Systems.Test
 				EndColor = settings.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Size = new Vector2(_settings.Texture.Width, _settings.Texture.Height),
+				Scale = ParticleUtils.Vec4From2Vec2(settings.Scale, settings.ScaleVelocity),
 				Rotation = new Vector4(0.5f, 0.5f, settings.Rotation, settings.RotationVelocity),
 
 				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
