@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
-using ParticleLibrary.Core.Systems.ParticleSystem;
+using ParticleLibrary.Core.Systems;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
@@ -22,16 +23,18 @@ namespace ParticleLibrary.Core.Systems.Test
 		public Matrix WorldViewProjection { get; private set; }
 
 		// Effect
+		private GParticleSystemSettings _settings;
+
 		private Effect _effect;
 		private EffectParameter _transformMatrixParameter;
 		private EffectParameter _time;
 		private EffectParameter _screenPosition;
-
-		private readonly Texture2D _texture;
-		private EffectParameter _textureParameter;
-
-		private readonly int _lifespan;
-		private EffectParameter _lifespanParameter;
+		private EffectParameter _fade;
+		private EffectParameter _lifespan;
+		private EffectParameter _size;
+		private EffectParameter _scaleVelocity;
+		private EffectParameter _rotationVelocity;
+		private EffectParameter _texture;
 
 		// Buffers
 		private DynamicVertexBuffer _vertexBuffer;
@@ -42,29 +45,27 @@ namespace ParticleLibrary.Core.Systems.Test
 
 		private int _currentParticleIndex;
 		private int _currentTime;
-
 		private bool _needDataSet;
-
-		private int _maxParticles = 1000000;
 
 		public GParticleSystem(GParticleSystemSettings settings)
 		{
+			if (settings is null)
+				throw new ArgumentNullException(nameof(settings), "Settings cannot be null.");
+
 			if (settings.Texture is null)
 				throw new ArgumentNullException(nameof(settings.Texture), "Texture cannot be null.");
 
-			_texture = settings.Texture;
-			_maxParticles = settings.MaxParticles;
-			_lifespan = settings.Lifespan;
+			_settings = settings;
 
 			Main.QueueMainThreadAction(() =>
 			{
 				LoadEffect();
 
-				_vertexBuffer = new(Device, typeof(GParticleVertex), _maxParticles * 4, BufferUsage.WriteOnly);
-				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _maxParticles * 6, BufferUsage.WriteOnly);
+				_vertexBuffer = new(Device, typeof(GParticleVertex), _settings.MaxParticles * 4, BufferUsage.WriteOnly);
+				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _settings.MaxParticles * 6, BufferUsage.WriteOnly);
 
-				_vertices = new GParticleVertex[_maxParticles * 4];
-				_indices = new int[_maxParticles * 6];
+				_vertices = new GParticleVertex[_settings.MaxParticles * 4];
+				_indices = new int[_settings.MaxParticles * 6];
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -90,11 +91,11 @@ namespace ParticleLibrary.Core.Systems.Test
 					_vertexBuffer.Dispose();
 					_indexBuffer.Dispose();
 
-					_vertexBuffer = new(Device, typeof(GParticleVertex), _maxParticles * 4, BufferUsage.WriteOnly);
-					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _maxParticles * 6, BufferUsage.WriteOnly);
+					_vertexBuffer = new(Device, typeof(GParticleVertex), _settings.MaxParticles * 4, BufferUsage.WriteOnly);
+					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, _settings.MaxParticles * 6, BufferUsage.WriteOnly);
 
-					_vertices = new GParticleVertex[_maxParticles * 4];
-					_indices = new int[_maxParticles * 6];
+					_vertices = new GParticleVertex[_settings.MaxParticles * 4];
+					_indices = new int[_settings.MaxParticles * 6];
 
 					_currentParticleIndex = 0;
 					_currentTime = 0;
@@ -185,57 +186,89 @@ namespace ParticleLibrary.Core.Systems.Test
 			_transformMatrixParameter = _effect.Parameters["TransformMatrix"];
 			_time = _effect.Parameters["Time"];
 			_screenPosition = _effect.Parameters["ScreenPosition"];
-			_textureParameter = _effect.Parameters["Texture"];
-			_lifespanParameter = _effect.Parameters["Lifespan"];
+			_lifespan = _effect.Parameters["Lifespan"];
+			_fade = _effect.Parameters["Fade"];
+			_size = _effect.Parameters["Size"];
+			_scaleVelocity = _effect.Parameters["ScaleVelocity"];
+			_rotationVelocity = _effect.Parameters["RotationVelocity"];
+			_texture = _effect.Parameters["Texture"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
-			_textureParameter.SetValue(_texture);
-			_lifespanParameter.SetValue(_lifespan);
+			_lifespan.SetValue(_settings.Lifespan);
+			_fade.SetValue(_settings.Fade);
+			_size.SetValue(_settings.Texture.Size());
+			_scaleVelocity.SetValue(_settings.ScaleVelocity);
+			_rotationVelocity.SetValue(_settings.RotationVelocity);
+			_texture.SetValue(_settings.Texture);
 		}
 
 		public void AddParticle(Vector2 position, Vector2 velocity, GParticleSettings settings)
 		{
-			if (_currentParticleIndex >= _maxParticles)
+			if (_currentParticleIndex >= _settings.MaxParticles)
 				return;
 
-			Vector2 size = new(_texture.Width * settings.Scale.X, _texture.Height * settings.Scale.Y);
+			Vector2 size = new(_settings.Texture.Width * settings.Scale.X, _settings.Texture.Height * settings.Scale.Y);
 			Vector4 random = new(Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon));
 
 			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X, position.Y, 0f, 1f),
+				Position = new Vector4(position.X - size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
+				TexCoord = new Vector2(),
+
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
-				TexCoord = new Vector2(),
+
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				TimeOfAdd = _currentTime
+				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Rotation = new Vector4(-0.5f, -0.5f, settings.Rotation, settings.RotationVelocity),
+
+				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
+				Random = new Color(random)
 			};
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X, position.Y + size.Y, 0f, 1f),
+				Position = new Vector4(position.X - size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
+				TexCoord = new Vector2(0f, 1f),
+
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
-				TexCoord = new Vector2(0f, 1f),
+
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				TimeOfAdd = _currentTime
+				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Rotation = new Vector4(-0.5f, 0.5f, settings.Rotation, settings.RotationVelocity),
+
+				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
+				Random = new Color(random)
 			};
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + size.X, position.Y, 0f, 1f),
+				Position = new Vector4(position.X + size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
+				TexCoord = new Vector2(1f, 0f),
+
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
-				TexCoord = new Vector2(1f, 0f),
+
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				TimeOfAdd = _currentTime
+				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Rotation = new Vector4(0.5f, -0.5f, settings.Rotation, settings.RotationVelocity),
+
+				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
+				Random = new Color(random)
 			};
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
 			{
-				Position = new Vector4(position.X + size.X, position.Y + size.Y, 0f, 1f),
+				Position = new Vector4(position.X + size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
+				TexCoord = new Vector2(1f),
+
 				StartColor = settings.StartColor,
 				EndColor = settings.EndColor,
-				TexCoord = new Vector2(1f),
+
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, settings.VelocityAcceleration),
-				TimeOfAdd = _currentTime
+				Scale = new Vector4(_settings.Texture.Width, _settings.Texture.Height, settings.Scale.X, settings.Scale.Y),
+				Rotation = new Vector4(0.5f, 0.5f, settings.Rotation, settings.RotationVelocity),
+
+				DepthTime = new Vector3(settings.Depth, settings.DepthVelocity, _currentTime),
+				Random = new Color(random)
 			};
 
 			int vertexIndex = _currentParticleIndex * 4;

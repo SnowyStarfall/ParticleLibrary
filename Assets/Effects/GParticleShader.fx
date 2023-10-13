@@ -1,7 +1,18 @@
+#define PI 3.14159265
+#define TAU 6.28318531
+
 matrix TransformMatrix;
 float Time;
 float2 ScreenPosition;
 float Lifespan;
+bool Fade;
+
+float2 Size;
+float2 Scale;
+float2 ScaleVelocity;
+
+float Rotation;
+float RotationVelocity;
 
 // Current time in frames.
 texture Texture;
@@ -23,8 +34,12 @@ struct VertexShaderInput
 	float4 StartColor : COLOR0;
 	float4 EndColor : COLOR1;
 	
-	float4 Velocity : NORMAL0;
-	float TimeOfAdd : NORMAL1;
+	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
+	float4 Scale : NORMAL1; // XY Size | ZW Scale
+	float4 Rotation : NORMAL2; // XY Corner | Z Rotation | W Velocity
+
+	float3 DepthTime : NORMAL3; // X Depth | Y Velocity | Z Time
+	float4 Random : COLOR2;
 };
 
 struct VertexShaderOutput
@@ -37,53 +52,99 @@ struct VertexShaderOutput
 float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
 {
 	float2 displacement = (velocity * time) + (0.5 * acceleration * pow(time, 2));
-	displacement -= ScreenPosition;
 
 	return position + float4(displacement, 0, 0);
 }
 
-float4 ComputeColor(float4 start, float4 end, float age)
+float2 ComputeSize(float2 size, float2 scale, float time)
 {
-	return lerp(start, end, age);
+	float2 s = size * scale;
+
+	return s;
 }
 
-	// Custom vertex shader animates particles entirely on the GPU.
+float4 ComputeColor(float4 start, float4 end, float age)
+{
+	float4 color = lerp(start, end, age);
+	
+	if (Fade)
+		color *= 1.0 - age;
+	
+	return color;
+}
+
+float2x2 ComputeRotation(float2 rotation, float time)
+{
+	float r = rotation.x + (rotation.y * time);
+	
+	float c = cos(r);
+	float s = sin(r);
+
+	return float2x2(c, -s, s, c);
+}
+
+float ComputeDepth(float depth, float velocity, float time)
+{
+	float d = depth + (velocity * time);
+	
+	return d;
+}
+
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
 	VertexShaderOutput output;
 	
-	float time = Time - input.TimeOfAdd;
+	// Set up our reference variables
+	float time = Time - input.DepthTime.z;
 	float age = clamp(time / Lifespan, 0.0, 1.0);
+	float2 size = ComputeSize(input.Scale.xy, input.Scale.zw, time);
+	float2x2 rotation = ComputeRotation(input.Rotation.zw, time);
+	float2 rotationoffset = size * input.Rotation.xy;
 	
-	output.Position = mul(ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time), TransformMatrix);
+	// Calculate the position over time
+	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
+	// Apply rotation over time
+	output.Position.xy += -rotationoffset + mul(rotationoffset, rotation);
+	// Apply matrix and offset for screen view
+	output.Position = mul(output.Position - float4(ScreenPosition, 0, 0), TransformMatrix);
+	// Apply depth over time (handled after this function finishes)
+	output.Position.w = ComputeDepth(input.DepthTime.x, input.DepthTime.y, time);
+
+	// Assign the rest of the values
 	output.TexCoords = input.TexCoords;
 	output.Color = ComputeColor(input.StartColor, input.EndColor, age);
 	
 	return output;
 }
 
-	// Pixel shader for drawing particles.
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 	float4 v = tex2D(TextureSampler, input.TexCoords);
 
 	return v * input.Color;
+	
+	//float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
+	
+	//return input.Color * pow(m, 7);
+	
+	// Quad debugging
+	//if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
+	//	return float4(1, 0, 0, 1);
+	//if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)
+	//	return float4(1, 1, 0, 1);
+	//if (input.TexCoords.x < 0.1 && input.TexCoords.y > 0.9)
+	//	return float4(0, 1, 0, 1);
+	//if (input.TexCoords.x > 0.9 && input.TexCoords.y > 0.9)
+	//	return float4(0, 0, 1, 1);
+	
+	//return float4(0, 0, 0, 0);
 }
-
 
 technique DefaultTechnique
 {
 	pass Particles
 	{
 		VertexShader = compile vs_2_0 VertexShaderFunction();
-		PixelShader = compile ps_2_0 PixelShaderFunction();
-	}
-	pass Update
-	{
-		VertexShader = compile vs_2_0 VertexShaderFunction();
-	}
-	pass Render
-	{
 		PixelShader = compile ps_2_0 PixelShaderFunction();
 	}
 }

@@ -1,29 +1,34 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Core.Systems;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.ExampleParticles
 {
-	public class GlowParticle : Particle
+	public class GlowParticle : CParticle
 	{
 		public override void SetDefaults()
 		{
-			width = 128;
-			height = 128;
-			timeLeft = 120;
-			tileCollide = false;
-			SpawnAction = Spawn;
+			TimeLeft = 120;
 		}
+
+		public override void Spawn()
+		{
+			Scale *= 0.125f;
+		}
+
 		public override void AI()
 		{
-			scale = (120 - ai[0]) / 120;
-			ai[0]++;
-			velocity *= 0.96f;
+			Scale = (120 - TimeLeft) / 120;
+			Velocity *= 0.96f;
 		}
-		public void Spawn()
+
+		public override void Draw(SpriteBatch spriteBatch, Vector2 location)
 		{
-			scale *= 0.125f;
+			Texture2D texture = ModContent.Request<Texture2D>(Texture, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+			spriteBatch.Draw(texture, location, texture.Bounds, new Color(0.05f, 0f, 0.1f, 0f), 0f, texture.Size() * 0.5f, 0.1f, SpriteEffects.None, 0f);
 		}
 	}
 }

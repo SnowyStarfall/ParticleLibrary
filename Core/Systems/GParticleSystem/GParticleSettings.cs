@@ -15,6 +15,7 @@ namespace ParticleLibrary.Core.Systems.Test
 		public float Rotation { get; set; } = 0f;
 		public float RotationVelocity { get; set; } = 0f;
 
-		public float Depth { get; set; } = 0f;
+		public float Depth { get; set; } = 1f;
+		public float DepthVelocity { get; set; } = 0f;
 	}
 }

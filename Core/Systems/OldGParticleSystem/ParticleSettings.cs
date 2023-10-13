@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
-namespace ParticleLibrary.Core.Systems.ParticleSystem
+namespace ParticleLibrary.Core.Systems
 {
     public abstract class ParticleSettings
     {
