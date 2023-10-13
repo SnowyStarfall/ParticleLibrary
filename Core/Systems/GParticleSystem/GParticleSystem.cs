@@ -31,6 +31,7 @@ namespace ParticleLibrary.Core.Systems.Test
 		private EffectParameter _screenPosition;
 		private EffectParameter _fade;
 		private EffectParameter _lifespan;
+		private EffectParameter _gravity;
 		private EffectParameter _texture;
 
 		// Buffers
@@ -114,6 +115,7 @@ namespace ParticleLibrary.Core.Systems.Test
 			_currentTime++;
 			_time.SetValue(_currentTime);
 			_screenPosition.SetValue(Main.screenPosition);
+			_gravity.SetValue(new Vector2(0f, 2f));
 		}
 
 		private void On_Main_DrawDust(On_Main.orig_DrawDust orig, Main self)
@@ -185,11 +187,13 @@ namespace ParticleLibrary.Core.Systems.Test
 			_screenPosition = _effect.Parameters["ScreenPosition"];
 			_lifespan = _effect.Parameters["Lifespan"];
 			_fade = _effect.Parameters["Fade"];
+			_gravity = _effect.Parameters["Gravity"];
 			_texture = _effect.Parameters["Texture"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
 			_lifespan.SetValue(_settings.Lifespan);
 			_fade.SetValue(_settings.Fade);
+			_gravity.SetValue(_settings.Gravity);
 			_texture.SetValue(_settings.Texture);
 		}
 

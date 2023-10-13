@@ -6,6 +6,7 @@ float Time;
 float2 ScreenPosition;
 float Lifespan;
 bool Fade;
+float2 Gravity;
 
 // Current time in frames.
 texture Texture;
@@ -45,7 +46,7 @@ struct VertexShaderOutput
 
 float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
 {
-	float2 displacement = (velocity * time) + (0.5 * acceleration * pow(time, 2));
+	float2 displacement = (velocity * time) + (0.5 * acceleration * pow(time, 2)) + (Gravity * time);
 
 	return position + float4(displacement, 0, 0);
 }
@@ -90,9 +91,14 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	VertexShaderOutput output;
 	
 	// Set up our reference variables
+	
+	// The total time elapsed since this particle spawned
 	float time = Time - input.DepthTime.z;
+	// The normalized age of this particle
 	float age = clamp(time / Lifespan, 0.0, 1.0);
+	// The needed offset to account for rotation
 	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
+	// The rotation matrix
 	float2x2 rotation = ComputeRotation(input.Rotation.zw, time);
 	
 	// Calculate the position over time
@@ -113,13 +119,14 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-	float4 v = tex2D(TextureSampler, input.TexCoords);
+	//float4 v = tex2D(TextureSampler, input.TexCoords);
 
-	return v * input.Color;
+	//return v * input.Color;
 	
-	//float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
+	float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
+	float n = pow(m, 15);
 	
-	//return input.Color * pow(m, 7);
+	return float4(n, n, n, 0);
 	
 	// Quad debugging
 	//if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)

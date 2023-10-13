@@ -14,7 +14,7 @@ namespace ParticleLibrary.Core.Systems.Test
 		{
 			Instance = this;
 
-			GParticleSystemSettings settings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 100000, 180);
+			GParticleSystemSettings settings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 100000, 180, gravity: new Vector2(0f, 0.1f));
 			ParticleSystem = new(settings);
 		}
 
