@@ -2,13 +2,13 @@
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace ParticleLibrary.Core.Systems.EmitterSystem
+namespace ParticleLibrary.Core.Systems.OldEmitterSystem
 {
-    internal class EmitterSerializer : TagSerializable
+    internal class CEmitterSerializer : TagSerializable
     {
-        public static Func<TagCompound, EmitterSerializer> DESERIALIZER = DeserializeData;
-        public Emitter emitter;
-        public EmitterSerializer(Emitter emitter)
+        public static Func<TagCompound, CEmitterSerializer> DESERIALIZER = DeserializeData;
+        public CEmitter emitter;
+        public CEmitterSerializer(CEmitter emitter)
         {
             this.emitter = emitter;
         }
@@ -43,14 +43,14 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
             }
             return tag;
         }
-        public static EmitterSerializer DeserializeData(TagCompound tag)
+        public static CEmitterSerializer DeserializeData(TagCompound tag)
         {
             string assembly = tag.GetString("Assembly");
             string type = tag.GetString("Type");
             bool exists = ModLoader.TryGetMod(assembly, out Mod result);
             if (!exists)
                 return null;
-            Emitter e = result.Code.CreateInstance(type) as Emitter;
+            CEmitter e = result.Code.CreateInstance(type) as CEmitter;
             e.Assembly = assembly;
             e.Type = type;
             e.Data = tag.GetString("Data");

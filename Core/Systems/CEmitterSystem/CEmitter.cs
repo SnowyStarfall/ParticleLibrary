@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 
-namespace ParticleLibrary.Core.Systems.EmitterSystem
+namespace ParticleLibrary.Core.Systems.OldEmitterSystem
 {
     /// <summary>
     /// Base class for all emitters. Inherit this class to create your own emitter.
     /// </summary>
-    public abstract class Emitter : Entity
+    public abstract class CEmitter : Entity
     {
         /// <summary>
         /// Originating mod.
@@ -32,7 +33,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
 
         /// <summary>
         /// </summary>
-        protected Emitter()
+        protected CEmitter()
         {
             SetDefaults();
             Assembly = GetType().Assembly.GetName().Name;
@@ -62,7 +63,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// </summary>
         public void Kill()
         {
-            EmitterManager.emitters?.Remove(this);
+            CEmitterManager.emitters?.Remove(this);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ParticleLibrary.Core.Systems
+namespace ParticleLibrary.Core.Systems.GEmitterSystem
 {
-	public class ColorSettings
+	public class GEmitterColorSettings
 	{
 		public bool UseHSL { get; set; } = false;
 

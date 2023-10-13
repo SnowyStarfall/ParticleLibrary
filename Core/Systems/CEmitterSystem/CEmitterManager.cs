@@ -7,17 +7,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace ParticleLibrary.Core.Systems.EmitterSystem
+namespace ParticleLibrary.Core.Systems.OldEmitterSystem
 {
-    public class EmitterManager : ModSystem
+	public class CEmitterManager : ModSystem
     {
-        public delegate Emitter NewEmitterCreated(Vector2 Position, Emitter Emitter, string Data = null, float CullDistance = -1f);
+        public delegate CEmitter NewEmitterCreated(Vector2 Position, CEmitter Emitter, string Data = null, float CullDistance = -1f);
         public static event NewEmitterCreated OnNewEmitter;
 
         /// <summary>
         /// List of emitters.
         /// </summary>
-        public static List<Emitter> emitters;
+        public static List<CEmitter> emitters;
 
         public override void Load()
         {
@@ -33,7 +33,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
 
         public override void LoadWorldData(TagCompound tag)
         {
-            List<EmitterSerializer> e = tag.Get<List<EmitterSerializer>>("ParticleLibrary: Emitters");
+            List<CEmitterSerializer> e = tag.Get<List<CEmitterSerializer>>("ParticleLibrary: Emitters");
             e.RemoveAll(x => x == null);
             emitters = e.ConvertAll((o) => o.emitter) ?? new();
         }
@@ -42,7 +42,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         {
             emitters ??= new();
 
-            List<EmitterSerializer> e = emitters.ConvertAll<EmitterSerializer>((o) => new(o));
+            List<CEmitterSerializer> e = emitters.ConvertAll<CEmitterSerializer>((o) => new(o));
             e.RemoveAll(x => x == null);
             tag.Add("ParticleLibrary: Emitters", e);
         }
@@ -68,7 +68,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < emitters?.Count; i++)
                 {
-                    Emitter emitter = emitters[i];
+                    CEmitter emitter = emitters[i];
                     emitter?.Draw(Main.spriteBatch, emitter.VisualPosition, Lighting.GetColor((int)(emitter.position.X / 16), (int)(emitter.position.Y / 16)));
                 }
                 Main.spriteBatch.End();
@@ -81,7 +81,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// </summary>
         /// <typeparam name="T">The emitter.</typeparam>
         /// <returns>A new instance of this emitter</returns>
-        public static Emitter NewInstance<T>() where T : Emitter
+        public static CEmitter NewInstance<T>() where T : CEmitter
         {
             return Activator.CreateInstance<T>();
         }
@@ -93,9 +93,9 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// <param name="Position">The emitter's position.</param>
         /// <param name="Data">Custom string data.</param>
         /// <param name="CullDistance">The maximum distance before the emitter no longer runs.</param>
-        public static Emitter NewEmitter<T>(Vector2 Position, string Data = null, float CullDistance = -1f) where T : Emitter
+        public static CEmitter NewEmitter<T>(Vector2 Position, string Data = null, float CullDistance = -1f) where T : CEmitter
         {
-            Emitter Emitter = Activator.CreateInstance<T>();
+            CEmitter Emitter = Activator.CreateInstance<T>();
             return NewEmitter(Position, Emitter, Data, CullDistance);
         }
 
@@ -106,9 +106,9 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// <param name="Emitter">The emitter type.</param>
         /// <param name="Data">Defaults to "ModName: EmitterName". If the mod can't be found by the Assembly name, then defaults to "AssemblyName: EmitterName".</param>
         /// <param name="CullDistance">Defaults to the largest screen dimension.</param>
-        public static Emitter NewEmitter(Vector2 Position, Emitter Emitter, string Data = null, float CullDistance = -1f)
+        public static CEmitter NewEmitter(Vector2 Position, CEmitter Emitter, string Data = null, float CullDistance = -1f)
         {
-            Emitter type = (Emitter)Activator.CreateInstance(Emitter.GetType());
+            CEmitter type = (CEmitter)Activator.CreateInstance(Emitter.GetType());
 
             type.position = Position;
             if (Data != null)
@@ -140,7 +140,7 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// Kills a specified emitter.
         /// </summary>
         /// <param name="emitter"></param>
-        public static void Remove(Emitter emitter) => emitters.Remove(emitter);
+        public static void Remove(CEmitter emitter) => emitters.Remove(emitter);
 
         /// <summary>
         /// Kills all emitters with matching data.
@@ -152,18 +152,18 @@ namespace ParticleLibrary.Core.Systems.EmitterSystem
         /// Kills all emitters that fulfill the conditions.
         /// </summary>
         /// <param name="predicate"></param>
-        public static void Remove(Predicate<Emitter> predicate) => emitters.RemoveAll(predicate);
+        public static void Remove(Predicate<CEmitter> predicate) => emitters.RemoveAll(predicate);
 
         /// <summary>
         /// Returns an emitter with matching data.
         /// </summary>
         /// <param name="Data"></param>
-        public static Emitter Find(string Data) => emitters.Find(x => x.Data == Data);
+        public static CEmitter Find(string Data) => emitters.Find(x => x.Data == Data);
 
         /// <summary>
         /// Returns all emitters that fulfill the conditions.
         /// </summary>
         /// <param name="predicate"></param>
-        public static List<Emitter> Find(Predicate<Emitter> predicate) => emitters.FindAll(predicate);
+        public static List<CEmitter> Find(Predicate<CEmitter> predicate) => emitters.FindAll(predicate);
     }
 }
