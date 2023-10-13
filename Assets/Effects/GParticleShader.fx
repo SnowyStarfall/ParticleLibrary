@@ -6,7 +6,8 @@ float Time;
 float2 ScreenPosition;
 float Lifespan;
 bool Fade;
-float2 Gravity;
+float Gravity;
+float TerminalGravity;
 
 // Current time in frames.
 texture Texture;
@@ -46,9 +47,14 @@ struct VertexShaderOutput
 
 float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
 {
-	float2 displacement = (velocity * time) + (0.5 * acceleration * pow(time, 2)) + (Gravity * time);
+	// Displacement
+	float2 d = (velocity * time);
+	// Acceleration
+	float2 a = (0.5 * acceleration * pow(time, 2));
+	// Gravity
+	float g = (0.5 * Gravity * pow(time, 2));
 
-	return position + float4(displacement, 0, 0);
+	return position + float4(d + a + float2(0, g), 0, 0);
 }
 
 float2 ComputeSize(float2 size, float2 scale, float2 velocity, float time)
