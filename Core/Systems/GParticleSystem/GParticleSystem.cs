@@ -31,9 +31,6 @@ namespace ParticleLibrary.Core.Systems.Test
 		private EffectParameter _screenPosition;
 		private EffectParameter _fade;
 		private EffectParameter _lifespan;
-		private EffectParameter _size;
-		private EffectParameter _scaleVelocity;
-		private EffectParameter _rotationVelocity;
 		private EffectParameter _texture;
 
 		// Buffers
@@ -188,17 +185,11 @@ namespace ParticleLibrary.Core.Systems.Test
 			_screenPosition = _effect.Parameters["ScreenPosition"];
 			_lifespan = _effect.Parameters["Lifespan"];
 			_fade = _effect.Parameters["Fade"];
-			_size = _effect.Parameters["Size"];
-			_scaleVelocity = _effect.Parameters["ScaleVelocity"];
-			_rotationVelocity = _effect.Parameters["RotationVelocity"];
 			_texture = _effect.Parameters["Texture"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
 			_lifespan.SetValue(_settings.Lifespan);
 			_fade.SetValue(_settings.Fade);
-			_size.SetValue(_settings.Texture.Size());
-			_scaleVelocity.SetValue(_settings.ScaleVelocity);
-			_rotationVelocity.SetValue(_settings.RotationVelocity);
 			_texture.SetValue(_settings.Texture);
 		}
 

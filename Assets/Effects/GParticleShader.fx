@@ -7,13 +7,6 @@ float2 ScreenPosition;
 float Lifespan;
 bool Fade;
 
-float2 Size;
-float2 Scale;
-float2 ScaleVelocity;
-
-float Rotation;
-float RotationVelocity;
-
 // Current time in frames.
 texture Texture;
 sampler TextureSampler = sampler_state
