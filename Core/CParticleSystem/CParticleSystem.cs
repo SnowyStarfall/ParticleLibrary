@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Core.Systems;
 using ParticleLibrary.Debug;
 using ParticleLibrary.Utilities;
 using ReLogic.Threading;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static ParticleLibrary.Core.Systems.CParticle;
+using static ParticleLibrary.Core.CParticle;
 
-namespace ParticleLibrary.Core.Systems
+namespace ParticleLibrary.Core
 {
 	/// <summary>
 	/// This class manages the particle system. New instances of this class can be created.
@@ -115,13 +114,20 @@ namespace ParticleLibrary.Core.Systems
 					if (p is null)
 						continue;
 
-					p.RotationVelocity += p.RotationAcceleration;
 					p.Rotation += p.RotationVelocity;
+					p.RotationVelocity += p.RotationAcceleration;
 
-					p.ScaleVelocity.X += p.ScaleAcceleration.X;
-					p.ScaleVelocity.Y += p.ScaleAcceleration.Y;
 					p.Scale2D.X += p.ScaleVelocity.X;
 					p.Scale2D.Y += p.ScaleVelocity.Y;
+					p.ScaleVelocity.X += p.ScaleAcceleration.X;
+					p.ScaleVelocity.Y += p.ScaleAcceleration.Y;
+
+					// TODO: Uncomment this
+					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeVelocity)
+					{
+						p.Position.X += p.Velocity.X;
+						p.Position.Y += p.Velocity.Y;
+					}
 
 					if (p.TileCollide)
 					{
@@ -136,15 +142,10 @@ namespace ParticleLibrary.Core.Systems
 						p.Velocity = Vector2.Zero;
 					}
 
-					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeVelocity)
-					{
-						p.Position.X += p.Velocity.X;
-						p.Position.Y += p.Velocity.Y;
-					}
-
+					// TODO: Uncomment this
 					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI)
 					{
-						p.AI();
+						p.Update();
 
 						if (--p.TimeLeft == 0)
 						{
@@ -386,7 +387,6 @@ namespace ParticleLibrary.Core.Systems
 
 			_particlesToAdd.Add(particle);
 			ParticleCount++;
-			particle.Spawn();
 
 			return particle;
 		}

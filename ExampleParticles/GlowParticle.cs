@@ -1,25 +1,21 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Core.Systems;
+using ParticleLibrary.Core;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.ExampleParticles
 {
-	public class GlowParticle : CParticle
+    public class GlowParticle : CParticle
 	{
-		public override void SetDefaults()
-		{
-			TimeLeft = 120;
-		}
-
 		public override void Spawn()
 		{
+			TimeLeft = 120;
 			Scale *= 0.125f;
 		}
 
-		public override void AI()
+		public override void Update()
 		{
 			Scale = (120 - TimeLeft) / 120;
 			Velocity *= 0.96f;

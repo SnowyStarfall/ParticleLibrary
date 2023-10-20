@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.ModLoader.IO;
 
-namespace ParticleLibrary.Core.Systems.GEmitterSystem
+namespace ParticleLibrary.Core
 {
-	public class GEmitterParticleSettings
+	public class EmitterParticleSettings
 	{
 		/// <summary>
 		/// Whether to use scalar velocity, or to use directional velocity.
@@ -45,11 +46,11 @@ namespace ParticleLibrary.Core.Systems.GEmitterSystem
 		/// <summary>
 		/// The minimum velocity acceleration to spawn a particle with.
 		/// </summary>
-		public Vector2 MinimumVelocityAcceleration { get; set; } = Vector2.Zero;
+		public Vector2 MinimumDirectionalVelocityAcceleration { get; set; } = Vector2.Zero;
 		/// <summary>
 		/// The maximum velocity acceleration to spawn a particle with.
 		/// </summary>
-		public Vector2 MaximumVelocityAcceleration { get; set; } = Vector2.Zero;
+		public Vector2 MaximumDirectionalVelocityAcceleration { get; set; } = Vector2.Zero;
 
 		/// <summary>
 		/// The minimum scale acceleration to spawn a particle with.
@@ -101,5 +102,58 @@ namespace ParticleLibrary.Core.Systems.GEmitterSystem
 		/// The maximum depth velocity to spawn a particle with.
 		/// </summary>
 		public float MaximumDepthVelocity { get; set; } = 0f;
+
+		internal void SaveData(TagCompound tag)
+		{
+			tag.Set("UseScalarVelocity", UseScalarVelocity);
+			tag.Set("ScalarVelocity", new Vector4(MinimumScalarVelocity, MaximumScalarVelocity, MinimumScalarVelocityAcceleration, MaximumScalarVelocityAcceleration));
+			tag.Set("Radians", new Vector2(MinimumRadians, MaximumRadians));
+			tag.Set("MinimumDirectionalVelocity", MinimumDirectionalVelocity);
+			tag.Set("MaximumDirectionalVelocity", MaximumDirectionalVelocity);
+			tag.Set("MinimumDirectionalVelocityAcceleration", MinimumDirectionalVelocityAcceleration);
+			tag.Set("MaximumDirectionalVelocityAcceleration", MaximumDirectionalVelocityAcceleration);
+			tag.Set("MinimumScale", MinimumScale);
+			tag.Set("MaximumScale", MaximumScale);
+			tag.Set("MinimumScaleVelocity", MinimumScaleVelocity);
+			tag.Set("MaximumScaleVelocity", MaximumScaleVelocity);
+			tag.Set("Rotation", new Vector4(MinimumRotation, MaximumRotation, MinimumRotationSpeed, MaximumRotationSpeed));
+			tag.Set("Depth", new Vector4(MinimumDepth, MaximumDepth, MinimumDepthVelocity, MaximumDepthVelocity));
+		}
+
+		internal void LoadData(TagCompound tag)
+		{
+			UseScalarVelocity = tag.GetBool("UseScalarVelocity");
+
+			Vector4 scalar = tag.Get<Vector4>("ScalarVelocity");
+			MinimumScalarVelocity = scalar.X;
+			MaximumScalarVelocity = scalar.Y;
+			MinimumScalarVelocityAcceleration = scalar.Z;
+			MaximumScalarVelocityAcceleration = scalar.W;
+
+			Vector2 radians = tag.Get<Vector2>("Radians");
+			MinimumRadians = radians.X;
+			MaximumRadians = radians.Y;
+
+			MinimumDirectionalVelocity = tag.Get<Vector2>("MinimumDirectionalVelocity");
+			MaximumDirectionalVelocity = tag.Get<Vector2>("MaximumDirectionalVelocity");
+			MinimumDirectionalVelocityAcceleration = tag.Get<Vector2>("MinimumDirectionalVelocityAcceleration");
+			MaximumDirectionalVelocityAcceleration = tag.Get<Vector2>("MaximumDirectionalVelocityAcceleration");
+			MinimumScale = tag.Get<Vector2>("MinimumScale");
+			MaximumScale = tag.Get<Vector2>("MaximumScale");
+			MinimumScaleVelocity = tag.Get<Vector2>("MinimumScaleVelocity");
+			MaximumScaleVelocity = tag.Get<Vector2>("MaximumScaleVelocity");
+
+			Vector4 rotation = tag.Get<Vector4>("Rotation");
+			MinimumRotation = rotation.X;
+			MaximumRotation = rotation.Y;
+			MinimumRotationSpeed = rotation.Z;
+			MaximumRotationSpeed = rotation.W;
+
+			Vector4 depth = tag.Get<Vector4>("Depth");
+			MinimumDepth = depth.X;
+			MaximumDepth = depth.Y;
+			MinimumDepthVelocity = depth.Z;
+			MaximumDepthVelocity = depth.W;
+		}
 	}
 }
