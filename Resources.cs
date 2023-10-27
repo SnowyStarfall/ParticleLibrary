@@ -6,7 +6,8 @@ namespace ParticleLibrary
     /// <remarks>
     /// This file originates from Nez, a Monogame library, which includes a T4 template that will auto-generate the content of this file.
     /// Modified by SnowyStarfall to be more thorough.
-    /// See: https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"
+	/// To use, right click the Resources.tt file in Visual Studio and click "Run Custom Tool". It will generate Resources.cs nested below itself.
+    /// See: <see href="https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"/>
     /// </remarks>
     internal class Resources
     {
@@ -14,18 +15,20 @@ namespace ParticleLibrary
 		{
 			public static class Effects
 			{
-				public const string ParticleShader = @"ParticleLibrary/Assets/Effects/ParticleShader";
+				public const string GParticleShader = @"ParticleLibrary/Assets/Effects/GParticleShader";
+				public const string PointParticleShader = @"ParticleLibrary/Assets/Effects/PointParticleShader";
+			}
+
+			public static class Textures
+			{
+				public const string Star = @"ParticleLibrary/Assets/Textures/Star";
 			}
 
 		}
 
 		public static class Content
 		{
-			public static class Items
-			{
-				public const string Devtool = @"ParticleLibrary/Content/Items/Devtool";
-			}
-
+			public const string Devtool = @"ParticleLibrary/Content/Devtool";
 		}
 
 		public static class Debug
@@ -52,11 +55,7 @@ namespace ParticleLibrary
 
 		public static class ExampleParticles
 		{
-			public const string EmberParticle = @"ParticleLibrary/ExampleParticles/EmberParticle";
 			public const string GlowParticle = @"ParticleLibrary/ExampleParticles/GlowParticle";
-			public const string RainbowParticle1 = @"ParticleLibrary/ExampleParticles/RainbowParticle1";
-			public const string RainbowParticle2 = @"ParticleLibrary/ExampleParticles/RainbowParticle2";
-			public const string RainbowParticle3 = @"ParticleLibrary/ExampleParticles/RainbowParticle3";
 		}
 
 		public static class Textures
@@ -69,7 +68,6 @@ namespace ParticleLibrary
 		public const string EmptyPixel = @"ParticleLibrary/EmptyPixel";
 		public const string Icon = @"ParticleLibrary/icon";
 		public const string WhitePixel = @"ParticleLibrary/WhitePixel";
-
     }
 }
 
