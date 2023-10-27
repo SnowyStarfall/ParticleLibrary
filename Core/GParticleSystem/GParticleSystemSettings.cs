@@ -21,7 +21,10 @@ namespace ParticleLibrary.Core
             if (texture is null)
                 throw new ArgumentNullException(nameof(texture), "Texture cannot be null.");
 
-            Texture = texture;
+			if (maxParticles < 1)
+				throw new ArgumentOutOfRangeException(nameof(maxParticles), "Must be greater than 0");
+
+			Texture = texture;
             MaxParticles = maxParticles;
             Lifespan = lifespan;
             Layer = layer;

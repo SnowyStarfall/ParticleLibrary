@@ -7,8 +7,23 @@ namespace ParticleLibrary.Core
 {
     public class GParticleManager : ModSystem
     {
+        /// <summary>
+        /// Access to the particle config
+        /// </summary>
         public static ParticleLibraryConfig Config => ParticleLibraryConfig.Instance;
+        /// <summary>
+        /// All registered <see cref="GParticleSystem"/>s
+        /// </summary>
         public static FastList<GParticleSystem> Systems { get; private set; }
+
+        /// <summary>
+        /// The maximum amount of GPU particles allowed
+        /// </summary>
+        public static int MaximumParticleBudget => Config.MaxGPUParticles;
+        /// <summary>
+        /// The current GPU particle budget, taking into account the requirements of all registered systems
+        /// </summary>
+        public static int FreeParticleBudget { get; private set; } = Config.MaxGPUParticles;
 
 		internal static GParticleSystem ParticleSystem;
 
@@ -23,12 +38,10 @@ namespace ParticleLibrary.Core
         {
         }
 
-		public static GParticleSystem AddSystem(GParticleSystem system)
+		internal static GParticleSystem AddSystem(GParticleSystem system)
         {
             if(system is null)
                 throw new ArgumentNullException(nameof(system));
-
-
 
             return system;
         }

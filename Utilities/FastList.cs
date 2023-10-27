@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ParticleLibrary.Utilities
 {
 	/// <summary>
-	/// Sourced from Nez https://github.com/prime31/Nez/blob/master/Nez.Portable/Utils/Collections/FastList.cs
+	/// Sourced from Nez <see href="https://github.com/prime31/Nez/blob/master/Nez.Portable/Utils/Collections/FastList.cs"/>
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class FastList<T>

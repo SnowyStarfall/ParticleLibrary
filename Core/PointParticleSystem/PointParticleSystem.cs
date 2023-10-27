@@ -1,20 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
 using static ParticleLibrary.Resources;
-using static Terraria.ModLoader.ExtraJump;
 
-namespace ParticleLibrary.Core
+namespace ParticleLibrary.Core.PointParticleSystem
 {
-	public class GParticleSystem : IDisposable
+	public class PointParticleSystem : IDisposable
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
 
@@ -23,22 +21,6 @@ namespace ParticleLibrary.Core
 		public Matrix WorldViewProjection { get; private set; }
 
 		// Settings
-		public Texture2D Texture
-		{
-			get => _texture;
-			set
-			{
-				if (value is null)
-				{
-					throw new ArgumentNullException(nameof(value));
-				}
-
-				_texture = value;
-				_eTexture.SetValue(value);
-			}
-		}
-		private Texture2D _texture;
-
 		public int MaxParticles { get; }
 
 		public int Lifespan
@@ -128,18 +110,11 @@ namespace ParticleLibrary.Core
 		private EffectParameter _eTexture;
 		private EffectParameter _eOffset;
 
-		// Buffers
+		// Buffer
 		private DynamicVertexBuffer _vertexBuffer;
-		private DynamicIndexBuffer _indexBuffer;
-
-		private GParticleVertex[] _vertices;
-		private int[] _indices;
-
+		private PointParticleVertex[] _vertices;
 		private GCHandle _verticesHandle;
-		private GCHandle _indicesHandle;
-
 		private IntPtr _verticesPtr;
-		private IntPtr _indicesPtr;
 
 		// Misc
 		private int _currentParticleIndex;
@@ -148,12 +123,11 @@ namespace ParticleLibrary.Core
 		private bool _setBuffers;
 		private bool _disposedValue;
 
-		public GParticleSystem(Texture2D texture, int maxParticles, int lifespan)
+		public PointParticleSystem(int maxParticles, int lifespan)
 		{
-			if (texture is null)
-				throw new ArgumentNullException(nameof(texture));
+			if (maxParticles < 1)
+				throw new ArgumentOutOfRangeException(nameof(maxParticles), "Must be greater than 0");
 
-			_texture = texture;
 			MaxParticles = maxParticles;
 			_lifespan = lifespan;
 			Layer = Layer.BeforeDust;
@@ -162,32 +136,22 @@ namespace ParticleLibrary.Core
 			_gravity = 0f;
 			_terminalGravity = 0f;
 
-			//GParticleManager.AddSystem(this);
-
 			Main.QueueMainThreadAction(() =>
 			{
 				LoadEffect();
 
-				_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
-				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
-
-				_vertices = new GParticleVertex[MaxParticles * 4];
-				_indices = new int[MaxParticles * 6];
-
+				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
+				_vertices = new PointParticleVertex[MaxParticles * 4];
 				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
-
 				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-				_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
 			On_Dust.UpdateDust += On_Dust_UpdateDust;
 		}
 
-		public GParticleSystem(GParticleSystemSettings settings)
+		public PointParticleSystem(PointParticleSystemSettings settings)
 		{
-			_texture = settings.Texture;
 			MaxParticles = settings.MaxParticles;
 			_lifespan = settings.Lifespan;
 			Layer = settings.Layer;
@@ -196,23 +160,14 @@ namespace ParticleLibrary.Core
 			_gravity = settings.Gravity;
 			_terminalGravity = settings.TerminalGravity;
 
-			//GParticleManager.AddSystem(this);
-
 			Main.QueueMainThreadAction(() =>
 			{
 				LoadEffect();
 
-				_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
-				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
-
-				_vertices = new GParticleVertex[MaxParticles * 4];
-				_indices = new int[MaxParticles * 6];
-
+				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
+				_vertices = new PointParticleVertex[MaxParticles * 4];
 				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
-
 				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-				_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -228,97 +183,23 @@ namespace ParticleLibrary.Core
 				return;
 
 			_effect.CurrentTechnique.Passes["Particles"].Apply();
-			Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, MaxParticles * 4, 0, MaxParticles * 2);
+			Device.DrawPrimitives(PrimitiveType.PointListEXT, 0, MaxParticles);
 		}
 
-		public void AddParticle(Vector2 position, Vector2 velocity, GParticle particle)
+		public void AddParticle(Vector2 position, Vector2 velocity, PointParticle particle)
 		{
-			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);
-			Vector4 random = new(Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon));
-
-			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
+			_vertices[_currentParticleIndex] = new PointParticleVertex()
 			{
-				Position = new Vector4(position.X - size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
-				TexCoord = new Vector2(),
+				Position = new Vector4(position.X - particle.Size / 2f, position.Y - particle.Size / 2f, 0f, 1f),
 
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
-				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
-				Rotation = new Vector4(-0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
+				Size = particle.Size,
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
 			};
-			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
-			{
-				Position = new Vector4(position.X - size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
-				TexCoord = new Vector2(0f, 1f),
-
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
-
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
-				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
-				Rotation = new Vector4(-0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
-
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
-			};
-			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
-			{
-				Position = new Vector4(position.X + size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
-				TexCoord = new Vector2(1f, 0f),
-
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
-
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
-				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
-				Rotation = new Vector4(0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
-
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
-			};
-			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
-			{
-				Position = new Vector4(position.X + size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
-				TexCoord = new Vector2(1f),
-
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
-
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
-				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
-				Rotation = new Vector4(0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
-
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
-			};
-
-			int vertexIndex = _currentParticleIndex * 4;
-
-			// _currentParticleIndex is 0
-			// vertexIndex would be 0
-			// vertices would be 0, 1, 2, 3
-			// indices would be 0, 2, 3, 0, 3, 1
-
-			// _currentParticleIndex is 1
-			// vertexIndex would be 4
-			// vertices would be 4, 5, 6, 7
-			// indices would be 4, 6, 7, 4, 7, 5
-
-			_indices[_currentParticleIndex * 6] = vertexIndex;
-			_indices[_currentParticleIndex * 6 + 1] = vertexIndex + 2;
-			_indices[_currentParticleIndex * 6 + 2] = vertexIndex + 3;
-			_indices[_currentParticleIndex * 6 + 3] = vertexIndex;
-			_indices[_currentParticleIndex * 6 + 4] = vertexIndex + 3;
-			_indices[_currentParticleIndex * 6 + 5] = vertexIndex + 1;
 
 			_currentParticleIndex++;
 			if (_currentParticleIndex >= MaxParticles)
@@ -375,7 +256,7 @@ namespace ParticleLibrary.Core
 
 		private void LoadEffect()
 		{
-			_effect = ModContent.Request<Effect>(Assets.Effects.GParticleShader, AssetRequestMode.ImmediateLoad).Value.Clone();
+			_effect = ModContent.Request<Effect>(Assets.Effects.PointParticleShader, AssetRequestMode.ImmediateLoad).Value.Clone();
 
 			SetParameters();
 		}
@@ -402,11 +283,9 @@ namespace ParticleLibrary.Core
 			_eFade = _effect.Parameters["Fade"];
 			_eGravity = _effect.Parameters["Gravity"];
 			_eTerminalGravity = _effect.Parameters["TerminalGravity"];
-			_eTexture = _effect.Parameters["Texture"];
 			_eOffset = _effect.Parameters["Offset"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
-			_eTexture.SetValue(Texture);
 			_eLifespan.SetValue(Lifespan);
 			_eFade.SetValue(Fade);
 			_eGravity.SetValue(Gravity);
@@ -542,27 +421,21 @@ namespace ParticleLibrary.Core
 			}
 
 #if DEBUG
-			if (Main.keyState.IsKeyDown(Keys.RightAlt))
+			if (Main.keyState.IsKeyDown(Keys.RightControl))
 			{
 				Main.QueueMainThreadAction(() =>
 				{
 					_vertexBuffer.Dispose();
-					_indexBuffer.Dispose();
 
-					_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
-					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
+					_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
 
-					_vertices = new GParticleVertex[MaxParticles * 4];
-					_indices = new int[MaxParticles * 6];
+					_vertices = new PointParticleVertex[MaxParticles];
 
 					_verticesHandle.Free();
-					_indicesHandle.Free();
 
 					_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-					_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
 
 					_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-					_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
 
 					_currentParticleIndex = 0;
 					_currentTime = 0;
@@ -578,10 +451,8 @@ namespace ParticleLibrary.Core
 			if (_setBuffers)
 			{
 				_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
-				_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.Discard);
 
 				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
-				//_indexBuffer.SetData(_indices, 0, _indices.Length, SetDataOptions.Discard);
 
 				_setBuffers = false;
 			}
@@ -754,7 +625,6 @@ namespace ParticleLibrary.Core
 
 			// Set buffers
 			Device.SetVertexBuffer(_vertexBuffer);
-			Device.Indices = _indexBuffer;
 
 			// Do particle pass
 			Draw();
@@ -769,19 +639,16 @@ namespace ParticleLibrary.Core
 			{
 				if (disposing)
 				{
-					_texture = null;
 					_effect.Dispose();
 					_vertexBuffer.Dispose();
-					_indexBuffer.Dispose();
 				}
 
 				_verticesHandle.Free();
-				_indicesHandle.Free();
 				_disposedValue = true;
 			}
 		}
 
-		~GParticleSystem()
+		~PointParticleSystem()
 		{
 			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
 			Dispose(disposing: false);

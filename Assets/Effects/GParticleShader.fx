@@ -26,7 +26,7 @@ struct VertexShaderInput
 {
 	float4 Position : POSITION0;
 	float4 TexCoords : TEXCOORD0;
-	
+		
 	float4 StartColor : COLOR0;
 	float4 EndColor : COLOR1;
 	
