@@ -107,7 +107,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		private EffectParameter _eLifespan;
 		private EffectParameter _eGravity;
 		private EffectParameter _eTerminalGravity;
-		private EffectParameter _eTexture;
 		private EffectParameter _eOffset;
 
 		// Buffer
@@ -141,7 +140,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				LoadEffect();
 
 				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
-				_vertices = new PointParticleVertex[MaxParticles * 4];
+				_vertices = new PointParticleVertex[MaxParticles];
 				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
 				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
 			});
@@ -165,7 +164,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				LoadEffect();
 
 				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
-				_vertices = new PointParticleVertex[MaxParticles * 4];
+				_vertices = new PointParticleVertex[MaxParticles];
 				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
 				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
 			});
@@ -265,7 +264,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		{
 			// Create shader
 			string additionalPath = @"";
-			string fileName = "GParticleShader";
+			string fileName = "PointParticleShader";
 			string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 			FileStream stream = new(documents + $@"\My Games\Terraria\tModLoader\ModSources\ParticleLibrary\Assets\Effects\{additionalPath}{fileName}.xnb", FileMode.Open, FileAccess.Read);
@@ -426,13 +425,11 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				Main.QueueMainThreadAction(() =>
 				{
 					_vertexBuffer.Dispose();
-
 					_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
 
 					_vertices = new PointParticleVertex[MaxParticles];
 
 					_verticesHandle.Free();
-
 					_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
 
 					_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
@@ -625,6 +622,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 
 			// Set buffers
 			Device.SetVertexBuffer(_vertexBuffer);
+			Device.Indices = null;
 
 			// Do particle pass
 			Draw();
