@@ -15,7 +15,7 @@ using static ParticleLibrary.Core.CParticle;
 namespace ParticleLibrary.Core
 {
 	/// <summary>
-	/// This class manages the particle system. New instances of this class can be created.
+	/// This class manages the particle system.
 	/// </summary>
 	public class CParticleSystem : ModSystem
 	{

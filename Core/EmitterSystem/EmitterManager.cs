@@ -14,9 +14,6 @@ namespace ParticleLibrary.Core
 {
 	public class EmitterManager : ModSystem
 	{
-		public const string CEmitterTag = "ParticleLibrary: CEmitters";
-		public const string GEmitterTag = "ParticleLibrary: GEmitters";
-
 		/// <summary>
 		/// List of emitters.
 		/// </summary>
@@ -40,7 +37,7 @@ namespace ParticleLibrary.Core
 		{
 			Emitters ??= new();
 
-			Emitters.Buffer = tag.Get<List<EmitterSerializer>>(CEmitterTag).ToList()
+			Emitters.Buffer = tag.Get<List<EmitterSerializer>>("Emitters").ToList()
 				.ConvertAll((o) => o.Emitter)
 				.Where((x) => x is not null)
 				.ToArray();
@@ -54,7 +51,7 @@ namespace ParticleLibrary.Core
 				.ToList()
 				.ConvertAll<EmitterSerializer>((o) => new(o));
 
-			tag.Add(CEmitterTag, c);
+			tag.Add("Emitters", c);
 		}
 
 		private void Update(On_Dust.orig_UpdateDust orig)
