@@ -448,7 +448,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 			if (_setBuffers)
 			{
 				_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
-
 				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
 
 				_setBuffers = false;

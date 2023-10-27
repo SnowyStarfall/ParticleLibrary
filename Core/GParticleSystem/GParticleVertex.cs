@@ -37,5 +37,7 @@ namespace ParticleLibrary.Core
         );
 
         readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
+
+        public const int SizeInBytes = sizeof(float) * 26; // 104
     }
 }

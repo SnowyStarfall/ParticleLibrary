@@ -142,11 +142,14 @@ namespace ParticleLibrary.Core
 		private IntPtr _indicesPtr;
 
 		// Misc
-		private int _currentParticleIndex;
 		private int _currentTime;
 		private int _lastParticleTime;
-		private bool _setBuffers;
 		private bool _disposedValue;
+
+		// Buffer management
+		private int _currentParticleIndex;
+		private bool _setBuffers;
+		private int _startIndex;
 
 		public GParticleSystem(Texture2D texture, int maxParticles, int lifespan)
 		{
@@ -320,9 +323,31 @@ namespace ParticleLibrary.Core
 			_indices[_currentParticleIndex * 6 + 4] = vertexIndex + 3;
 			_indices[_currentParticleIndex * 6 + 5] = vertexIndex + 1;
 
-			_currentParticleIndex++;
-			if (_currentParticleIndex >= MaxParticles)
-				_currentParticleIndex = 0; // This effectively means that particles will be overwritten.
+			// Set buffer data 
+			// TODO: Batch buffer data setting
+			//_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.None);
+			//_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.None);
+
+			// This means that we just started adding particles since the last batch
+			if (_startIndex == -1)
+			{
+				_startIndex = _currentParticleIndex;
+			}
+
+			// We wrap back to zero and immediately send our batch of new particles without waiting
+			if (++_currentParticleIndex >= MaxParticles)
+			{
+				SetBuffers();
+
+				// We reset since we batched
+				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
+				_startIndex = 0;
+
+				_lastParticleTime = 0;
+				_setBuffers = false;
+				return;
+			}
+
 			_lastParticleTime = 0;
 			_setBuffers = true;
 		}
@@ -529,6 +554,12 @@ namespace ParticleLibrary.Core
 			}
 		}
 
+		private void SetBuffers()
+		{
+			_vertexBuffer.SetData(GParticleVertex.SizeInBytes * _startIndex * 4, _vertices, _startIndex, (_currentParticleIndex - _startIndex) * 4, GParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
+			_indexBuffer.SetData(sizeof(int) * _startIndex * 6, _indices, _startIndex, (_currentParticleIndex - _startIndex) * 6, SetDataOptions.NoOverwrite);
+		}
+
 		// Updating
 		private void On_Dust_UpdateDust(On_Dust.orig_UpdateDust orig)
 		{
@@ -577,12 +608,16 @@ namespace ParticleLibrary.Core
 			// Batched data transfer
 			if (_setBuffers)
 			{
-				_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
-				_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.Discard);
+				//_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
+				//_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.Discard);
 
 				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
 				//_indexBuffer.SetData(_indices, 0, _indices.Length, SetDataOptions.Discard);
 
+				SetBuffers();
+
+				// We reset since we batched
+				_startIndex = 0;
 				_setBuffers = false;
 			}
 
