@@ -135,12 +135,6 @@ namespace ParticleLibrary.Core
 		private GParticleVertex[] _vertices;
 		private int[] _indices;
 
-		private GCHandle _verticesHandle;
-		private GCHandle _indicesHandle;
-
-		private IntPtr _verticesPtr;
-		private IntPtr _indicesPtr;
-
 		// Misc
 		private int _currentTime;
 		private int _lastParticleTime;
@@ -176,12 +170,6 @@ namespace ParticleLibrary.Core
 
 				_vertices = new GParticleVertex[MaxParticles * 4];
 				_indices = new int[MaxParticles * 6];
-
-				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
-
-				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-				_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -210,12 +198,6 @@ namespace ParticleLibrary.Core
 
 				_vertices = new GParticleVertex[MaxParticles * 4];
 				_indices = new int[MaxParticles * 6];
-
-				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
-
-				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-				_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -322,11 +304,6 @@ namespace ParticleLibrary.Core
 			_indices[_currentParticleIndex * 6 + 3] = vertexIndex;
 			_indices[_currentParticleIndex * 6 + 4] = vertexIndex + 3;
 			_indices[_currentParticleIndex * 6 + 5] = vertexIndex + 1;
-
-			// Set buffer data 
-			// TODO: Batch buffer data setting
-			//_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.None);
-			//_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.None);
 
 			// This means that we just started adding particles since the last batch
 			if (_startIndex == -1)
@@ -586,15 +563,6 @@ namespace ParticleLibrary.Core
 					_vertices = new GParticleVertex[MaxParticles * 4];
 					_indices = new int[MaxParticles * 6];
 
-					_verticesHandle.Free();
-					_indicesHandle.Free();
-
-					_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-					_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
-
-					_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-					_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
-
 					_currentParticleIndex = 0;
 					_currentTime = 0;
 
@@ -810,17 +778,15 @@ namespace ParticleLibrary.Core
 					_indexBuffer.Dispose();
 				}
 
-				_verticesHandle.Free();
-				_indicesHandle.Free();
 				_disposedValue = true;
 			}
 		}
 
-		~GParticleSystem()
-		{
-			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-			Dispose(disposing: false);
-		}
+		//~GParticleSystem()
+		//{
+		//	// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		//	Dispose(disposing: false);
+		//}
 
 		void IDisposable.Dispose()
 		{
