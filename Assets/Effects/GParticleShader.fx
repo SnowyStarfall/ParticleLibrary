@@ -8,6 +8,7 @@ float Lifespan;
 bool Fade;
 float Gravity;
 float TerminalGravity;
+float2 Offset;
 
 // Current time in frames.
 texture Texture;
@@ -60,7 +61,7 @@ float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, fl
 float2 ComputeSize(float2 size, float2 scale, float2 velocity, float time)
 {
 	//float2 s = size * (scale + (velocity * time));
-	float2 s = size * scale; // TODO: Fix. Bouncing issue return when changing scale over time
+	float2 s = size * scale; // TODO: Fix. Bouncing issue returns when changing scale over time
 
 	return s;
 }
@@ -100,20 +101,33 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	
 	// The total time elapsed since this particle spawned
 	float time = Time - input.DepthTime.z;
+	
+	// Branching here is worth the performance gain
+	if(time == Lifespan)
+	{
+		output.Position = 0;
+		output.TexCoords = 0;
+		output.Color = 0;
+		
+		return output;
+	}
+
 	// The normalized age of this particle
 	float age = clamp(time / Lifespan, 0.0, 1.0);
-	// The needed offset to account for rotation
+	// The size at this point in the particle's life, multiplied by the corner to be an offset for the rotation
 	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
-	// The rotation matrix
-	float2x2 rotation = ComputeRotation(input.Rotation.zw, time);
+	// The rotation matrix. We only calculate when rotation is relevant
+	float2x2 rotation = input.Rotation.z == 0 && input.Rotation.w == 0 ? float2x2(1, 0, 0, 1) : ComputeRotation(input.Rotation.zw, time);
 	
 	// Calculate the position over time
 	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
-	// Apply rotation over time
-	output.Position.xy += -size + mul(size, rotation);
+	// Apply rotation over time. We only mul when rotation is relevant
+	output.Position.xy += -size + (input.Rotation.z == 0 && input.Rotation.w == 0 ? 0 : mul(size, rotation));
+	// Apply offset for when drawing on the same layer as water
+	output.Position.xy += Offset;
 	// Apply matrix and offset for screen view
 	output.Position = mul(output.Position - float4(ScreenPosition, 0, 0), TransformMatrix);
-	// Apply depth over time (handled after this function finishes)
+	// Apply depth over time (automatically handled after this function returns)
 	output.Position.w = ComputeDepth(input.DepthTime.x, input.DepthTime.y, time);
 
 	// Assign the rest of the values
@@ -134,17 +148,22 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	
 	return float4(n, n, n, 0);
 	
-	// Quad debugging
-	//if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
-	//	return float4(1, 0, 0, 1);
-	//if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)
-	//	return float4(1, 1, 0, 1);
-	//if (input.TexCoords.x < 0.1 && input.TexCoords.y > 0.9)
-	//	return float4(0, 1, 0, 1);
-	//if (input.TexCoords.x > 0.9 && input.TexCoords.y > 0.9)
-	//	return float4(0, 0, 1, 1);
+	//return QuadDebug(input);
+}
+
+float4 QuadDebug(VertexShaderOutput input)
+{
+		// Quad debugging
+	if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
+		return float4(1, 0, 0, 1);
+	if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)
+		return float4(1, 1, 0, 1);
+	if (input.TexCoords.x < 0.1 && input.TexCoords.y > 0.9)
+		return float4(0, 1, 0, 1);
+	if (input.TexCoords.x > 0.9 && input.TexCoords.y > 0.9)
+		return float4(0, 0, 1, 1);
 	
-	//return float4(0, 0, 0, 0);
+	return float4(0, 0, 0, 0);
 }
 
 technique DefaultTechnique

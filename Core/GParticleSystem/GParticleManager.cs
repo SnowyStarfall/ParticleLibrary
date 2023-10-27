@@ -1,32 +1,41 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Utilities;
+using System;
+using System.Diagnostics;
+using Terraria;
+using Terraria.Graphics.Renderers;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
 {
     public class GParticleManager : ModSystem
     {
-        public GParticleManager Instance { get; private set; }
+        public static ParticleLibraryConfig Config => ParticleLibraryConfig.Instance;
+        public static FastList<GParticleSystem> Systems { get; private set; }
 
-        public static GParticleSystem ParticleSystem;
+		internal static GParticleSystem ParticleSystem;
 
         public override void Load()
         {
-            Instance = this;
+            Systems = new();
 
-            GParticleSystemSettings settings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 100000, 180);
-            ParticleSystem = new(settings);
+            ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 100000, 180);
         }
 
         public override void Unload()
         {
-            Instance = null;
         }
 
-        // TODO: Implement AddSystem and system management
-        public static GParticleSystem AddSystem(Texture2D texture)
+		public static GParticleSystem AddSystem(GParticleSystem system)
         {
-            return null;
+            if(system is null)
+                throw new ArgumentNullException(nameof(system));
+
+
+
+            return system;
         }
     }
 }
