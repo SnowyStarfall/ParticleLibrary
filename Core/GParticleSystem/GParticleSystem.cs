@@ -234,8 +234,7 @@ namespace ParticleLibrary.Core
 				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
 
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
+				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
 			};
 			_vertices[_currentParticleIndex * 4 + 1] = new GParticleVertex()
 			{
@@ -250,8 +249,7 @@ namespace ParticleLibrary.Core
 				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
 
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
+				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
 			};
 			_vertices[_currentParticleIndex * 4 + 2] = new GParticleVertex()
 			{
@@ -266,8 +264,7 @@ namespace ParticleLibrary.Core
 				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
 
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
+				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
 			};
 			_vertices[_currentParticleIndex * 4 + 3] = new GParticleVertex()
 			{
@@ -282,8 +279,7 @@ namespace ParticleLibrary.Core
 				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
 
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
-				Random = new Color(random)
+				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
 			};
 
 			int vertexIndex = _currentParticleIndex * 4;
@@ -576,12 +572,6 @@ namespace ParticleLibrary.Core
 			// Batched data transfer
 			if (_setBuffers)
 			{
-				//_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
-				//_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.Discard);
-
-				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
-				//_indexBuffer.SetData(_indices, 0, _indices.Length, SetDataOptions.Discard);
-
 				SetBuffers();
 
 				// We reset since we batched

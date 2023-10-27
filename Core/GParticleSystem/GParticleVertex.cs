@@ -17,7 +17,6 @@ namespace ParticleLibrary.Core
         public Vector4 Rotation;
 
         public Vector3 DepthTime;
-        public Color Random;
 
         public static readonly VertexDeclaration VertexDeclaration = new
         (
@@ -32,12 +31,11 @@ namespace ParticleLibrary.Core
             new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector4, VertexElementUsage.Normal, 2), // Scale
             new VertexElement(sizeof(float) * 18, VertexElementFormat.Vector4, VertexElementUsage.Normal, 3), // Rotation
 
-            new VertexElement(sizeof(float) * 22, VertexElementFormat.Vector3, VertexElementUsage.Normal, 4), // Depth Time
-            new VertexElement(sizeof(float) * 25, VertexElementFormat.Color, VertexElementUsage.Color, 2) // Random
+            new VertexElement(sizeof(float) * 22, VertexElementFormat.Vector3, VertexElementUsage.Normal, 4) // Depth Time
         );
 
         readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
 
-        public const int SizeInBytes = sizeof(float) * 26; // 104
+        public const int SizeInBytes = sizeof(float) * 25; // 100
     }
 }
