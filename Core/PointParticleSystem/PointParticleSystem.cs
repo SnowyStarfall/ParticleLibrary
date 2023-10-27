@@ -112,15 +112,16 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		// Buffer
 		private DynamicVertexBuffer _vertexBuffer;
 		private PointParticleVertex[] _vertices;
-		private GCHandle _verticesHandle;
-		private IntPtr _verticesPtr;
 
 		// Misc
-		private int _currentParticleIndex;
 		private int _currentTime;
 		private int _lastParticleTime;
-		private bool _setBuffers;
 		private bool _disposedValue;
+
+		// Buffer management
+		private int _currentParticleIndex;
+		private bool _setBuffers;
+		private int _startIndex;
 
 		public PointParticleSystem(int maxParticles, int lifespan)
 		{
@@ -141,8 +142,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 
 				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
 				_vertices = new PointParticleVertex[MaxParticles];
-				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -165,8 +164,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 
 				_vertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
 				_vertices = new PointParticleVertex[MaxParticles];
-				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -200,9 +197,26 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
 			};
 
-			_currentParticleIndex++;
-			if (_currentParticleIndex >= MaxParticles)
-				_currentParticleIndex = 0; // This effectively means that particles will be overwritten.
+			// This means that we just started adding particles since the last batch
+			if (_startIndex == -1)
+			{
+				_startIndex = _currentParticleIndex;
+			}
+
+			// We wrap back to zero and immediately send our batch of new particles without waiting
+			if (++_currentParticleIndex >= MaxParticles)
+			{
+				SetBuffer();
+
+				// We reset since we batched
+				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
+				_startIndex = 0;
+
+				_lastParticleTime = 0;
+				_setBuffers = false;
+				return;
+			}
+
 			_lastParticleTime = 0;
 			_setBuffers = true;
 		}
@@ -235,6 +249,12 @@ namespace ParticleLibrary.Core.PointParticleSystem
 			TerminalGravity = value;
 			_eTerminalGravity.SetValue(value);
 		}
+
+		private void SetBuffer()
+		{
+			_vertexBuffer.SetData(PointParticleVertex.SizeInBytes * _startIndex, _vertices, _startIndex, (_currentParticleIndex - _startIndex), PointParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
+		}
+
 
 		// Internal utilities
 
@@ -429,11 +449,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 
 					_vertices = new PointParticleVertex[MaxParticles];
 
-					_verticesHandle.Free();
-					_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
-
-					_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
-
 					_currentParticleIndex = 0;
 					_currentTime = 0;
 
@@ -447,9 +462,10 @@ namespace ParticleLibrary.Core.PointParticleSystem
 			// Batched data transfer
 			if (_setBuffers)
 			{
-				_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
-				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
+				SetBuffer();
 
+				// We reset since we batched
+				_startIndex = 0;
 				_setBuffers = false;
 			}
 
@@ -640,16 +656,15 @@ namespace ParticleLibrary.Core.PointParticleSystem
 					_vertexBuffer.Dispose();
 				}
 
-				_verticesHandle.Free();
 				_disposedValue = true;
 			}
 		}
 
-		~PointParticleSystem()
-		{
-			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-			Dispose(disposing: false);
-		}
+		//~PointParticleSystem()
+		//{
+		//	// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		//	Dispose(disposing: false);
+		//}
 
 		void IDisposable.Dispose()
 		{

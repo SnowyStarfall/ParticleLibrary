@@ -1,12 +1,16 @@
 
 matrix TransformMatrix;
+
 float Time;
-float2 ScreenPosition;
 float Lifespan;
+
+float2 ScreenPosition;
+float2 Offset;
+
 bool Fade;
+
 float Gravity;
 float TerminalGravity;
-float2 Offset;
 
 struct VertexShaderInput
 {

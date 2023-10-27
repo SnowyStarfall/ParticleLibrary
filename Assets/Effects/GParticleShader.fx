@@ -2,13 +2,17 @@
 #define TAU 6.28318531
 
 matrix TransformMatrix;
+
 float Time;
-float2 ScreenPosition;
 float Lifespan;
+
+float2 ScreenPosition;
+float2 Offset;
+
 bool Fade;
+
 float Gravity;
 float TerminalGravity;
-float2 Offset;
 
 // Current time in frames.
 texture Texture;
@@ -36,7 +40,6 @@ struct VertexShaderInput
 	float4 Rotation : NORMAL3; // XY Corner | Z Rotation | W Velocity
 
 	float3 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
-	float4 Random : COLOR2;
 };
 
 struct VertexShaderOutput

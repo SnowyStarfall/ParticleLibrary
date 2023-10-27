@@ -29,5 +29,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
+
+		public const int SizeInBytes = sizeof(float) * 14;
 	}
 }
