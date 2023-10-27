@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Utilities;
 using System;
-using System.Diagnostics;
-using Terraria;
-using Terraria.Graphics.Renderers;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core

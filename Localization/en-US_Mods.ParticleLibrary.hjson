@@ -6,19 +6,32 @@ Configs: {
 		}
 
 		Headers: {
-			Debug: Debug Header
-			Particles: Particles Header
+			Debug: Debug
+			Particles: Particles
 		}
 
-		MaxParticles: {
+		MaxCPUParticles: {
 			Tooltip:
 				'''
-				Maximum particles allowed at once.
-				Note: Performance is tested with 6000 as max.
-				Any higher cannot guarantee a (mostly) lag-free experience.
+				Maximum CPU particles allowed at once.
+				Note: Performance is tested with 15,000 as default max.
+				CPU particles are typically much less efficient than GPU particles, but they have more overall fidelity.
+				Good performance cannot be entirely guaranteed with values above the default amount.
 				A value of 0 will disable the system.
 				'''
-			Label: Max Particles
+			Label: Max CPU Particles
+		}
+
+		MaxGPUParticles: {
+			Tooltip:
+				'''
+				Maximum GPU particles allowed at once.
+				Note: Performance is tested with 50,000 as default max.
+				GPU particles are typically much more efficient than CPU particles, but they have less overall fidelity.
+				Good performance cannot be entirely guaranteed with values above the default amount.
+				A value of 0 will disable the system.
+				'''
+			Label: Max GPU Particles
 		}
 
 		DisplayName: Particle Library Config

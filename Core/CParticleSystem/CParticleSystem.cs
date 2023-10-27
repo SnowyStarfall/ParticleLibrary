@@ -32,7 +32,7 @@ namespace ParticleLibrary.Core
 
 		public override void OnModLoad()
 		{
-			_particles = new(ParticleLibraryConfig.Instance.MaxParticles);
+			_particles = new(ParticleLibraryConfig.Instance.MaxCPUParticles);
 			_particlesToAdd = new();
 			_particlesToRemove = new();
 
@@ -376,7 +376,7 @@ namespace ParticleLibrary.Core
 			if (particle is null)
 				throw new ArgumentNullException(nameof(particle));
 
-			if (ParticleCount >= ParticleLibraryConfig.Instance.MaxParticles)
+			if (ParticleCount >= ParticleLibraryConfig.Instance.MaxCPUParticles)
 				return null;
 
 			particle.Position = position;

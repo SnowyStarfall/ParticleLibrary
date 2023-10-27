@@ -15,10 +15,15 @@ namespace ParticleLibrary
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header("Particles")]
-		[DefaultValue(6000)]
+		[DefaultValue(15000)]
 		[Range(0, 50000)]
-		[Increment(100)]
-		public int MaxParticles;
+		[Increment(1000)]
+		public int MaxCPUParticles;
+
+		[DefaultValue(50000)]
+		[Range(0, 250000)]
+		[Increment(1000)]
+		public int MaxGPUParticles;
 
 		[Header("Debug")]
 		[DefaultValue(false)]
