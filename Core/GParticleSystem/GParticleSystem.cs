@@ -60,6 +60,7 @@ namespace ParticleLibrary.Core
 			get => _layer;
 			set
 			{
+				// We can't unhook a layer if we've just initialized
 				Unhook(_layer);
 				_layer = value;
 				Hook(_layer);
@@ -132,11 +133,12 @@ namespace ParticleLibrary.Core
 		private DynamicIndexBuffer _indexBuffer;
 
 		private GParticleVertex[] _vertices;
-		private GCHandle _verticesHandle;
-		private IntPtr _verticesPtr;
-
 		private int[] _indices;
+
+		private GCHandle _verticesHandle;
 		private GCHandle _indicesHandle;
+
+		private IntPtr _verticesPtr;
 		private IntPtr _indicesPtr;
 
 		// Misc
@@ -154,7 +156,7 @@ namespace ParticleLibrary.Core
 			_texture = texture;
 			MaxParticles = maxParticles;
 			_lifespan = lifespan;
-			_layer = Layer.BeforeDust;
+			Layer = Layer.BeforeDust;
 			_blendState = BlendState.AlphaBlend;
 			_fade = true;
 			_gravity = 0f;
@@ -166,7 +168,7 @@ namespace ParticleLibrary.Core
 			_texture = settings.Texture;
 			MaxParticles = settings.MaxParticles;
 			_lifespan = settings.Lifespan;
-			_layer = settings.Layer;
+			Layer = settings.Layer;
 			_blendState = settings.BlendState;
 			_fade = settings.Fade;
 			_gravity = settings.Gravity;
@@ -182,14 +184,14 @@ namespace ParticleLibrary.Core
 				_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
 				_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
 
+				_vertices = new GParticleVertex[MaxParticles * 4];
+				_indices = new int[MaxParticles * 6];
+
 				_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
 				_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
 
 				_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
 				_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
-
-				_vertices = new GParticleVertex[MaxParticles * 4];
-				_indices = new int[MaxParticles * 6];
 			});
 
 			Main.OnResolutionChanged += ResolutionChanged;
@@ -300,12 +302,10 @@ namespace ParticleLibrary.Core
 			_indices[_currentParticleIndex * 6 + 4] = vertexIndex + 3;
 			_indices[_currentParticleIndex * 6 + 5] = vertexIndex + 1;
 
-			//_vertexBuffer.SetData(_vertices[(_currentParticleIndex * 4)..(_currentParticleIndex * 4 + 4)], _currentParticleIndex * 4, 4, SetDataOptions.None);
-			//_indexBuffer.SetData(_indices[(_currentParticleIndex * 6)..(_currentParticleIndex * 6 + 6)], _currentParticleIndex * 6, 6, SetDataOptions.None);
-
 			_currentParticleIndex++;
 			if (_currentParticleIndex >= MaxParticles)
 				_currentParticleIndex = 0; // This effectively means that particles will be overwritten.
+			_lastParticleTime = 0;
 			_setBuffers = true;
 		}
 
@@ -388,11 +388,11 @@ namespace ParticleLibrary.Core
 			_eOffset = _effect.Parameters["Offset"];
 
 			ResolutionChanged(Main.ScreenSize.ToVector2());
+			_eTexture.SetValue(Texture);
 			_eLifespan.SetValue(Lifespan);
 			_eFade.SetValue(Fade);
 			_eGravity.SetValue(Gravity);
 			_eTerminalGravity.SetValue(TerminalGravity);
-			_eTexture.SetValue(Texture);
 		}
 
 		private void Hook(Layer layer)
@@ -512,7 +512,7 @@ namespace ParticleLibrary.Core
 		}
 
 		// Updating
-		private unsafe void On_Dust_UpdateDust(On_Dust.orig_UpdateDust orig)
+		private void On_Dust_UpdateDust(On_Dust.orig_UpdateDust orig)
 		{
 			orig();
 
@@ -537,6 +537,15 @@ namespace ParticleLibrary.Core
 					_vertices = new GParticleVertex[MaxParticles * 4];
 					_indices = new int[MaxParticles * 6];
 
+					_verticesHandle.Free();
+					_indicesHandle.Free();
+
+					_verticesHandle = GCHandle.Alloc(_vertices, GCHandleType.Pinned);
+					_indicesHandle = GCHandle.Alloc(_indices, GCHandleType.Pinned);
+
+					_verticesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_vertices, 0);
+					_indicesPtr = Marshal.UnsafeAddrOfPinnedArrayElement(_indices, 0);
+
 					_currentParticleIndex = 0;
 					_currentTime = 0;
 
@@ -552,12 +561,21 @@ namespace ParticleLibrary.Core
 			{
 				_vertexBuffer.SetDataPointerEXT(0, _verticesPtr, _vertices.Length, SetDataOptions.Discard);
 				_indexBuffer.SetDataPointerEXT(0, _indicesPtr, _indices.Length, SetDataOptions.Discard);
+
+				//_vertexBuffer.SetData(_vertices, 0, _vertices.Length, SetDataOptions.Discard);
+				//_indexBuffer.SetData(_indices, 0, _indices.Length, SetDataOptions.Discard);
+
+				_setBuffers = false;
 			}
 
 			// Update the system's time
 			_currentTime++;
 			if (_lastParticleTime < Lifespan)
+			{
 				_lastParticleTime++;
+			}
+
+			// Set effect values
 			_eTime.SetValue(_currentTime);
 			_eScreenPosition.SetValue(Main.screenPosition);
 		}
@@ -657,6 +675,8 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_BeforeDust(On_Main.orig_DrawDust orig, Main self)
 		{
+			DrawParticles_OnLayer(Layer.BeforeDust);
+
 			orig(self);
 		}
 

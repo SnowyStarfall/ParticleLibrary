@@ -103,7 +103,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	float time = Time - input.DepthTime.z;
 	
 	// Branching here is worth the performance gain
-	if(time == Lifespan)
+	if(time >= Lifespan)
 	{
 		output.Position = 0;
 		output.TexCoords = 0;
@@ -137,18 +137,12 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	return output;
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+float4 PointParticle(VertexShaderOutput input)
 {
-	//float4 v = tex2D(TextureSampler, input.TexCoords);
-
-	//return v * input.Color;
-	
 	float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
 	float n = pow(m, 15);
 	
-	return float4(n, n, n, 0);
-	
-	//return QuadDebug(input);
+	return float4(n, n, n, 0) * input.Color;
 }
 
 float4 QuadDebug(VertexShaderOutput input)
@@ -164,6 +158,16 @@ float4 QuadDebug(VertexShaderOutput input)
 		return float4(0, 0, 1, 1);
 	
 	return float4(0, 0, 0, 0);
+}
+
+float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+{
+	//float4 v = tex2D(TextureSampler, input.TexCoords);
+
+	//return v * input.Color;
+	
+	return PointParticle(input);
+	//return QuadDebug(input);
 }
 
 technique DefaultTechnique
