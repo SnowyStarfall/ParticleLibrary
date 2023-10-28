@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using System.Drawing;
 using Terraria.ModLoader.IO;
 
@@ -34,8 +33,8 @@ namespace ParticleLibrary.Core
 		public float X
 		{
 			get => _position.X;
-			set 
-			{ 
+			set
+			{
 				_position.X = value;
 				RecalculateBounds();
 			}

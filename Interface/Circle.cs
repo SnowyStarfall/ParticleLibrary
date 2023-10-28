@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 
-namespace ParticleLibrary.Debug
+namespace ParticleLibrary.Interface
 {
 	public class Circle
 	{

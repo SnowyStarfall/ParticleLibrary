@@ -8,11 +8,17 @@ namespace ParticleLibrary
 		/// <summary>
 		/// Empty 1x1 texture
 		/// </summary>
-		public static Texture2D EmptyPixel;
+		public static Texture2D EmptyPixel { get; private set; }
+
+		/// <summary>
+		/// White 1x1 texture
+		/// </summary>
+		public static Texture2D WhitePixel { get; private set; }
 
 		public override void Load()
 		{
-			EmptyPixel = ModContent.Request<Texture2D>("ParticleLibrary/EmptyPixel", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+			EmptyPixel = ModContent.Request<Texture2D>(Resources.Assets.Textures.EmptyPixel, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+			WhitePixel = ModContent.Request<Texture2D>(Resources.Assets.Textures.WhitePixel, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 		}
 
 		public override void Unload()

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
@@ -78,7 +77,7 @@ namespace ParticleLibrary.Core
 			if (Main.netMode != NetmodeID.Server)
 			{
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-			
+
 				foreach (var emitter in Emitters.Buffer)
 				{
 					emitter?.Draw(Main.spriteBatch, emitter.EmitterSettings.Position - Main.screenPosition);

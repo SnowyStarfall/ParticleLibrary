@@ -15,6 +15,7 @@
 	<ItemGroup>
 		<None Remove="Assets\Effects\GParticleShader.fx" />
 		<None Remove="Assets\Effects\PointParticleShader.fx" />
+		<None Remove="Assets\Textures\EmptyPixel.png" />
 		<None Remove="Assets\Textures\Star.png" />
 	</ItemGroup>
 	<ItemGroup>
@@ -44,5 +45,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Assets\Textures\Examples\" />
+	  <Folder Include="Textures\" />
 	</ItemGroup>
 </Project>

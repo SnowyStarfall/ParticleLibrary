@@ -59,6 +59,7 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public virtual void Update()
 		{
+			// TODO: Functionality
 		}
 
 		/// <summary>
@@ -66,6 +67,7 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public virtual void SpawnParticle()
 		{
+			// TODO: Parameters and default functionality
 		}
 
 		/// <summary>

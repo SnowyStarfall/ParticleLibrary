@@ -1,15 +1,15 @@
 ﻿namespace ParticleLibrary.Core
 {
-    public enum EmitterShape
-    {
-        Point,
-        Circle,
-        Rectangle
-    }
+	public enum EmitterShape
+	{
+		Point,
+		Circle,
+		Rectangle
+	}
 
-    public enum EmitterOrigin
-    {
-        Spread,
-        Rim
-    }
+	public enum EmitterOrigin
+	{
+		Spread,
+		Rim
+	}
 }

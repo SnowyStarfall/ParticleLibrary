@@ -1,6 +1,6 @@
-displayName = [c/9ebae2:Pa][c/dafaf4:rtic][c/9ebae2:le][c/e8a272:Li][c/fad3a0:bra][c/e8a272:ry]
+displayName = [c/dafaf4:Particle][c/fad3a0:Library]
 author = SnowyStarfall
-version = 1.1.5.2
+version = 2.0.0.0
 homepage = https://github.com/SnowyStarfall/ParticleLibrary
 hideCode = false
 hideResources = true

@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ParticleLibrary.Utilities;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core.PointParticleSystem

@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace ParticleLibrary.Debug
+namespace ParticleLibrary.Interface
 {
 	internal class UISystem : ModSystem
 	{

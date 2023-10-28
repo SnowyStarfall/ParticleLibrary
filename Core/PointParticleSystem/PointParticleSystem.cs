@@ -1,11 +1,9 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
 using static ParticleLibrary.Resources;

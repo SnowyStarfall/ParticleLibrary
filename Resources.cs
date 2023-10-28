@@ -21,7 +21,9 @@ namespace ParticleLibrary
 
 			public static class Textures
 			{
+				public const string EmptyPixel = @"ParticleLibrary/Assets/Textures/EmptyPixel";
 				public const string Star = @"ParticleLibrary/Assets/Textures/Star";
+				public const string WhitePixel = @"ParticleLibrary/Assets/Textures/WhitePixel";
 			}
 
 		}
@@ -31,43 +33,34 @@ namespace ParticleLibrary
 			public const string Devtool = @"ParticleLibrary/Content/Devtool";
 		}
 
-		public static class Debug
-		{
-			public const string BlackPanel = @"ParticleLibrary/Debug/BlackPanel";
-			public const string BlackPanelBackground = @"ParticleLibrary/Debug/BlackPanelBackground";
-			public const string Box = @"ParticleLibrary/Debug/Box";
-			public const string BoxBackground = @"ParticleLibrary/Debug/BoxBackground";
-			public const string BoxHighlight = @"ParticleLibrary/Debug/BoxHighlight";
-			public const string Circle = @"ParticleLibrary/Debug/Circle";
-			public const string CircleTarget = @"ParticleLibrary/Debug/CircleTarget";
-			public const string Minus = @"ParticleLibrary/Debug/Minus";
-			public const string PanelBackground = @"ParticleLibrary/Debug/PanelBackground";
-			public const string PanelFrame = @"ParticleLibrary/Debug/PanelFrame";
-			public const string Plus = @"ParticleLibrary/Debug/Plus";
-			public const string PointTarget = @"ParticleLibrary/Debug/PointTarget";
-			public const string Scrollbar = @"ParticleLibrary/Debug/Scrollbar";
-			public const string Scrollbutton = @"ParticleLibrary/Debug/Scrollbutton";
-			public const string Square = @"ParticleLibrary/Debug/Square";
-			public const string SquareTarget = @"ParticleLibrary/Debug/SquareTarget";
-			public const string WhitePixel = @"ParticleLibrary/Debug/WhitePixel";
-			public const string X = @"ParticleLibrary/Debug/X";
-		}
-
 		public static class ExampleParticles
 		{
 			public const string GlowParticle = @"ParticleLibrary/ExampleParticles/GlowParticle";
 		}
 
-		public static class Textures
+		public static class Interface
 		{
-			public const string Circle = @"ParticleLibrary/Textures/Circle";
-			public const string EmptyPixel = @"ParticleLibrary/Textures/EmptyPixel";
-			public const string SoftGlow = @"ParticleLibrary/Textures/SoftGlow";
+			public const string BlackPanel = @"ParticleLibrary/Interface/BlackPanel";
+			public const string BlackPanelBackground = @"ParticleLibrary/Interface/BlackPanelBackground";
+			public const string Box = @"ParticleLibrary/Interface/Box";
+			public const string BoxBackground = @"ParticleLibrary/Interface/BoxBackground";
+			public const string BoxHighlight = @"ParticleLibrary/Interface/BoxHighlight";
+			public const string Circle = @"ParticleLibrary/Interface/Circle";
+			public const string CircleTarget = @"ParticleLibrary/Interface/CircleTarget";
+			public const string Minus = @"ParticleLibrary/Interface/Minus";
+			public const string PanelBackground = @"ParticleLibrary/Interface/PanelBackground";
+			public const string PanelFrame = @"ParticleLibrary/Interface/PanelFrame";
+			public const string Plus = @"ParticleLibrary/Interface/Plus";
+			public const string PointTarget = @"ParticleLibrary/Interface/PointTarget";
+			public const string Scrollbar = @"ParticleLibrary/Interface/Scrollbar";
+			public const string Scrollbutton = @"ParticleLibrary/Interface/Scrollbutton";
+			public const string Square = @"ParticleLibrary/Interface/Square";
+			public const string SquareTarget = @"ParticleLibrary/Interface/SquareTarget";
+			public const string WhitePixel = @"ParticleLibrary/Interface/WhitePixel";
+			public const string X = @"ParticleLibrary/Interface/X";
 		}
 
-		public const string EmptyPixel = @"ParticleLibrary/EmptyPixel";
 		public const string Icon = @"ParticleLibrary/icon";
-		public const string WhitePixel = @"ParticleLibrary/WhitePixel";
     }
 }
 

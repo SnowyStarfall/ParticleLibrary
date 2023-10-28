@@ -17,9 +17,9 @@ using Terraria.UI;
 using static ParticleLibrary.Core.CParticle;
 using static Terraria.GameContent.FontAssets;
 
-namespace ParticleLibrary.Debug
+namespace ParticleLibrary.Interface
 {
-    internal class DebugUI : UIState
+	internal class DebugUI : UIState
 	{
 		// Instance
 		internal DebugUI Instance;

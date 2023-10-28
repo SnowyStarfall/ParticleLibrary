@@ -1,16 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Debug;
 using ParticleLibrary.Utilities;
-using ReLogic.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static ParticleLibrary.Core.CParticle;
 
 namespace ParticleLibrary.Core
 {
