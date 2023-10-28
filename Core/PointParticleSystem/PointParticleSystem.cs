@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
@@ -184,13 +185,12 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		{
 			_vertices[_currentParticleIndex] = new PointParticleVertex()
 			{
-				Position = new Vector4(position.X - particle.Size / 2f, position.Y - particle.Size / 2f, 0f, 1f),
+				Position = new Vector4(position, 0f, 1f),
 
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
 				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
-				Size = particle.Size,
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
 			};

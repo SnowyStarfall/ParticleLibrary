@@ -30,7 +30,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 			Systems = new();
 
 			// Testing purposes
-			ParticleSystem = new(100000, 3600);
+			ParticleSystem = new(100000, 180);
 		}
 
 		public override void Unload()

@@ -11,7 +11,6 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		public Color EndColor;
 
 		public Vector4 Velocity;
-		public float Size;
 
 		public Vector3 DepthTime;
 
@@ -23,13 +22,12 @@ namespace ParticleLibrary.Core.PointParticleSystem
 			new VertexElement(sizeof(float) * 5, VertexElementFormat.Color, VertexElementUsage.Color, 1), // End Color
 
 			new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0), // Velocity
-			new VertexElement(sizeof(float) * 10, VertexElementFormat.Single, VertexElementUsage.PointSize, 0), // Size
 
-			new VertexElement(sizeof(float) * 11, VertexElementFormat.Vector3, VertexElementUsage.Normal, 1) // Depth Time
+			new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector3, VertexElementUsage.Normal, 1) // Depth Time
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
 
-		public const int SizeInBytes = sizeof(float) * 14;
+		public const int SizeInBytes = sizeof(float) * 13;
 	}
 }

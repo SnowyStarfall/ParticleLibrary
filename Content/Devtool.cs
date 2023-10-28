@@ -172,8 +172,6 @@ namespace ParticleLibrary.Content
 							StartColor = new(1f, 0f, 0f, 0f),
 							EndColor = new(0f, 1f, 0f, 0f),
 
-							Size = 10f,
-
 							Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
@@ -263,14 +261,48 @@ namespace ParticleLibrary.Content
 			if (Main.gamePaused)
 				return;
 
+			//Vector2 position = new(x * 16, y * 16);
+
 			if (_counter >= 1)
 			{
 				_counter = 0;
-				for (int i = 0; i < 300; i++)
-				{
-					CParticleSystem.NewParticle<GlowParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f, layer: Layer.BeforeTiles);
-				}
+				//for (int i = 0; i < 300; i++)
+				//{
+				//	CParticleSystem.NewParticle<GlowParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f, layer: Layer.BeforeTiles);
+				//}
+
+				//PointParticle settings = new()
+				//{
+				//	StartColor = new(1f, 0f, 0f, 0f),
+				//	EndColor = new(0f, 1f, 0f, 0f),
+
+				//	//Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
+				//	//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
+				//};
+
+				//for (int i = 0; i < 360f; i++)
+				//{
+				//	float rad = MathHelper.ToRadians(i);
+
+				//	Vector2 position = Main.MouseWorld + new Vector2(0f, 0f).RotatedBy(rad + Main.rand.NextFloat(-0.02f, 0.02f));
+				//	Vector2 velocity = new Vector2(0f, -4f + Main.rand.NextFloat(-1f, 1f)).RotatedBy(rad + Main.rand.NextFloat(-1f, 1f));
+				//	settings.VelocityAcceleration = new Vector2(0f, 0.05f);
+
+				//	PointParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+				//}
+
+				//for (int i = 0; i < 360f; i++)
+				//{
+				//	float rad = MathHelper.ToRadians(i);
+
+				//	Vector2 position = Main.MouseWorld + new Vector2(0f, 0f).RotatedBy(rad);
+				//	Vector2 velocity = new Vector2(0f, -1f + Main.rand.NextFloat(-0.2f, 0.2f)).RotatedBy(rad + Main.rand.NextFloat(-0.5f, 0.5f));
+				//	settings.VelocityAcceleration = Vector2.Zero;
+
+				//	PointParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+				//}
 			}
+
 			_counter++;
 		}
 	}

@@ -20,7 +20,6 @@ struct VertexShaderInput
 	float4 EndColor : COLOR1;
 	
 	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
-	float Size : PSIZE0; // X Size
 
 	float3 DepthTime : NORMAL1; // X Depth | Y Velocity | Z Time
 };
