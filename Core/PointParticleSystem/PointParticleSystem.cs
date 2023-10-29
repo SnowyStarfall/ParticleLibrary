@@ -201,6 +201,8 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				_startIndex = _currentParticleIndex;
 			}
 
+			_lastParticleTime = 0;
+
 			// We wrap back to zero and immediately send our batch of new particles without waiting
 			if (++_currentParticleIndex >= MaxParticles)
 			{
@@ -208,14 +210,9 @@ namespace ParticleLibrary.Core.PointParticleSystem
 
 				// We reset since we batched
 				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
-				_startIndex = 0;
-
-				_lastParticleTime = 0;
-				_setBuffers = false;
 				return;
 			}
 
-			_lastParticleTime = 0;
 			_setBuffers = true;
 		}
 
@@ -251,6 +248,10 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		private void SetBuffer()
 		{
 			_vertexBuffer.SetData(PointParticleVertex.SizeInBytes * _startIndex, _vertices, _startIndex, (_currentParticleIndex - _startIndex), PointParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
+
+			// Reset
+			_startIndex = -1;
+			_setBuffers = false;
 		}
 
 

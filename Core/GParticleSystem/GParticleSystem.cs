@@ -304,6 +304,8 @@ namespace ParticleLibrary.Core
 				_startIndex = _currentParticleIndex;
 			}
 
+			_lastParticleTime = 0;
+
 			// We wrap back to zero and immediately send our batch of new particles without waiting
 			if (++_currentParticleIndex >= MaxParticles)
 			{
@@ -311,14 +313,9 @@ namespace ParticleLibrary.Core
 
 				// We reset since we batched
 				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
-				_startIndex = 0;
-
-				_lastParticleTime = 0;
-				_setBuffers = false;
 				return;
 			}
 
-			_lastParticleTime = 0;
 			_setBuffers = true;
 		}
 
@@ -528,6 +525,10 @@ namespace ParticleLibrary.Core
 		{
 			_vertexBuffer.SetData(GParticleVertex.SizeInBytes * _startIndex * 4, _vertices, _startIndex, (_currentParticleIndex - _startIndex) * 4, GParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
 			_indexBuffer.SetData(sizeof(int) * _startIndex * 6, _indices, _startIndex, (_currentParticleIndex - _startIndex) * 6, SetDataOptions.NoOverwrite);
+
+			// Reset
+			_startIndex = -1;
+			_setBuffers = false;
 		}
 
 		// Updating
