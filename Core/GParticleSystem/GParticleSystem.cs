@@ -213,10 +213,65 @@ namespace ParticleLibrary.Core
 			Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, MaxParticles * 4, 0, MaxParticles * 2);
 		}
 
+		private void Update()
+		{
+			// Safeguard
+			if (_effect is null)
+			{
+				LoadEffect();
+				return;
+			}
+
+#if DEBUG
+			if (Main.keyState.IsKeyDown(Keys.RightControl))
+			{
+				Main.QueueMainThreadAction(() =>
+				{
+					_vertexBuffer.Dispose();
+					_indexBuffer.Dispose();
+
+					_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
+					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
+
+					_vertices = new GParticleVertex[MaxParticles * 4];
+					_indices = new int[MaxParticles * 6];
+
+					_currentParticleIndex = 0;
+					_currentTime = 0;
+
+					_setBuffers = false;
+				});
+
+				ReloadEffect();
+			}
+#endif
+
+			// Batched data transfer
+			if (_setBuffers)
+			{
+				SetBuffers();
+
+				// We reset since we batched
+				_startIndex = 0;
+				_setBuffers = false;
+			}
+
+			// Update the system's time
+			_currentTime++;
+			if (_lastParticleTime < Lifespan)
+			{
+				_lastParticleTime++;
+			}
+
+			// Set effect values
+			_eTime.SetValue(_currentTime);
+			_eScreenPosition.SetValue(Main.screenPosition);
+		}
+
+
 		public void AddParticle(Vector2 position, Vector2 velocity, GParticle particle)
 		{
 			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);
-			Vector4 random = new(Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon), Main.rand.NextFloat(1f + float.Epsilon));
 
 			_vertices[_currentParticleIndex * 4] = new GParticleVertex()
 			{
@@ -531,65 +586,14 @@ namespace ParticleLibrary.Core
 			_setBuffers = false;
 		}
 
-		// Updating
+
+		// Hooks
 		private void On_Dust_UpdateDust(On_Dust.orig_UpdateDust orig)
 		{
+			Update();
+			
 			orig();
-
-			// Safeguard
-			if (_effect is null)
-			{
-				LoadEffect();
-				return;
-			}
-
-#if DEBUG
-			if (Main.keyState.IsKeyDown(Keys.RightAlt))
-			{
-				Main.QueueMainThreadAction(() =>
-				{
-					_vertexBuffer.Dispose();
-					_indexBuffer.Dispose();
-
-					_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
-					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
-
-					_vertices = new GParticleVertex[MaxParticles * 4];
-					_indices = new int[MaxParticles * 6];
-
-					_currentParticleIndex = 0;
-					_currentTime = 0;
-
-					_setBuffers = false;
-				});
-
-				ReloadEffect();
-			}
-#endif
-
-			// Batched data transfer
-			if (_setBuffers)
-			{
-				SetBuffers();
-
-				// We reset since we batched
-				_startIndex = 0;
-				_setBuffers = false;
-			}
-
-			// Update the system's time
-			_currentTime++;
-			if (_lastParticleTime < Lifespan)
-			{
-				_lastParticleTime++;
-			}
-
-			// Set effect values
-			_eTime.SetValue(_currentTime);
-			_eScreenPosition.SetValue(Main.screenPosition);
 		}
-
-		// Drawing
 
 		private void DrawParticles_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
@@ -710,8 +714,8 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			// TODO: Move this
-			//if (Main.gameMenu && Main.hasFocus)
-			//	UpdateParticles();
+			if (Main.gameMenu && Main.hasFocus)
+				Update();
 
 			Main.spriteBatch.End();
 			DrawParticles_OnLayer(Layer.BeforeMainMenu);

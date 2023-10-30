@@ -13,7 +13,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 		public float Gravity { get; internal set; }
 		public float TerminalGravity { get; internal set; }
 
-		public PointParticleSystemSettings(int maxParticles, int lifespan, Layer layer = Layer.BeforeDust, BlendState? blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
+		public PointParticleSystemSettings(int maxParticles, int lifespan, Layer layer = Layer.BeforeDust, BlendState blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
 		{
 			if (maxParticles < 1)
 				throw new ArgumentOutOfRangeException(nameof(maxParticles), "Must be greater than 0");

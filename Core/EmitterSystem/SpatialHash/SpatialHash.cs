@@ -12,6 +12,6 @@ namespace ParticleLibrary.Core.EmitterSystem.SpatialHash
 		/// <summary>
 		/// the Dictionary that holds all of the data
 		/// </summary>
-		private IntIntDictionary CellDict = new();
+		private readonly IntIntDictionary CellDict = new();
 	}
 }

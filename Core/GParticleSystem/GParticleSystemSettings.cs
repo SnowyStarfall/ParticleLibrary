@@ -14,7 +14,7 @@ namespace ParticleLibrary.Core
 		public float Gravity { get; internal set; }
 		public float TerminalGravity { get; internal set; }
 
-		public GParticleSystemSettings(Texture2D texture, int maxParticles, int lifespan, Layer layer = Layer.BeforeDust, BlendState? blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
+		public GParticleSystemSettings(Texture2D texture, int maxParticles, int lifespan, Layer layer = Layer.BeforeDust, BlendState blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
 		{
 			if (texture is null)
 				throw new ArgumentNullException(nameof(texture), "Texture cannot be null.");

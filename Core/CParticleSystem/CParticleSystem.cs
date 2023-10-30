@@ -81,6 +81,13 @@ namespace ParticleLibrary.Core
 
 		private void UpdateParticles(On_Dust.orig_UpdateDust orig)
 		{
+			Update();
+
+			orig();
+		}
+
+		private void Update()
+		{
 			if (!Main.gamePaused)
 			{
 				// Add particles in batch
@@ -158,8 +165,6 @@ namespace ParticleLibrary.Core
 
 				UpdateTime_InMilliseconds = s.Elapsed.TotalMilliseconds;
 			}
-
-			orig();
 		}
 
 		private void DrawParticles_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
@@ -281,8 +286,8 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeAndAfterMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			// TODO: Move this
-			//if (Main.gameMenu && Main.hasFocus)
-			//	UpdateParticles();
+			if (Main.gameMenu && Main.hasFocus)
+				Update();
 
 			Main.spriteBatch.End();
 			Draw(Layer.BeforeMainMenu);

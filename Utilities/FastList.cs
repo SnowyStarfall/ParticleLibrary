@@ -58,7 +58,7 @@ namespace ParticleLibrary.Utilities
 		public void RemoveAt(int index)
 		{
 			if (index >= Length)
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 
 			Length--;
 			if (index < Length)
@@ -69,7 +69,7 @@ namespace ParticleLibrary.Utilities
 		public void RemoveAtWithSwap(int index)
 		{
 			if (index >= Length)
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 
 			Buffer[index] = Buffer[Length - 1];
 			Buffer[Length - 1] = default;

@@ -58,9 +58,9 @@ namespace ParticleLibrary.Core
 
 		/// <summary>
 		/// The width of the <see cref="Shape"/>. 
-		/// No effect when used with <see cref="EmitterShape.Point"/>. 
-		/// Used as diameter for <see cref="EmitterShape.Circle"/>
-		/// Used as side length for <see cref="EmitterShape.Rectangle"/>
+		/// No effect when used with <see cref="EmitterPoint"/>. 
+		/// Used as diameter for <see cref="EmitterCircle"/>
+		/// Used as side length for <see cref="EmitterRectangle"/>
 		/// </summary>
 		public float Width
 		{
@@ -77,9 +77,9 @@ namespace ParticleLibrary.Core
 
 		/// <summary>
 		/// The height of the <see cref="Shape"/>. 
-		/// No effect when used with <see cref="EmitterShape.Point"/>. 
-		/// Used as diameter for <see cref="EmitterShape.Circle"/>
-		/// Used as side length for <see cref="EmitterShape.Rectangle"/>
+		/// No effect when used with <see cref="EmitterPoint"/>. 
+		/// Used as diameter for <see cref="EmitterCircle"/>
+		/// Used as side length for <see cref="EmitterRectangle"/>
 		/// </summary>
 		public float Height
 		{

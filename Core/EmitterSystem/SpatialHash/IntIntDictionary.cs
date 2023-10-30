@@ -8,7 +8,7 @@ namespace ParticleLibrary.Core.EmitterSystem.SpatialHash
 	/// </summary>
 	internal class IntIntDictionary
 	{
-		private Dictionary<long, List<Emitter>> _store = new();
+		private readonly Dictionary<long, List<Emitter>> _store = new();
 
 		public void Add(int x, int y, List<Emitter> list)
 		{
