@@ -80,11 +80,11 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// The minimum rotation speed to spawn a particle with. Defaults to zero, as that is more performant.
 		/// </summary>
-		public float MinimumRotationSpeed { get; set; } = 0;
+		public float MinimumRotationVelocity { get; set; } = 0;
 		/// <summary>
 		/// The maximum rotation speed to spawn a particle with. Defaults to zero, as that is more performant.
 		/// </summary>
-		public float MaximumRotationSpeed { get; set; } = 0;
+		public float MaximumRotationVelocity { get; set; } = 0;
 
 		/// <summary>
 		/// The minimum depth to spawn a particle with.
@@ -116,7 +116,7 @@ namespace ParticleLibrary.Core
 			tag.Set("MaximumScale", MaximumScale);
 			tag.Set("MinimumScaleVelocity", MinimumScaleVelocity);
 			tag.Set("MaximumScaleVelocity", MaximumScaleVelocity);
-			tag.Set("Rotation", new Vector4(MinimumRotation, MaximumRotation, MinimumRotationSpeed, MaximumRotationSpeed));
+			tag.Set("Rotation", new Vector4(MinimumRotation, MaximumRotation, MinimumRotationVelocity, MaximumRotationVelocity));
 			tag.Set("Depth", new Vector4(MinimumDepth, MaximumDepth, MinimumDepthVelocity, MaximumDepthVelocity));
 		}
 
@@ -146,8 +146,8 @@ namespace ParticleLibrary.Core
 			Vector4 rotation = tag.Get<Vector4>("Rotation");
 			MinimumRotation = rotation.X;
 			MaximumRotation = rotation.Y;
-			MinimumRotationSpeed = rotation.Z;
-			MaximumRotationSpeed = rotation.W;
+			MinimumRotationVelocity = rotation.Z;
+			MaximumRotationVelocity = rotation.W;
 
 			Vector4 depth = tag.Get<Vector4>("Depth");
 			MinimumDepth = depth.X;

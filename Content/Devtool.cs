@@ -158,7 +158,7 @@ namespace ParticleLibrary.Content
 				}
 
 				float offset = 0f;
-				for (int i = 0; i < 1000; i++)
+				for (int i = 0; i < 100000; i++)
 				{
 					Vector2 shift = new Vector2(256f + (offset += 0.001f), 0f).RotatedBy(MathHelper.ToRadians(i * 36f));
 
@@ -170,7 +170,7 @@ namespace ParticleLibrary.Content
 						PointParticle settings = new()
 						{
 							StartColor = new(1f, 0f, 0f, 0f),
-							EndColor = new(0f, 1f, 0f, 0f),
+							EndColor = new(0f, 0f, 1f, 0f),
 
 							Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),

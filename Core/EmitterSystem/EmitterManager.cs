@@ -16,14 +16,13 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// List of emitters.
 		/// </summary>
-		public static FastList<Emitter> Emitters;
+		public static FastList<Emitter> Emitters { get; private set; }
 
 		public RectangleF ScreenLocation => new(Main.screenPosition.X, Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 
 		public override void Load()
 		{
 			Emitters = new();
-			On_Dust.UpdateDust += Update;
 			On_Main.DrawDust += Draw;
 		}
 
@@ -53,10 +52,8 @@ namespace ParticleLibrary.Core
 			tag.Add("Emitters", c);
 		}
 
-		private void Update(On_Dust.orig_UpdateDust orig)
+		public override void PreUpdateWorld()
 		{
-			orig();
-
 			if (Main.netMode != NetmodeID.Server)
 			{
 				foreach (var emitter in Emitters.Buffer)

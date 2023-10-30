@@ -1,15 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary.Core.EmitterSystem.Shapes;
 using System.Drawing;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
 {
 	public class EmitterSettings
 	{
+		public static EmitterPoint Point { get; } = new();
+		public static EmitterCircle Circle { get; } = new();
+		public static EmitterRectangle Rectangle { get; } = new();
+
 		/// <summary>
 		/// The shape of the emitter.
 		/// </summary>
-		public EmitterShape Shape { get; private set; }
+		public EmitterShape Shape { get; private set; } = Point;
 
 		/// <summary>
 		/// How the emitter distributes particles.
@@ -113,20 +119,62 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// The minimum interval between particle spawns.
 		/// </summary>
-		public int MinimumInterval { get; set; } = 10;
+		public int MinimumInterval
+		{
+			get => _minimumInterval;
+			set
+			{
+				if (value < 0)
+					value = 0;
+				_minimumInterval = value;
+			}
+		}
+		private int _minimumInterval = 10;
 		/// <summary>
 		/// The maximum interval between particle spawns.
 		/// </summary>
-		public int MaximumInterval { get; set; } = 10;
+		public int MaximumInterval
+		{
+			get => _maximumInterval;
+			set
+			{
+				if (value < 0)
+					value = 0;
+				_maximumInterval = value;
+			}
+		}
+		private int _maximumInterval = 10;
 
 		/// <summary>
 		/// The minimum amount of particles to spawn at once.
 		/// </summary>
-		public int MinimumSpawns { get; set; } = 1;
+		public int MinimumSpawns
+		{
+			get => _minimumSpawns;
+			set
+			{
+				if (value < 0)
+				{
+					value = 0;
+				}
+				_minimumSpawns = value;
+			}
+		}
+		private int _minimumSpawns = 1;
 		/// <summary>
 		/// The maximum amount of particles to spawn at once.
 		/// </summary>
-		public int MaximumSpawns { get; set; } = 1;
+		public int MaximumSpawns
+		{
+			get => _maximumSpawns;
+			set
+			{
+				if (value < 0)
+					value = 0;
+				_maximumSpawns = value;
+			}
+		}
+		private int _maximumSpawns = 1;
 
 		/// <summary>
 		/// Custom string Data for this emitter.
@@ -161,7 +209,8 @@ namespace ParticleLibrary.Core
 
 		internal void SaveData(TagCompound tag)
 		{
-			tag.Set("Shape", Shape);
+			tag.Set("Shape Assembly", Shape.Assembly);
+			tag.Set("Shape Type", Shape.Type);
 			tag.Set("Origin", Origin);
 			tag.Set("Position", Position);
 			tag.Set("Size", new Vector3(Width, Height, Padding));
@@ -173,6 +222,19 @@ namespace ParticleLibrary.Core
 
 		internal void LoadData(TagCompound tag)
 		{
+			string shapeAssembly = tag.GetString("Shape Assembly");
+			string shapeType = tag.GetString("Shape Type");
+
+			bool shapeExists = ModLoader.TryGetMod(shapeAssembly, out Mod result);
+			if (!shapeExists)
+			{
+				Shape = new EmitterRectangle();
+			}
+			else
+			{
+				Shape = result.Code.CreateInstance(shapeType) as EmitterShape;
+			}
+
 			Shape = tag.Get<EmitterShape>("Shape");
 			Origin = tag.Get<EmitterOrigin>("Origin");
 			Position = tag.Get<Vector2>("Position");

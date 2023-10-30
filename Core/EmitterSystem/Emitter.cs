@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Core.EmitterSystem.Data;
+using ParticleLibrary.Core.EmitterSystem.Shapes;
+using ParticleLibrary.Properties;
+using System;
 using System.Drawing;
+using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
@@ -24,6 +30,11 @@ namespace ParticleLibrary.Core
 		public EmitterColorSettings ColorSettings { get; private set; }
 
 		public RectangleF Bounds => EmitterSettings.Bounds;
+
+		// Function fields
+		protected int Timer;
+		protected int SpawnTime;
+		protected int SpawnCount;
 
 		/// <summary>
 		/// Creates a new emitter. You must call <see cref="EmitterManager.NewEmitter(Emitter)"/> or <see cref="EmitterManager.NewEmitter{T}(EmitterSettings, EmitterParticleSettings, EmitterColorSettings)"/> to add it to the system.
@@ -59,15 +70,37 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public virtual void Update()
 		{
-			// TODO: Functionality
+			// Spawn logic
+			if (Timer >= SpawnTime)
+			{
+				Vector2 position = EmitterSettings.Position;
+
+				for (int i = 0; i < SpawnCount; i++)
+				{
+					// Calculate parameters
+					position = EmitterSettings.Shape.Solve(position, EmitterSettings.Origin, this);
+					SpatialParameters spatial = SpatialParameters.Calculate(ParticleSettings);
+					VisualParameters visual = VisualParameters.Calculate(ColorSettings);
+
+					// Spawn the particle
+					SpawnParticle(position, spatial, visual);
+				}
+
+				// Reset for next spawn interval
+				Timer = 0;
+				SpawnTime = Main.rand.Next(EmitterSettings.MinimumInterval, EmitterSettings.MaximumInterval + 1);
+				SpawnCount = Main.rand.Next(EmitterSettings.MinimumSpawns, EmitterSettings.MaximumSpawns + 1);
+			}
+
+			// Update time
+			Timer++;
 		}
 
 		/// <summary>
 		/// Spawns a particle with the provided parameters.
 		/// </summary>
-		public virtual void SpawnParticle()
+		public virtual void SpawnParticle(Vector2 position, SpatialParameters spatial, VisualParameters visual)
 		{
-			// TODO: Parameters and default functionality
 		}
 
 		/// <summary>
