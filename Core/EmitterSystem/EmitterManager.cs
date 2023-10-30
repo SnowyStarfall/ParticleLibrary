@@ -2,12 +2,12 @@
 using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
 
 namespace ParticleLibrary.Core
 {
@@ -18,7 +18,7 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public static FastList<Emitter> Emitters { get; private set; }
 
-		public RectangleF ScreenLocation => new(Main.screenPosition.X, Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+		public Rectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 
 		public override void Load()
 		{
@@ -61,7 +61,7 @@ namespace ParticleLibrary.Core
 					if (Main.LocalPlayer?.active != true)
 						continue;
 
-					if (ScreenLocation.IntersectsWith(emitter.Bounds))
+					if (ScreenLocation.Intersects(emitter.Bounds))
 						emitter.Update();
 				}
 			}

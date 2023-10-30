@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Core.EmitterSystem.Shapes;
-using System.Drawing;
+
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -113,8 +113,8 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// The bounds of the emitter. Used for culling.
 		/// </summary>
-		public RectangleF Bounds { get => _bounds; }
-		private RectangleF _bounds;
+		public Rectangle Bounds { get => _bounds; }
+		private Rectangle _bounds;
 
 		/// <summary>
 		/// The minimum interval between particle spawns.
@@ -188,15 +188,15 @@ namespace ParticleLibrary.Core
 
 		public EmitterSettings()
 		{
-			_bounds = new(_position.X, _position.Y, _width, _height);
+			_bounds = new((int)_position.X, (int)_position.Y, (int)_width, (int)_height);
 		}
 
 		public void RecalculateBounds()
 		{
-			_bounds.X = _position.X - _width / 2f;
-			_bounds.Y = _position.Y - _height / 2f;
-			_bounds.Width = _width;
-			_bounds.Height = _height;
+			_bounds.X = (int)(_position.X - _width / 2f);
+			_bounds.Y = (int)(_position.Y - _height / 2f);
+			_bounds.Width = (int)_width;
+			_bounds.Height = (int)_height;
 		}
 
 		public void SetPosition(float x, float y)

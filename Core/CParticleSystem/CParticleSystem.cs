@@ -26,6 +26,8 @@ namespace ParticleLibrary.Core
 		public static int ParticleCount { get; internal set; }
 		internal static double UpdateTime_InMilliseconds { get; private set; }
 
+		public Rectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+
 		public override void OnModLoad()
 		{
 			_particles = new(ParticleLibraryConfig.Instance.MaxCPUParticles);
@@ -302,7 +304,9 @@ namespace ParticleLibrary.Core
 				if (p is null)
 					continue;
 
-				if (p.Layer == layer)
+				Rectangle r = (Rectangle)p.Bounds;
+				ScreenLocation.Intersects(ref r, out bool intersects);
+				if (p.Layer == layer && (p.Bounds is null || intersects))
 				{
 					Vector2 offset = p.Layer == Layer.BeforeWater ? new Vector2(Main.offScreenRange, Main.offScreenRange) : Vector2.Zero;
 					p.Draw(Main.spriteBatch, p.VisualPosition + offset);

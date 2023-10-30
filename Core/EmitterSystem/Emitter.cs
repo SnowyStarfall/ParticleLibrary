@@ -4,7 +4,7 @@ using ParticleLibrary.Core.EmitterSystem.Data;
 using ParticleLibrary.Core.EmitterSystem.Shapes;
 using ParticleLibrary.Properties;
 using System;
-using System.Drawing;
+
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader.IO;
@@ -29,7 +29,7 @@ namespace ParticleLibrary.Core
 		public EmitterParticleSettings ParticleSettings { get; private set; }
 		public EmitterColorSettings ColorSettings { get; private set; }
 
-		public RectangleF Bounds => EmitterSettings.Bounds;
+		public Rectangle Bounds => EmitterSettings.Bounds;
 
 		// Function fields
 		protected int Timer;

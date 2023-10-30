@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,6 +22,14 @@ namespace ParticleLibrary.Core
 		/// Texture path for a particle. Override this to specify a custom path.
 		/// </summary>
 		public virtual string Texture => GetType().Namespace.Replace(".", "/") + "/" + GetType().Name;
+
+		/// <summary>
+		/// The expected visual bounds for this particle. Used for visual culling.
+		/// X and Y are used for position offset. Width and Height are the size of the bounds.
+		/// Defaults to null. The particle will never be culled.
+		/// </summary>
+		public virtual Rectangle? Bounds { get; set; }
+
 		/// <summary>
 		/// The visual position taking into account Main.screenPosition;
 		/// </summary>
@@ -100,6 +109,12 @@ namespace ParticleLibrary.Core
 			{
 				try { _texture = ModContent.Request<Texture2D>(Texture).Value; }
 				catch { _texture = ParticleLibrary.EmptyPixel; }
+
+				if (!Bounds.HasValue && _texture is not null)
+				{
+					Bounds = new Rectangle(0,0,_texture.Width, _texture.Height);
+				}
+					
 			}
 		}
 
