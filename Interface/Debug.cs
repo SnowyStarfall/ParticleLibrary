@@ -19,10 +19,10 @@ using static Terraria.GameContent.FontAssets;
 
 namespace ParticleLibrary.Interface
 {
-	internal class DebugUI : UIState
+	internal class Debug : UIState
 	{
 		// Instance
-		internal DebugUI Instance;
+		internal Debug Instance;
 
 		//// UI Variables
 		//private BasicDebugDrawer Debug;
