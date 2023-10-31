@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.OS;
-using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.UI.Chat;
 
 namespace ParticleLibrary.Interface
 {
@@ -22,11 +20,11 @@ namespace ParticleLibrary.Interface
 		private bool _backspaceHeld;
 		private int _backspaceCounter;
 
-		private KeyboardState _keyState;
 		private KeyboardState _oldKeyState;
 
 		public void Update()
 		{
+			// We just update counters here - This method only runs once per frame
 			_caretCounter++;
 			if (_caretCounter > 50)
 				_caretCounter = 0;
@@ -35,9 +33,7 @@ namespace ParticleLibrary.Interface
 				_arrowCounter--;
 
 			if (_backspaceCounter > 0)
-			{
 				_backspaceCounter--;
-			}
 		}
 
 		public string Write()
@@ -72,9 +68,13 @@ namespace ParticleLibrary.Interface
 						copied = copied.Replace("\n", string.Empty);
 					Text += copied;
 				}
+
+				EndWriting();
+				return Text;
 			}
+
 			// Shift is held
-			else if (Main.keyState.PressingShift())
+			if (Main.keyState.PressingShift())
 			{
 				// Delete line
 				if (Main.keyState.IsKeyDown(Keys.Delete) && !_oldKeyState.IsKeyDown(Keys.Delete))
@@ -89,8 +89,13 @@ namespace ParticleLibrary.Interface
 						copied = copied.Replace("\n", string.Empty);
 					Text += copied;
 				}
+
+				EndWriting();
+				return Text;
 			}
-			else if (Main.keyState.IsKeyDown(Keys.Left))
+
+			// Caret manipulation
+			if (Main.keyState.IsKeyDown(Keys.Left))
 			{
 				if (_arrowCounter <= 0)
 				{
@@ -110,6 +115,9 @@ namespace ParticleLibrary.Interface
 						Main.NewText(_caretIndex);
 					}
 				}
+
+				EndWriting();
+				return Text;
 			}
 			else if (Main.keyState.IsKeyDown(Keys.Right))
 			{
@@ -131,64 +139,72 @@ namespace ParticleLibrary.Interface
 						Main.NewText(_caretIndex);
 					}
 				}
+
+				EndWriting();
+				return Text;
 			}
 			else
 			{
-				// Some magical stuff for getting the value of recently pressed keys
-				string tempText = string.Empty;
-				for (int i = 0; i < Main.keyCount; i++)
-				{
-					Keys key = (Keys)Main.keyInt[i];
-					string value = Main.keyString[i];
-
-					// Enter
-					if (key == Keys.Enter && AllowNewline)
-					{
-						tempText += "\n";
-					}
-
-					// Backspace
-					if (key == Keys.Back && _backspaceCounter <= 0) // Backspace
-					{
-						if (!_backspaceHeld)
-						{
-							_backspaceHeld = true;
-							_backspaceCounter = 10;
-						}
-
-
-						if (Text.Length > 0)
-							Text = Text.Remove(_caretIndex - 1, 1);
-
-						if (_caretIndex > 0)
-							_caretIndex--;
-					}
-					else
-					{
-						_backspaceHeld = false;
-						_backspaceCounter = 0;
-					}
-
-					// Letters, numbers, symbols
-					if (key >= Keys.Space && key != Keys.F16)
-					{
-						tempText += value;
-					}
-				}
-
-				Text = Text.Insert(_caretIndex, tempText);
-				_caretIndex += tempText.Length;
-
-				// Reset caret manipulation
 				_arrowCounter = 0;
 				_arrowHeld = false;
 			}
 
+			// Writing
+			string tempText = string.Empty;
+			for (int i = 0; i < Main.keyCount; i++)
+			{
+				Keys key = (Keys)Main.keyInt[i];
+				string value = Main.keyString[i];
+
+				// Enter
+				if (key == Keys.Enter && AllowNewline)
+				{
+					tempText += "\n";
+				}
+
+				// Backspace
+				if (key == Keys.Back && _backspaceCounter <= 0) // Backspace
+				{
+					if (!_backspaceHeld)
+					{
+						_backspaceHeld = true;
+						_backspaceCounter = 10;
+					}
+
+
+					if (Text.Length > 0)
+						Text = Text.Remove(_caretIndex - 1, 1);
+
+					if (_caretIndex > 0)
+						_caretIndex--;
+				}
+				else
+				{
+					_backspaceHeld = false;
+					_backspaceCounter = 0;
+				}
+
+				// Letters, numbers, symbols
+				if (key >= Keys.Space && key != Keys.F16)
+				{
+					tempText += value;
+				}
+			}
+
+			// Finally, insert text and adjust caret
+			Text = Text.Insert(_caretIndex, tempText);
+			_caretIndex += tempText.Length;
+
+			// End and return
+			EndWriting();
+			return Text;
+		}
+
+		private void EndWriting()
+		{
 			// Update our old key state and clear input
 			_oldKeyState = Keyboard.GetState();
 			Main.clrInput();
-
-			return Text;
 		}
 	}
 }
