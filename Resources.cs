@@ -16,6 +16,7 @@ namespace ParticleLibrary
 			{
 				public const string GParticleShader = @"ParticleLibrary/Assets/Effects/GParticleShader";
 				public const string PointParticleShader = @"ParticleLibrary/Assets/Effects/PointParticleShader";
+				public const string Shape = @"ParticleLibrary/Assets/Effects/Shape";
 			}
 
 			public static class Textures

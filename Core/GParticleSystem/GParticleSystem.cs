@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ParticleLibrary.Interface.Primitives;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
@@ -11,7 +12,7 @@ using static ParticleLibrary.Resources;
 
 namespace ParticleLibrary.Core
 {
-	public class GParticleSystem : IDisposable
+    public class GParticleSystem : IDisposable
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
 
@@ -277,9 +278,9 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
+				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
@@ -292,9 +293,9 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
+				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
@@ -307,9 +308,9 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
+				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)
@@ -322,9 +323,9 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
-				Scale = ParticleUtils.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
+				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime)

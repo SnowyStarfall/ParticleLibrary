@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ParticleLibrary.Interface.Primitives;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
@@ -11,7 +12,7 @@ using static ParticleLibrary.Resources;
 
 namespace ParticleLibrary.Core.PointParticleSystem
 {
-	public class PointParticleSystem : IDisposable
+    public class PointParticleSystem : IDisposable
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
 
@@ -186,7 +187,7 @@ namespace ParticleLibrary.Core.PointParticleSystem
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = ParticleUtils.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, _currentTime),
 			};

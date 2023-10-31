@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary.Core.Primitives.Shapes;
-using ParticleLibrary.Interface;
+using ParticleLibrary.Interface.Primitives;
+using ParticleLibrary.Interface.Primitives.Shapes;
+using ParticleLibrary.Interface.States;
+using ParticleLibrary.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace ParticleLibrary.Core
+namespace ParticleLibrary.Interface
 {
     internal class UISystem : ModSystem
     {
@@ -25,10 +27,20 @@ namespace ParticleLibrary.Core
             DebugUIElement = new Debug();
             DebugUILayer.SetState(DebugUIElement);
 
-            Rectangle = new(Vector2.Zero, Vector2.Zero);
+            Rectangle = new(Vector2.Zero, Vector2.Zero, MatrixType.Interface);
         }
 
-        private GameTime _lastUpdateUIGameTIme;
+		public override void PreUpdateEntities()
+		{
+			if (DebugUIElement.Visible)
+				RecursiveUpdate(DebugUIElement);
+		}
+
+		public override void PostUpdateInput()
+		{
+		}
+
+		private GameTime _lastUpdateUIGameTIme;
         public override void UpdateUI(GameTime gameTime)
         {
             _lastUpdateUIGameTIme = gameTime;
@@ -37,7 +49,19 @@ namespace ParticleLibrary.Core
                 DebugUILayer.Update(gameTime);
         }
 
-        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+		public void RecursiveUpdate(UIElement element)
+		{
+			if (element is null)
+				return;
+
+			if (element is IConsistentUpdateable updateable)
+				updateable.Update();
+
+			foreach (var child in element.Children)
+				RecursiveUpdate(child);
+		}
+
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (MouseTextIndex != -1)
@@ -46,8 +70,8 @@ namespace ParticleLibrary.Core
                 {
                     if (_lastUpdateUIGameTIme != null && DebugUILayer?.CurrentState != null)
                         DebugUIElement.Draw(Main.spriteBatch);
-                    //DrawDebugHitbox(EntityHealthElement, 1f);
-                    //PrintHoveredElement(EntityHealthElement, Color.Red);
+                    DrawDebugHitbox(DebugUIElement, 1f);
+                    //PrintHoveredElement(DebugUIElement, Color.Red);
                     return true;
                 }, InterfaceScaleType.UI));
             }
@@ -61,13 +85,17 @@ namespace ParticleLibrary.Core
             }
 
             Color color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f);
-            CalculatedStyle innerDimensions = element.GetInnerDimensions();
+            Rectangle innerDimensions = element.GetInnerDimensions().ToRectangle();
 
-            Rectangle.Position = innerDimensions.Position();
-            Rectangle.Size = new Vector2(innerDimensions.Width, innerDimensions.Height);
+            Rectangle.SetSize(innerDimensions);
             Rectangle.Color = color;
 
             Rectangle.Draw();
+
+            if (element is IDebuggable debuggable)
+            {
+                debuggable.RenderDebug(Rectangle);
+            }
 
             foreach (UIElement e in element.Children)
             {

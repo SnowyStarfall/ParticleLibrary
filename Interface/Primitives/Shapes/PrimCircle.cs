@@ -1,13 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Core;
 using System;
 using Terraria;
 
-namespace ParticleLibrary.Core.Primitives.Shapes
+namespace ParticleLibrary.Interface.Primitives.Shapes
 {
     public class PrimCircle
     {
+        public MatrixType Matrix
+        {
+            get => _matrix;
+            set
+            {
+                _matrix = value;
+                CalculateVertices();
+            }
+        }
+        private MatrixType _matrix;
+
         public Vector2 Position
         {
             get => _position;
@@ -43,15 +53,16 @@ namespace ParticleLibrary.Core.Primitives.Shapes
 
         private VertexPositionColor[] _vertices;
 
-        public PrimCircle(Vector2 positiom, Vector2 radius) : this(positiom, radius, Color.White)
+        public PrimCircle(Vector2 positiom, Vector2 radius, MatrixType matrix) : this(positiom, radius, Color.White, matrix)
         {
         }
 
-        public PrimCircle(Vector2 position, Vector2 radius, Color color)
+        public PrimCircle(Vector2 position, Vector2 radius, Color color, MatrixType matrix)
         {
             _position = position;
             _radius = radius;
             _color = color;
+            _matrix = matrix;
 
             CalculateVertices();
         }
@@ -61,7 +72,10 @@ namespace ParticleLibrary.Core.Primitives.Shapes
             if (_vertices.Length == 0)
                 return;
 
-            Primitive.Effect.CurrentTechnique.Passes[0].Apply();
+            if (_matrix is MatrixType.World)
+                Primitive.WorldEffect.CurrentTechnique.Passes[0].Apply();
+            else
+                Primitive.InterfaceEffect.CurrentTechnique.Passes[0].Apply();
             Primitive.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices, 0, _vertices.Length - 1);
         }
 
