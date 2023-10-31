@@ -57,8 +57,6 @@ namespace ParticleLibrary.Interface.Elements
 			if (!_active)
 				return;
 
-			Text = _textWriter.Write();
-
 			// Cancellation conditionals.
 			if (Main.keyState.IsKeyDown(Keys.Escape))
 			{
@@ -77,58 +75,6 @@ namespace ParticleLibrary.Interface.Elements
 				ToggleActive();
 				return;
 			}
-
-			// Caret manipulation
-			if (Main.keyState.IsKeyDown(Keys.Left))
-			{
-				if (_arrowCounter <= 0)
-				{
-					if (!_arrowHeld)
-					{
-						_arrowCounter = 30;
-						_arrowHeld = true;
-						if (_caretIndex > 0)
-							_caretIndex--;
-						Main.NewText(_caretIndex);
-					}
-					else
-					{
-						_arrowCounter = 2;
-						if (_caretIndex > 0)
-							_caretIndex--;
-						Main.NewText(_caretIndex);
-					}
-				}
-			}
-			else if (Main.keyState.IsKeyDown(Keys.Right))
-			{
-				if (_arrowCounter <= 0)
-				{
-					if (!_arrowHeld)
-					{
-						_arrowCounter = 30;
-						_arrowHeld = true;
-						if (_caretIndex < Text.Length)
-							_caretIndex++;
-						Main.NewText(_caretIndex);
-					}
-					else
-					{
-						_arrowCounter = 2;
-						if (_caretIndex < Text.Length)
-							_caretIndex++;
-						Main.NewText(_caretIndex);
-					}
-				}
-			}
-			else
-			{
-				_arrowCounter = 0;
-				_arrowHeld = false;
-			}
-
-
-			Main.NewText(_textWriter.Text ?? "NULL");
 
 			// Lets Terraria know that we're writing text so that it can handle it.
 			PlayerInput.WritingText = true;
@@ -164,17 +110,18 @@ namespace ParticleLibrary.Interface.Elements
 				//Main.instance.HandleIME();
 
 				// Change the stored value.
-				//string newText = _textWriter.Write();
+				string newText = _textWriter.Write();
 
-				//if (newText != Text)
-				//{
-				//	//string newText = inputText;
+				if (newText != Text)
+				{
+					//string newText = inputText;
 
-				//	OnTextChanged?.Invoke(Text, newText);
-				//	Text = newText;
+					Main.NewText(_textWriter.Text);
+					OnTextChanged?.Invoke(Text, newText);
+					Text = newText;
 
-				//	//_caretIndex += inputText.Length;
-				//}
+					//_caretIndex += inputText.Length;
+				}
 
 			}
 

@@ -27,8 +27,6 @@ namespace ParticleLibrary.Interface
 
 		public void Update()
 		{
-			// TODO: Functionality
-
 			_caretCounter++;
 			if (_caretCounter > 50)
 				_caretCounter = 0;
@@ -92,6 +90,48 @@ namespace ParticleLibrary.Interface
 					Text += copied;
 				}
 			}
+			else if (Main.keyState.IsKeyDown(Keys.Left))
+			{
+				if (_arrowCounter <= 0)
+				{
+					if (!_arrowHeld)
+					{
+						_arrowCounter = 30;
+						_arrowHeld = true;
+						if (_caretIndex > 0)
+							_caretIndex--;
+						Main.NewText(_caretIndex);
+					}
+					else
+					{
+						_arrowCounter = 2;
+						if (_caretIndex > 0)
+							_caretIndex--;
+						Main.NewText(_caretIndex);
+					}
+				}
+			}
+			else if (Main.keyState.IsKeyDown(Keys.Right))
+			{
+				if (_arrowCounter <= 0)
+				{
+					if (!_arrowHeld)
+					{
+						_arrowCounter = 30;
+						_arrowHeld = true;
+						if (_caretIndex < Text.Length)
+							_caretIndex++;
+						Main.NewText(_caretIndex);
+					}
+					else
+					{
+						_arrowCounter = 2;
+						if (_caretIndex < Text.Length)
+							_caretIndex++;
+						Main.NewText(_caretIndex);
+					}
+				}
+			}
 			else
 			{
 				// Some magical stuff for getting the value of recently pressed keys
@@ -107,59 +147,21 @@ namespace ParticleLibrary.Interface
 						tempText += "\n";
 					}
 
-					// Caret manipulation
-					if (key == Keys.Left && _arrowCounter <= 0)
-					{
-						if (!_arrowHeld)
-						{
-							_arrowCounter = 30;
-							_arrowHeld = true;
-							if (_caretIndex > 0)
-								_caretIndex--;
-						}
-						else
-						{
-							_arrowCounter = 2;
-							if (_caretIndex > 0)
-								_caretIndex--;
-						}
-					}
-					else if (key == Keys.Right && _arrowCounter <= 0)
-					{
-						if (!_arrowHeld)
-						{
-							_arrowCounter = 30;
-							_arrowHeld = true;
-							if (_caretIndex < Text.Length)
-								_caretIndex++;
-						}
-						else
-						{
-							_arrowCounter = 2;
-							if (_caretIndex < Text.Length)
-								_caretIndex++;
-						}
-					}
-					else
-					{
-						_arrowCounter = 0;
-						_arrowHeld = false;
-					}
-
 					// Backspace
 					if (key == Keys.Back && _backspaceCounter <= 0) // Backspace
 					{
 						if (!_backspaceHeld)
 						{
 							_backspaceHeld = true;
-							_backspaceCounter = 15;
-							Text = Text.Length == 0 ? "" : Text[0..^1];
+							_backspaceCounter = 10;
 						}
-						else
-						{
-							_backspaceCounter = 2;
-							Text = Text.Length == 0 ? "" : Text[0..^1];
-						}
+
+
+						if (Text.Length > 0)
+							Text = Text.Remove(_caretIndex - 1, 1);
+
+						if (_caretIndex > 0)
+							_caretIndex--;
 					}
 					else
 					{
@@ -174,11 +176,17 @@ namespace ParticleLibrary.Interface
 					}
 				}
 
-				Text += tempText;
+				Text = Text.Insert(_caretIndex, tempText);
+				_caretIndex += tempText.Length;
+
+				// Reset caret manipulation
+				_arrowCounter = 0;
+				_arrowHeld = false;
 			}
 
-			// Update our old key state
+			// Update our old key state and clear input
 			_oldKeyState = Keyboard.GetState();
+			Main.clrInput();
 
 			return Text;
 		}
