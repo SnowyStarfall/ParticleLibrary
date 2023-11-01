@@ -4,6 +4,6 @@ namespace ParticleLibrary.Interface
 {
 	internal interface IDebuggable
 	{
-		public void RenderDebug(PrimRectangle rectangle);
+		public void RenderDebug(PrimRectangle rectangle, float alpha);
 	}
 }

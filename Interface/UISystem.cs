@@ -70,7 +70,7 @@ namespace ParticleLibrary.Interface
                 {
                     if (_lastUpdateUIGameTIme != null && DebugUILayer?.CurrentState != null)
                         DebugUIElement.Draw(Main.spriteBatch);
-                    DrawDebugHitbox(DebugUIElement, 1f);
+                    //DrawDebugHitbox(DebugUIElement, 1f);
                     //PrintHoveredElement(DebugUIElement, Color.Red);
                     return true;
                 }, InterfaceScaleType.UI));
@@ -84,7 +84,8 @@ namespace ParticleLibrary.Interface
                 colorIntensity += 0.1f;
             }
 
-            Color color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f);
+            float alpha = 0.5f;
+            Color color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f, (byte)(255 * alpha));
             Rectangle innerDimensions = element.GetInnerDimensions().ToRectangle();
 
             Rectangle.SetSize(innerDimensions);
@@ -94,7 +95,7 @@ namespace ParticleLibrary.Interface
 
             if (element is IDebuggable debuggable)
             {
-                debuggable.RenderDebug(Rectangle);
+                debuggable.RenderDebug(Rectangle, alpha);
             }
 
             foreach (UIElement e in element.Children)

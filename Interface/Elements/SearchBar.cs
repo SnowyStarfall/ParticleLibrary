@@ -95,22 +95,16 @@ namespace ParticleLibrary.Interface.Elements
 				// Lets Terraria know that we're writing text so that it can handle it.
 				// For whatever reason, this part has to be here. How yucky.
 				PlayerInput.WritingText = true;
-				//Main.instance.HandleIME();
-
+	
 				// Change the stored value.
 				string newText = _textWriter.Write();
 
 				if (newText != Text)
 				{
 					//string newText = inputText;
-
-					Main.NewText(_textWriter.Text);
 					OnTextChanged?.Invoke(Text, newText);
 					Text = newText;
-
-					//_caretIndex += inputText.Length;
 				}
-
 			}
 
 			// Draw text with clipping

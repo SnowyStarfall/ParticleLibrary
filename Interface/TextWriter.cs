@@ -133,6 +133,11 @@ namespace ParticleLibrary.Interface
 					EndWriting();
 					return Text;
 				}
+				else if (Main.keyState.IsKeyDown(Keys.A) && !_oldKeyState.IsKeyDown(Keys.A))
+				{
+					SelectionIndex = 0;
+					CaretIndex = Text.Length;
+				}
 			}
 
 			if (shift)

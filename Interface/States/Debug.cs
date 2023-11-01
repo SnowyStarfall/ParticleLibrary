@@ -20,17 +20,17 @@ namespace ParticleLibrary.Interface.States
 			if (!Visible)
 				return;
 
-			Base = new(ParticleLibraryConfig.CurrentTheme.Low, ParticleLibraryConfig.CurrentTheme.LowAccent, 2f)
+			Base = new(ParticleLibraryConfig.CurrentTheme.Low, ParticleLibraryConfig.CurrentTheme.LowAccent, 1f)
 			{
 				Resizable = true,
 				Draggable = true
 			};
-			Base.Width.Set(0f, 0.5f);
-			Base.Height.Set(0f, 0.5f);
+			Base.Width.Set(384f, 0f);
+			Base.Height.Set(512f, 0f);
 			Base.MinWidth.Set(0f, 0.125f);
 			Base.MinHeight.Set(0f, 0.125f);
 
-			SearchBar = new(ParticleLibraryConfig.CurrentTheme.Mid, ParticleLibraryConfig.CurrentTheme.LowAccent, ParticleLibraryConfig.CurrentTheme.HighAccent, cornerRadius: 4f)
+			SearchBar = new(ParticleLibraryConfig.CurrentTheme.Mid, ParticleLibraryConfig.CurrentTheme.LowAccent, ParticleLibraryConfig.CurrentTheme.HighAccent, 1f, 0f)
 			{
 			};
 			SearchBar.Left.Set(0f, 0.05f);

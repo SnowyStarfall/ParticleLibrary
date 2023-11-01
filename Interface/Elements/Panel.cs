@@ -133,9 +133,9 @@ namespace ParticleLibrary.Interface.Elements
 		}
 
 		// Debug
-		public void RenderDebug(PrimRectangle rectangle)
+		public void RenderDebug(PrimRectangle rectangle, float alpha)
 		{
-			rectangle.Color = Color.Red;
+			rectangle.Color = Color.Red.WithAlpha(alpha);
 
 			rectangle.SetSize(_draggableArea);
 			rectangle.Draw();
