@@ -31,6 +31,11 @@ namespace ParticleLibrary.Utilities
 			};
 		}
 
+		public static Color WithAlpha(this Color color, float alpha)
+		{
+			return new Color(color.R / 255f, color.G / 255f, color.B / 255f, alpha);
+		}
+
 		public static void Begin(this SpriteBatch spriteBatch, SpriteBatchSettings spriteBatchSettings, bool useMatrix = true)
 		{
 			if (useMatrix)

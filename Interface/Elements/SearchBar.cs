@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.GameContent;
 using ParticleLibrary.Utilities;
 using System.Linq;
+using System;
 
 namespace ParticleLibrary.Interface.Elements
 {
@@ -22,12 +23,6 @@ namespace ParticleLibrary.Interface.Elements
 
 		protected bool _active;
 
-		private int _caretCounter;
-		private int _caretIndex;
-
-		private bool _arrowHeld;
-		private int _arrowCounter;
-
 		private TextWriter _textWriter;
 
 		public SearchBar(Color fill, Color outline, Color activeOutline, float outlineThickness = 1f, float cornerRadius = 0f, bool soft = false) : base(fill, outline, outlineThickness, cornerRadius, soft)
@@ -40,13 +35,6 @@ namespace ParticleLibrary.Interface.Elements
 		// For things that need to be consistently updated.
 		public void Update()
 		{
-			_caretCounter++;
-			if (_caretCounter > 50)
-				_caretCounter = 0;
-
-			if (_arrowCounter > 0)
-				_arrowCounter--;
-
 			_textWriter.Update();
 		}
 
@@ -131,16 +119,23 @@ namespace ParticleLibrary.Interface.Elements
 			Main.graphics.GraphicsDevice.ScissorRectangle = inner.ToRectangle();
 			Main.graphics.GraphicsDevice.RasterizerState.ScissorTestEnable = true;
 
-			spriteBatch.Begin(LibUtilities.DefaultUISettings);
+			spriteBatch.Begin(LibUtilities.CustomUISettings);
 
 			Vector2 position = inner.Center() - new Vector2(inner.Width / 2f - 8f, 10f);
 
+			if (_textWriter.SelectionIndex != -1)
+			{
+				Vector2 unselectedSize = _textWriter.CaretIndex == 0 || _textWriter.SelectionIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[0..Math.Min(_textWriter.CaretIndex, _textWriter.SelectionIndex)]);
+				Vector2 selectedSize = _textWriter.CaretIndex == 0 && _textWriter.SelectionIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[Math.Min(_textWriter.CaretIndex, _textWriter.SelectionIndex)..Math.Max(_textWriter.CaretIndex, _textWriter.SelectionIndex)]);
+				spriteBatch.Draw(ParticleLibrary.WhitePixel, position + new Vector2(unselectedSize.X, 0f), new Rectangle(0, 0, (int)selectedSize.X, (int)selectedSize.Y), ParticleLibraryConfig.CurrentTheme.HighAccent.WithAlpha(0.5f));
+			}
+
 			spriteBatch.DrawText(Text, position, Color.White);
 
-			if (_caretCounter < 25)
+			if (_textWriter.CaretVisible)
 			{
-				//Vector2 size = FontAssets.MouseText.Value.MeasureString(_caretIndex == 0 ? string.Empty : Text[0.._caretIndex]);
-				//spriteBatch.DrawLine(position + new Vector2(size.X + 4f, -inner.Height / 2f + 4f + 10f), position + new Vector2(size.X + 4f, inner.Height / 2f - 4f + 10f), ParticleLibraryConfig.CurrentTheme.HighAccent, 2f);
+				Vector2 size = _textWriter.CaretIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[0.._textWriter.CaretIndex]);
+				spriteBatch.DrawLine(position + new Vector2(size.X, -inner.Height / 2f + 4f + 10f), position + new Vector2(size.X, inner.Height / 2f - 4f + 10f), ParticleLibraryConfig.CurrentTheme.HighAccent, 2f);
 			}
 
 			spriteBatch.End();

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.OS;
+using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Utilities;
 
 namespace ParticleLibrary.Interface
 {
@@ -11,8 +13,9 @@ namespace ParticleLibrary.Interface
 		public string Text { get; private set; } = string.Empty;
 		public bool AllowNewline { get; set; }
 
-		private int _caretCounter;
-		private int _caretIndex;
+		public bool CaretVisible => CaretCounter < 25;
+		public int CaretCounter { get; private set; }
+		public int CaretIndex { get; private set; }
 
 		private bool _arrowHeld;
 		private int _arrowCounter;
@@ -20,20 +23,27 @@ namespace ParticleLibrary.Interface
 		private bool _backspaceHeld;
 		private int _backspaceCounter;
 
+		public int SelectionIndex { get; private set; } = -1;
+		private bool _selectionHeld;
+		private int _selectionCounter;
+
 		private KeyboardState _oldKeyState;
 
 		public void Update()
 		{
 			// We just update counters here - This method only runs once per frame
-			_caretCounter++;
-			if (_caretCounter > 50)
-				_caretCounter = 0;
+			CaretCounter++;
+			if (CaretCounter > 50)
+				CaretCounter = 0;
 
 			if (_arrowCounter > 0)
 				_arrowCounter--;
 
 			if (_backspaceCounter > 0)
 				_backspaceCounter--;
+
+			if (_selectionCounter > 0)
+				_selectionCounter--;
 		}
 
 		public string Write()
@@ -46,19 +56,56 @@ namespace ParticleLibrary.Interface
 			if (!Main.hasFocus)
 				return Text;
 
-			// Control is held
-			if (Main.keyState.PressingControl())
+			bool control = Main.keyState.PressingControl();
+			bool shift = Main.keyState.PressingShift();
+			bool left = Main.keyState.IsKeyDown(Keys.Left);
+			bool right = Main.keyState.IsKeyDown(Keys.Right);
+
+			if (control)
 			{
 				// Cut
 				if (Main.keyState.IsKeyDown(Keys.X) && !_oldKeyState.IsKeyDown(Keys.X))
 				{
-					Platform.Get<IClipboard>().Value = Text;
-					Text = string.Empty;
+					if (SelectionIndex != -1)
+					{
+						int min = Math.Min(CaretIndex, SelectionIndex);
+						int max = Math.Max(CaretIndex, SelectionIndex);
+
+						Platform.Get<IClipboard>().Value = Text[min..max];
+						Text = Text.Remove(min, max - min);
+						SelectionIndex = -1;
+						if(CaretIndex != min)
+							CaretIndex = min;
+					}
+					else
+					{
+						Platform.Get<IClipboard>().Value = Text;
+						Text = string.Empty;
+						CaretIndex = 0;
+					}
+
+
+					EndWriting();
+					return Text;
 				}
 				// Copy
 				else if (Main.keyState.IsKeyDown(Keys.C) && !_oldKeyState.IsKeyDown(Keys.C))
 				{
-					Platform.Get<IClipboard>().Value = Text;
+					if (SelectionIndex != -1)
+					{
+						int min = Math.Min(CaretIndex, SelectionIndex);
+						int max = Math.Max(CaretIndex, SelectionIndex);
+
+						Platform.Get<IClipboard>().Value = Text[min..max];
+						SelectionIndex = -1;
+					}
+					else
+					{
+						Platform.Get<IClipboard>().Value = Text;
+					}
+
+					EndWriting();
+					return Text;
 				}
 				// Paste
 				else if (Main.keyState.IsKeyDown(Keys.V) && !_oldKeyState.IsKeyDown(Keys.V))
@@ -66,20 +113,38 @@ namespace ParticleLibrary.Interface
 					string copied = Platform.Get<IClipboard>().Value;
 					if (!AllowNewline)
 						copied = copied.Replace("\n", string.Empty);
-					Text += copied;
-				}
 
-				EndWriting();
-				return Text;
+					if (SelectionIndex != -1)
+					{
+						int min = Math.Min(CaretIndex, SelectionIndex);
+						int max = Math.Max(CaretIndex, SelectionIndex);
+
+						Text = Text.Remove(min, max - min);
+						Text = Text.Insert(min, copied);
+						SelectionIndex = -1;
+					}
+					else
+					{
+						Text = Text.Insert(CaretIndex, copied);
+					}
+
+					CaretIndex += copied.Length;
+
+					EndWriting();
+					return Text;
+				}
 			}
 
-			// Shift is held
-			if (Main.keyState.PressingShift())
+			if (shift)
 			{
 				// Delete line
 				if (Main.keyState.IsKeyDown(Keys.Delete) && !_oldKeyState.IsKeyDown(Keys.Delete))
 				{
 					Text = string.Empty;
+					SelectionIndex = -1;
+
+					EndWriting();
+					return Text;
 				}
 				// Paste
 				else if (Main.keyState.IsKeyDown(Keys.Insert) && !_oldKeyState.IsKeyDown(Keys.Insert))
@@ -87,15 +152,30 @@ namespace ParticleLibrary.Interface
 					string copied = Platform.Get<IClipboard>().Value;
 					if (!AllowNewline)
 						copied = copied.Replace("\n", string.Empty);
-					Text += copied;
-				}
 
-				EndWriting();
-				return Text;
+					if (SelectionIndex != -1)
+					{
+						int min = Math.Min(CaretIndex, SelectionIndex);
+						int max = Math.Max(CaretIndex, SelectionIndex);
+
+						Text = Text.Remove(min, max - min);
+						Text = Text.Insert(min, copied);
+						SelectionIndex = -1;
+					}
+					else
+					{
+						Text = Text.Insert(CaretIndex, copied);
+					}
+
+					CaretIndex += copied.Length;
+
+					EndWriting();
+					return Text;
+				}
 			}
 
 			// Caret manipulation
-			if (Main.keyState.IsKeyDown(Keys.Left))
+			if (left)
 			{
 				if (_arrowCounter <= 0)
 				{
@@ -103,23 +183,34 @@ namespace ParticleLibrary.Interface
 					{
 						_arrowCounter = 30;
 						_arrowHeld = true;
-						if (_caretIndex > 0)
-							_caretIndex--;
-						Main.NewText(_caretIndex);
 					}
 					else
 					{
 						_arrowCounter = 2;
-						if (_caretIndex > 0)
-							_caretIndex--;
-						Main.NewText(_caretIndex);
+					}
+
+					if (shift)
+					{
+						if (SelectionIndex == -1)
+						{
+							SelectionIndex = CaretIndex;
+						}
+					}
+					else
+					{
+						SelectionIndex = -1;
+					}
+
+					if (CaretIndex > 0)
+					{
+						CaretIndex--;
 					}
 				}
 
 				EndWriting();
 				return Text;
 			}
-			else if (Main.keyState.IsKeyDown(Keys.Right))
+			else if (right)
 			{
 				if (_arrowCounter <= 0)
 				{
@@ -127,16 +218,27 @@ namespace ParticleLibrary.Interface
 					{
 						_arrowCounter = 30;
 						_arrowHeld = true;
-						if (_caretIndex < Text.Length)
-							_caretIndex++;
-						Main.NewText(_caretIndex);
 					}
 					else
 					{
 						_arrowCounter = 2;
-						if (_caretIndex < Text.Length)
-							_caretIndex++;
-						Main.NewText(_caretIndex);
+					}
+
+					if (shift)
+					{
+						if (SelectionIndex == -1)
+						{
+							SelectionIndex = CaretIndex;
+						}
+					}
+					else
+					{
+						SelectionIndex = -1;
+					}
+
+					if (CaretIndex < Text.Length)
+					{
+						CaretIndex++;
 					}
 				}
 
@@ -160,6 +262,17 @@ namespace ParticleLibrary.Interface
 				if (key == Keys.Enter && AllowNewline)
 				{
 					tempText += "\n";
+
+					if (SelectionIndex != -1)
+					{
+						int min = Math.Min(CaretIndex, SelectionIndex);
+						int max = Math.Max(CaretIndex, SelectionIndex);
+
+						Text = Text.Remove(min, max - min);
+						SelectionIndex = -1;
+						if (CaretIndex != min)
+							CaretIndex = min;
+					}
 				}
 
 				// Backspace
@@ -171,12 +284,25 @@ namespace ParticleLibrary.Interface
 						_backspaceCounter = 10;
 					}
 
-
 					if (Text.Length > 0)
-						Text = Text.Remove(_caretIndex - 1, 1);
+					{
+						if (SelectionIndex != -1 && SelectionIndex != CaretIndex)
+						{
+							int min = Math.Min(CaretIndex, SelectionIndex);
+							int max = Math.Max(CaretIndex, SelectionIndex);
 
-					if (_caretIndex > 0)
-						_caretIndex--;
+							Text = Text.Remove(min, max - min);
+							SelectionIndex = -1;
+							CaretIndex = min;
+						}
+						else
+						{
+							Text = Text.Remove(CaretIndex - 1, 1);
+							if (CaretIndex > 0)
+								CaretIndex--;
+						}
+					}
+
 				}
 				else
 				{
@@ -192,8 +318,23 @@ namespace ParticleLibrary.Interface
 			}
 
 			// Finally, insert text and adjust caret
-			Text = Text.Insert(_caretIndex, tempText);
-			_caretIndex += tempText.Length;
+			if (SelectionIndex != -1 && tempText.Length > 0)
+			{
+				int min = Math.Min(CaretIndex, SelectionIndex);
+				int max = Math.Max(CaretIndex, SelectionIndex);
+
+				Text = Text.Remove(min, max - min);
+				Text = Text.Insert(min, tempText);
+				SelectionIndex = -1;
+				if (CaretIndex != min)
+					CaretIndex = min;
+			}
+			else
+			{
+				Text = Text.Insert(CaretIndex, tempText);
+			}
+
+			CaretIndex += tempText.Length;
 
 			// End and return
 			EndWriting();
