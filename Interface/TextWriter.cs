@@ -16,16 +16,13 @@ namespace ParticleLibrary.Interface
 		public bool CaretVisible => CaretCounter < 25;
 		public int CaretCounter { get; private set; }
 		public int CaretIndex { get; private set; }
+		public int SelectionIndex { get; private set; } = -1;
 
 		private bool _arrowHeld;
 		private int _arrowCounter;
 
 		private bool _backspaceHeld;
 		private int _backspaceCounter;
-
-		public int SelectionIndex { get; private set; } = -1;
-		private bool _selectionHeld;
-		private int _selectionCounter;
 
 		private KeyboardState _oldKeyState;
 
@@ -41,9 +38,6 @@ namespace ParticleLibrary.Interface
 
 			if (_backspaceCounter > 0)
 				_backspaceCounter--;
-
-			if (_selectionCounter > 0)
-				_selectionCounter--;
 		}
 
 		public string Write()
