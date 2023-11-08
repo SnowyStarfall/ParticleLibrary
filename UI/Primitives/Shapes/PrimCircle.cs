@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 
-namespace ParticleLibrary.Interface.Primitives.Shapes
+namespace ParticleLibrary.UI.Primitives.Shapes
 {
     public class PrimCircle
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ParticleLibrary.Interface.Primitives.Shapes
+namespace ParticleLibrary.UI.Primitives.Shapes
 {
     public class PrimRectangle
     {

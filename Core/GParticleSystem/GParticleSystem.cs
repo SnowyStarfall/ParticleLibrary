@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ParticleLibrary.Interface.Primitives;
+using ParticleLibrary.UI.Primitives;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;

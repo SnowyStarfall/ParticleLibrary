@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParticleLibrary.Interface.Primitives
+namespace ParticleLibrary.UI.Primitives
 {
     public enum MatrixType
     {

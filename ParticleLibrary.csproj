@@ -13,8 +13,8 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Interface\OldDebug.cs" />
-	  <Compile Remove="Interface\States\OldDebug.cs" />
+	  <Compile Remove="UI\OldDebug.cs" />
+	  <Compile Remove="UI\States\OldDebug.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Assets\Effects\GParticleShader.fx" />
@@ -56,6 +56,6 @@
 	  <Folder Include="Textures\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="Interface\States\OldDebug.cs" />
+	  <None Include="UI\States\OldDebug.cs" />
 	</ItemGroup>
 </Project>

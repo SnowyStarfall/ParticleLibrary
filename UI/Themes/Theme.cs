@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ParticleLibrary.Interface.Themes
+namespace ParticleLibrary.UI.Themes
 {
 	public abstract class Theme
 	{

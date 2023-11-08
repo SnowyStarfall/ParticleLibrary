@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Utilities;
 
-namespace ParticleLibrary.Interface.Themes
+namespace ParticleLibrary.UI.Themes
 {
 	public class DarkTheme : Theme
 	{

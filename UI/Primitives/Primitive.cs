@@ -4,7 +4,7 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ParticleLibrary.Interface.Primitives
+namespace ParticleLibrary.UI.Primitives
 {
 	public class Primitive : ModSystem
 	{

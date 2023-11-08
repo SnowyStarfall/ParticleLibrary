@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary.Interface.Primitives;
-using ParticleLibrary.Interface.Primitives.Shapes;
-using ParticleLibrary.Interface.States;
+using ParticleLibrary.UI.Interfaces;
+using ParticleLibrary.UI.Primitives;
+using ParticleLibrary.UI.Primitives.Shapes;
+using ParticleLibrary.UI.States;
 using ParticleLibrary.Utilities;
 using System.Collections.Generic;
 using Terraria;
@@ -9,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace ParticleLibrary.Interface
+namespace ParticleLibrary.UI
 {
     internal class UISystem : ModSystem
     {
@@ -32,8 +33,8 @@ namespace ParticleLibrary.Interface
 
 		public override void PreUpdateEntities()
 		{
-			if (DebugUIElement.Visible)
-				RecursiveUpdate(DebugUIElement);
+            if (DebugUIElement.Visible)
+                DebugUIElement.ExecuteRecursively(RecursiveUpdate);
 		}
 
 		public override void PostUpdateInput()
@@ -56,9 +57,6 @@ namespace ParticleLibrary.Interface
 
 			if (element is IConsistentUpdateable updateable)
 				updateable.Update();
-
-			foreach (var child in element.Children)
-				RecursiveUpdate(child);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -95,7 +93,7 @@ namespace ParticleLibrary.Interface
 
             if (element is IDebuggable debuggable)
             {
-                debuggable.RenderDebug(Rectangle, alpha);
+                debuggable.DebugRender(Rectangle, alpha);
             }
 
             foreach (UIElement e in element.Children)

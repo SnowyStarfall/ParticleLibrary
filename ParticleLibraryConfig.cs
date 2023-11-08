@@ -1,5 +1,5 @@
-﻿using ParticleLibrary.Interface;
-using ParticleLibrary.Interface.Themes;
+﻿using ParticleLibrary.UI;
+using ParticleLibrary.UI.Themes;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
 

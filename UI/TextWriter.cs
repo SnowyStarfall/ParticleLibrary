@@ -1,12 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using ReLogic.OS;
 using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.Utilities;
 
-namespace ParticleLibrary.Interface
+namespace ParticleLibrary.UI
 {
 	public class TextWriter
 	{
@@ -127,10 +125,14 @@ namespace ParticleLibrary.Interface
 					EndWriting();
 					return Text;
 				}
+				// Select all
 				else if (Main.keyState.IsKeyDown(Keys.A) && !_oldKeyState.IsKeyDown(Keys.A))
 				{
 					SelectionIndex = 0;
 					CaretIndex = Text.Length;
+
+					EndWriting();
+					return Text;
 				}
 			}
 
