@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core;
-using ParticleLibrary.Core.PointParticleSystem;
+using ParticleLibrary.Core;
 using ParticleLibrary.ExampleParticles;
 using ReLogic.Graphics;
 using Terraria;

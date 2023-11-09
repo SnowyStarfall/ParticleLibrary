@@ -10,7 +10,7 @@ using Terraria;
 using Terraria.ModLoader;
 using static ParticleLibrary.Resources;
 
-namespace ParticleLibrary.Core.PointParticleSystem
+namespace ParticleLibrary.Core
 {
     public class PointParticleSystem : IDisposable
 	{

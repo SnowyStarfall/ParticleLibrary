@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ParticleLibrary.Core.PointParticleSystem
+namespace ParticleLibrary.Core
 {
 	internal struct PointParticleVertex : IVertexType
 	{

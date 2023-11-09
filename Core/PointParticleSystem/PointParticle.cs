@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ParticleLibrary.Core.PointParticleSystem
+namespace ParticleLibrary.Core
 {
 	public class PointParticle
 	{

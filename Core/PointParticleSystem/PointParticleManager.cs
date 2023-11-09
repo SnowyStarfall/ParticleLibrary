@@ -1,7 +1,7 @@
 ﻿using ParticleLibrary.Utilities;
 using Terraria.ModLoader;
 
-namespace ParticleLibrary.Core.PointParticleSystem
+namespace ParticleLibrary.Core
 {
 	internal class PointParticleManager : ModSystem
 	{

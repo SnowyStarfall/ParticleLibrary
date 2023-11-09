@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace ParticleLibrary.Core.PointParticleSystem
+namespace ParticleLibrary.Core
 {
 	public class PointParticleSystemSettings
 	{
