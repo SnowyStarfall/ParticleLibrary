@@ -16,7 +16,7 @@ namespace ParticleLibrary.UI.Elements.Base
         public Color Fill { get; protected set; }
         public Color Outline { get; protected set; }
 
-        public bool Visible { get; set; }
+        public bool Visible { get; set; } = true;
         public bool Draggable { get; set; }
         public bool Resizable { get; set; }
 
@@ -133,7 +133,6 @@ namespace ParticleLibrary.UI.Elements.Base
                 _resizing = false;
             }
 
-
             Recalculate();
         }
 
@@ -185,29 +184,7 @@ namespace ParticleLibrary.UI.Elements.Base
             // Clamping logic
             if (!parentDim.Contains(panelDim))
             {
-                if (panelDim.X < parentDim.X)
-                {
-                    Left.Pixels = parentDim.X;
-                }
-                else if (panelDim.X + panelDim.Width > parentDim.X + parentDim.Width)
-                {
-                    Left.Pixels = parentDim.X + parentDim.Width - panelDim.Width;
-                }
-
-                if (panelDim.Y < parentDim.Y)
-                {
-                    Top.Pixels = parentDim.Y;
-                }
-                else if (panelDim.Y + panelDim.Height > parentDim.Y + parentDim.Height)
-                {
-                    Top.Pixels = parentDim.Y + parentDim.Height - panelDim.Height;
-                }
-
                 Recalculate();
-
-                //// Reestablish area after recalculation
-                //parentDim = Parent.GetDimensions().ToRectangle();
-                //panelDim = GetDimensions().ToRectangle();
             }
 
             // Update things if we resized
