@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.UI.Interfaces;
 using ParticleLibrary.UI.Primitives;
 using ParticleLibrary.UI.Primitives.Shapes;
 using ParticleLibrary.UI.States;
-using ParticleLibrary.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -31,7 +31,7 @@ namespace ParticleLibrary.UI
             Rectangle = new(Vector2.Zero, Vector2.Zero, MatrixType.Interface);
         }
 
-		public override void PreUpdateEntities()
+		public override void PostUpdateEverything()
 		{
             if (DebugUIElement.Visible)
                 DebugUIElement.ExecuteRecursively(RecursiveUpdate);
@@ -39,6 +39,13 @@ namespace ParticleLibrary.UI
 
 		public override void PostUpdateInput()
 		{
+#if DEBUG
+			if (Main.keyState.IsKeyDown(Keys.OemCloseBrackets))
+			{
+				DebugUIElement.Unload();
+                DebugUIElement.OnInitialize();
+			}
+#endif
 		}
 
 		private GameTime _lastUpdateUIGameTIme;
