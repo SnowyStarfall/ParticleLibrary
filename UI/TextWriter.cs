@@ -66,7 +66,7 @@ namespace ParticleLibrary.UI
 						Platform.Get<IClipboard>().Value = Text[min..max];
 						Text = Text.Remove(min, max - min);
 						SelectionIndex = -1;
-						if(CaretIndex != min)
+						if (CaretIndex != min)
 							CaretIndex = min;
 					}
 					else
@@ -130,6 +130,15 @@ namespace ParticleLibrary.UI
 				{
 					SelectionIndex = 0;
 					CaretIndex = Text.Length;
+
+					EndWriting();
+					return Text;
+				}
+				else if (Main.keyState.IsKeyDown(Keys.Back))
+				{
+					Text = string.Empty;
+					SelectionIndex = -1;
+					CaretIndex = 0;
 
 					EndWriting();
 					return Text;

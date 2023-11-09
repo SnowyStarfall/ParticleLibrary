@@ -54,6 +54,7 @@
 	<ItemGroup>
 	  <Folder Include="Assets\Textures\Examples\" />
 	  <Folder Include="Textures\" />
+	  <Folder Include="UI\Elements\Custom\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Include="UI\States\OldDebug.cs" />
