@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria;
 
 namespace ParticleLibrary.UI.Primitives.Shapes
 {
@@ -94,7 +96,7 @@ namespace ParticleLibrary.UI.Primitives.Shapes
             _vertices[1] = new VertexPositionColor(new Vector3(_position + new Vector2(_size.X, 0f), 0f), _color);
             _vertices[2] = new VertexPositionColor(new Vector3(_position + _size, 0f), _color);
             _vertices[3] = new VertexPositionColor(new Vector3(_position + new Vector2(0f, _size.Y), 0f), _color);
-            _vertices[4] = _vertices[0];
-        }
+            _vertices[^1] = _vertices[0];
+		}
     }
 }

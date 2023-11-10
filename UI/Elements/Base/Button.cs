@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.UI.Interfaces;
+using ParticleLibrary.UI.Primitives.Complex;
 using ParticleLibrary.UI.Primitives.Shapes;
 using ParticleLibrary.Utilities;
 using Terraria;
@@ -9,7 +10,7 @@ using Terraria.UI;
 
 namespace ParticleLibrary.UI.Elements.Base
 {
-    public class Button : Panel, IDebuggable
+    public class Button : Panel
     {
         public Color HoverFill { get; private set; }
         public Color HoverOutline { get; private set; }
@@ -90,19 +91,19 @@ namespace ParticleLibrary.UI.Elements.Base
             HoverOutline = outline;
         }
 
-        public override void DebugRender(PrimRectangle rectangle, float alpha)
+        public override void DebugRender(Box box, float alpha)
         {
-            base.DebugRender(rectangle, alpha);
+            base.DebugRender(box, alpha);
 
             CalculatedStyle inner = GetInnerDimensions();
             Vector2 size = FontAssets.MouseText.Value.MeasureString(Content ?? "");
 
-            rectangle.SetSize(inner.ToRectangle());
-            rectangle.Draw();
+			box.SetSize(inner.ToRectangle());
+			box.Draw();
 
-            rectangle.Position = inner.Position();
-            rectangle.SetSize(new Rectangle((int)inner.X, (int)inner.Y, (int)size.X, (int)size.Y));
-            rectangle.Draw();
+			box.SetPosition(inner.Position());
+			box.SetSize(new Rectangle((int)inner.X, (int)inner.Y, (int)size.X, (int)size.Y));
+			box.Draw();
         }
     }
 }

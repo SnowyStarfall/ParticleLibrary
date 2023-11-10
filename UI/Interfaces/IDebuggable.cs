@@ -1,9 +1,9 @@
-﻿using ParticleLibrary.UI.Primitives.Shapes;
+﻿using ParticleLibrary.UI.Primitives.Complex;
 
 namespace ParticleLibrary.UI.Interfaces
 {
     internal interface IDebuggable
     {
-        public abstract void DebugRender(PrimRectangle rectangle, float alpha);
+        public abstract void DebugRender(Box box, float alpha);
     }
 }

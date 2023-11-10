@@ -67,8 +67,9 @@ namespace ParticleLibrary.UI.Elements.Base
 			CalculatedStyle dim = GetInnerDimensions();
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(Content.ToString());
 			float scale = Utils.Clamp(dim.Height / size.Y, 0f, 2f);
+			Vector2 position = dim.Position() - new Vector2((_moveCounter / 100f) * _hiddenLength, 0f);
 
-			spriteBatch.DrawText(Content.ToString(), 1, dim.Position() - new Vector2((_moveCounter / 100f) * _hiddenLength, 0f), Color.White, Color.Black, scale: scale);
+			spriteBatch.DrawText(Content.ToString(), 1, position, Color.White, Color.Black);
 		}
 
 		private bool Overflows()

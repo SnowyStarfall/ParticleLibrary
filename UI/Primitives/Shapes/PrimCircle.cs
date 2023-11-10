@@ -76,6 +76,7 @@ namespace ParticleLibrary.UI.Primitives.Shapes
                 Primitive.WorldEffect.CurrentTechnique.Passes[0].Apply();
             else
                 Primitive.InterfaceEffect.CurrentTechnique.Passes[0].Apply();
+
             Primitive.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices, 0, _vertices.Length - 1);
         }
 

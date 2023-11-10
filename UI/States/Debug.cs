@@ -50,12 +50,13 @@ namespace ParticleLibrary.UI.States
 			SearchPanel = new(Theme.Low, Theme.LowAccent, 1f, 1f)
 			{
 				Resizable = true,
-				Draggable = true
+				Draggable = true,
+				Screenlocked = true
 			};
 			SearchPanel.Width.Set(384f, 0f);
 			SearchPanel.Height.Set(512f, 0f);
-			//SearchPanel.MinWidth.Set(0f, 0.125f);
-			//SearchPanel.MinHeight.Set(0f, 0.125f);
+			SearchPanel.MinWidth.Set(0f, 0.125f);
+			SearchPanel.MinHeight.Set(0f, 0.125f);
 
 			SearchBar = new(Theme.Mid, Theme.LowAccent, Theme.HighAccent, 1f, 4f)
 			{
@@ -79,12 +80,18 @@ namespace ParticleLibrary.UI.States
 			{
 				HAlign = 0.5f
 			};
-			SearchList.Top.Set(0f, 0.2f);
+			SearchList.Top.Set(0f, 0.15f);
 			SearchList.Width.Set(0f, 0.9f);
-			SearchList.Height.Set(0f, 0.75f);
+			SearchList.Height.Set(0f, 0.8f);
 
 			GetTypes();
 			AddTypes();
+
+			// TODO: Remove
+			SearchList.Add(new ListItem("ParticleLibrary Test 1"));
+			SearchList.Add(new ListItem("ParticleLibrary Teeeeest 2"));
+			SearchList.Add(new ListItem("ParticleLibrary Teeeeeeeeeeeeest 3"));
+			SearchList.Add(new ListItem("ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4"));
 
 			//// Append all panels to base
 			//Base.Append(SearchPanel);

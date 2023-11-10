@@ -7,6 +7,9 @@ using System.Xml.Linq;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Utilities;
+using ParticleLibrary.UI.Primitives.Shapes;
+using ParticleLibrary.UI.Primitives.Complex;
 
 namespace ParticleLibrary.UI.Elements.Base
 {
@@ -33,7 +36,7 @@ namespace ParticleLibrary.UI.Elements.Base
 			_selectedItems = new();
 
 			_innerList = new();
-			_innerList.OverflowHidden = false;
+			_innerList.SetPadding(4f);
 			_innerList.Width.Set(0f, 1f);
 			_innerList.Height.Set(0f, 1f);
 			Append(_innerList);
@@ -43,7 +46,7 @@ namespace ParticleLibrary.UI.Elements.Base
 
 		private class InnerList : UIElement
 		{
-			public override bool ContainsPoint(Vector2 point) => true;
+			//public override bool ContainsPoint(Vector2 point) => true;
 
 			protected override void DrawChildren(SpriteBatch spriteBatch)
 			{
@@ -58,7 +61,7 @@ namespace ParticleLibrary.UI.Elements.Base
 				}
 			}
 
-			public override Rectangle GetViewCullingArea() => Parent.GetDimensions().ToRectangle();
+			//public override Rectangle GetViewCullingArea() => Parent.GetDimensions().ToRectangle();
 		}
 
 		public virtual void Add(UIElement item)
@@ -84,7 +87,6 @@ namespace ParticleLibrary.UI.Elements.Base
 
 		public override void Recalculate()
 		{
-			
 			base.Recalculate();
 			//UpdateScrollbar();
 		}
@@ -100,23 +102,23 @@ namespace ParticleLibrary.UI.Elements.Base
 		{
 			base.RecalculateChildren();
 
-			//CalculatedStyle inner = GetInnerDimensions();
+			CalculatedStyle inner = GetInnerDimensions();
 
-			//float height = ItemHeight.GetValue(inner.Height);
-			//float padding = ItemPadding.GetValue(inner.Height);
-			//float totalHeight = Items.Count * (height + padding);
-			//float exposableHeight = inner.Height / totalHeight;
+			float height = ItemHeight.GetValue(inner.Height);
+			float padding = ItemPadding.GetValue(inner.Height);
+			float totalHeight = Items.Count * (height + padding);
+			float exposableHeight = inner.Height / totalHeight;
 
-			//float top = 0f;
+			float top = 0f;
 
-			//foreach (var item in Items)
-			//{
-			//	item.Top.Set(top, 0f);
-			//	item.Width.Set(0f, 1f);
-			//	item.Height = ItemHeight;
-			//	item.Recalculate();
-			//	top += height + padding;
-			//}
+			foreach (var item in Items)
+			{
+				item.Top.Set(top, 0f);
+				item.Width.Set(0f, 1f);
+				item.Height = ItemHeight;
+				item.Recalculate();
+				top += height + padding;
+			}
 
 			//float num = 0f;
 			//for (int i = 0; i < _items.Count; i++)
@@ -161,6 +163,17 @@ namespace ParticleLibrary.UI.Elements.Base
 			}
 
 			_selectedItems.Add(evt.Target);
+		}
+
+		public override void DebugRender(Box box, float alpha)
+		{
+			base.DebugRender(box, alpha);
+
+			foreach(UIElement item in Items)
+			{
+				box.SetSize(item.GetDimensions().ToRectangle());
+				box.Draw();
+			}
 		}
 	}
 }
