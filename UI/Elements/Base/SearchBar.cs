@@ -30,6 +30,7 @@ namespace ParticleLibrary.UI.Elements.Base
         {
             ActiveOutline = activeOutline;
 
+            OverflowHidden = true;
             _textWriter = new();
         }
 
@@ -111,8 +112,8 @@ namespace ParticleLibrary.UI.Elements.Base
             // Draw text with clipping
             CalculatedStyle inner = GetInnerDimensions();
 
-            Main.graphics.GraphicsDevice.ScissorRectangle = inner.ToRectangle();
-            Main.graphics.GraphicsDevice.RasterizerState.ScissorTestEnable = true;
+            //Main.graphics.GraphicsDevice.ScissorRectangle = inner.ToRectangle();
+            //Main.graphics.GraphicsDevice.RasterizerState.ScissorTestEnable = true;
 
             spriteBatch.Begin(LibUtilities.CustomUISettings);
 
@@ -136,7 +137,7 @@ namespace ParticleLibrary.UI.Elements.Base
             spriteBatch.End();
 
             //Main.graphics.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            Main.graphics.GraphicsDevice.RasterizerState.ScissorTestEnable = false;
+            //Main.graphics.GraphicsDevice.RasterizerState.ScissorTestEnable = false;
 
             spriteBatch.Begin(LibUtilities.DefaultUISettings);
         }
