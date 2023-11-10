@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
+using static ParticleLibrary.Resources.Assets;
 
 namespace ParticleLibrary.UI.Primitives.Complex
 {
@@ -26,10 +27,10 @@ namespace ParticleLibrary.UI.Primitives.Complex
 		private DynamicVertexBuffer _vertexBuffer;
 		private DynamicIndexBuffer _indexBuffer;
 
-		private readonly Effect _effect;
-		private readonly EffectParameter _matrix;
-		private readonly EffectParameter _outline;
-		private readonly EffectParameter _texel;
+		private Effect _effect;
+		private EffectParameter _matrix;
+		private EffectParameter _outline;
+		private EffectParameter _texel;
 
 		private bool Rounded => CornerRadius != 0f;
 
@@ -43,7 +44,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			CornerRadius = MathF.Abs(cornerRadius);
 			_originalRadius = MathF.Abs(cornerRadius);
 
-			OutlineThickness = outlineThickness;
+			OutlineThickness = outlineThickness == 0f ? 0f : outlineThickness + 0.0001f;
 
 			_vertices = new();
 			_indices = new();
@@ -52,14 +53,14 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			{
 				_vertexBuffer = new(Main.graphics.GraphicsDevice, typeof(VertexPositionColorTexture), 16, BufferUsage.WriteOnly);
 				_indexBuffer = new(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 54, BufferUsage.WriteOnly);
+
+				_effect = ModContent.Request<Effect>(Effects.Shape, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value.Clone();
+				_matrix = _effect.Parameters["UIScaleMatrix"];
+				_outline = _effect.Parameters["Outline"];
+				_texel = _effect.Parameters["Texel"];
+
+				_outline.SetValue(Outline.ToVector4());
 			});
-
-			_effect = ModContent.Request<Effect>(Resources.Assets.Effects.Shape, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-			_matrix = _effect.Parameters["UIScaleMatrix"];
-			_outline = _effect.Parameters["Outline"];
-			_texel = _effect.Parameters["Texel"];
-
-			_outline.SetValue(Outline.ToVector4());
 
 			_verticesDirty = true;
 		}
@@ -68,7 +69,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 		{
 			// Preventative measures to keep rounding from overflowing.
 			float min = MathF.Min(Size.X, Size.Y);
-			if (CornerRadius > min / 2f || CornerRadius < min / 2f && CornerRadius < _originalRadius)
+			if (Rounded && (CornerRadius > min / 2f || CornerRadius < min / 2f && CornerRadius < _originalRadius))
 			{
 				CornerRadius = min / 2f;
 				_verticesDirty = true;
@@ -244,6 +245,13 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			_verticesDirty = true;
 		}
 
+		public void SetSize(Rectangle size)
+		{
+			Position = new Vector2(size.X, size.Y);
+			Size = new Vector2(MathF.Abs(size.Width), MathF.Abs(size.Height));
+			_verticesDirty = true;
+		}
+
 		public void SetFill(Color color)
 		{
 			Fill = color;
@@ -264,13 +272,14 @@ namespace ParticleLibrary.UI.Primitives.Complex
 
 		public void SetOutlineThickness(float thickness)
 		{
-			OutlineThickness = thickness;
+			OutlineThickness = thickness == 0f ? 0f : thickness + 0.0001f;
 		}
 
 		public void Dispose()
 		{
 			_vertexBuffer.Dispose();
 			_indexBuffer.Dispose();
+			_effect.Dispose();
 
 			GC.SuppressFinalize(this);
 		}
