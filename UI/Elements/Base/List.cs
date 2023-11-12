@@ -17,7 +17,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		public StyleDimension ItemHeight { get; set; }
 		public StyleDimension ItemPadding { get; set; }
 
-		private InnerList _innerList;
+		private readonly InnerList _innerList;
 
 		public List(Color fill, Color outline, float outlineThickness = 1, float cornerRadius = 0, bool soft = false) : base(fill, outline, outlineThickness, cornerRadius, soft)
 		{

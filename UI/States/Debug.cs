@@ -72,6 +72,7 @@ namespace ParticleLibrary.UI.States
 			SearchList.Top.Set(0f, 0.15f);
 			SearchList.Width.Set(0f, 0.9f);
 			SearchList.Height.Set(0f, 0.8f);
+			SearchList.ItemHeight = new(28f, 0f);
 
 			GetTypes();
 			AddTypes();

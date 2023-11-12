@@ -23,7 +23,7 @@ namespace ParticleLibrary.UI.Elements.Base
 
 		protected bool _active;
 
-		private TextWriter _textWriter;
+		private readonly TextWriter _textWriter;
 
 		public SearchBar(Color fill, Color outline, Color activeOutline, float outlineThickness = 1f, float cornerRadius = 0f, bool soft = false) : base(fill, outline, outlineThickness, cornerRadius, soft)
 		{

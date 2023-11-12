@@ -78,7 +78,7 @@ namespace ParticleLibrary.UI
 				{
 					if (_lastUpdateUIGameTIme != null && DebugUILayer?.CurrentState != null)
 						DebugUIElement.Draw(Main.spriteBatch);
-					DrawDebugHitbox(DebugUIElement, 1f);
+					//DrawDebugHitbox(DebugUIElement, 1f);
 					//PrintHoveredElement(DebugUIElement, Color.Red);
 					return true;
 				}, InterfaceScaleType.UI));

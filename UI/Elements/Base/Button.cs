@@ -20,7 +20,7 @@ namespace ParticleLibrary.UI.Elements.Base
 
 		protected bool _hovered;
 
-		private TextShifter _textShifter;
+		private readonly TextShifter _textShifter;
 		private bool _overflows;
 		private float _hiddenLength;
 
