@@ -97,6 +97,11 @@ namespace ParticleLibrary.UI.Elements.Base
 		{
 			base.LeftMouseDown(evt);
 
+			if (evt.Target != this)
+			{
+				return;
+			}
+
 			if (Draggable && _draggableArea.Contains(Main.MouseScreen.ToPoint()))
 			{
 				_dragging = true;
@@ -120,6 +125,11 @@ namespace ParticleLibrary.UI.Elements.Base
 		public override void LeftMouseUp(UIMouseEvent evt)
 		{
 			base.LeftMouseUp(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
 
 			if (Draggable && _dragging)
 			{
@@ -224,7 +234,6 @@ namespace ParticleLibrary.UI.Elements.Base
 
 				Primitive.SetPosition(_oldDimensions.Position());
 				Primitive.SetSize(new Vector2(_oldDimensions.Width, _oldDimensions.Height));
-				Primitive.SetCornerRadius(Primitive.CornerRadius);
 
 				CalculateAreas(newDimensions);
 			}

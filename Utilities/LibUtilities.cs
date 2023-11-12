@@ -10,12 +10,12 @@ namespace ParticleLibrary.Utilities
 	public static class LibUtilities
 	{
 		public static SpriteBatchSettings DefaultUISettings { get; private set; }
-		public static SpriteBatchSettings CustomUISettings { get; private set; }
+		public static SpriteBatchSettings ClarityUISettings { get; private set; }
 
 		static LibUtilities()
 		{
 			DefaultUISettings = new(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, ui: true);
-			CustomUISettings = new(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, ui: true);
+			ClarityUISettings = new(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, ui: true);
 		}
 
 		public static Vector4 Vec4From2Vec2(Vector2 xy, Vector2 zw) => new(xy, zw.X, zw.Y);

@@ -94,6 +94,12 @@ namespace ParticleLibrary.UI.Elements.Base
 		public override void ScrollWheel(UIScrollWheelEvent evt)
 		{
 			base.ScrollWheel(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
 			//if (_scrollbar != null)
 			//	_scrollbar.ViewPosition -= evt.ScrollWheelValue;
 		}

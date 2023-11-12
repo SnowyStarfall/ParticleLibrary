@@ -42,7 +42,7 @@ namespace ParticleLibrary.UI.Elements.Base
 
             Primitive.Draw();
 
-            spriteBatch.Begin(LibUtilities.CustomUISettings);
+            spriteBatch.Begin(LibUtilities.ClarityUISettings);
 
             CalculatedStyle inner = GetInnerDimensions();
             Vector2 size = FontAssets.MouseText.Value.MeasureString(Content ?? "");
@@ -56,29 +56,64 @@ namespace ParticleLibrary.UI.Elements.Base
 
         public override void MouseOver(UIMouseEvent evt)
         {
-            Primitive.SetFill(HoverFill);
+            base.MouseOver(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
+			Primitive.SetFill(HoverFill);
             _hovered = true;
         }
 
         public override void MouseOut(UIMouseEvent evt)
         {
-            Primitive.SetFill(Fill);
+            base.MouseOut(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
+			Primitive.SetFill(Fill);
             _hovered = false;
         }
 
         public override void LeftMouseDown(UIMouseEvent evt)
         {
-            Primitive.SetFill(Fill);
+            base.LeftMouseDown(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
+			Primitive.SetFill(Fill);
         }
 
         public override void LeftMouseUp(UIMouseEvent evt)
         {
-            Primitive.SetFill(HoverFill);
+            base.LeftMouseUp(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
+			Primitive.SetFill(HoverFill);
         }
 
         public override void LeftClick(UIMouseEvent evt)
         {
-            OnClick?.Invoke(this);
+            base.LeftClick(evt);
+
+			if (evt.Target != this)
+			{
+				return;
+			}
+
+			OnClick?.Invoke(this);
         }
 
         public override void SetOutline(Color outline)

@@ -100,15 +100,13 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			// Set parameters
 			_matrix.SetValue(Main.UIScaleMatrix);
 
-			int triCount = CornerRadius == 0f ? 2 : 18;
-
 			// Draw box
 			_effect.CurrentTechnique.Passes[0].Apply();
 
 			Main.graphics.GraphicsDevice.SetVertexBuffer(_vertexBuffer);
 			Main.graphics.GraphicsDevice.Indices = _indexBuffer;
 
-			Main.graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count, 0, triCount);
+			Main.graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Count, 0, 2);
 		}
 
 		private void Recalculate()
