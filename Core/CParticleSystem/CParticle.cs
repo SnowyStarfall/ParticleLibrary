@@ -112,9 +112,9 @@ namespace ParticleLibrary.Core
 
 				if (!Bounds.HasValue && _texture is not null)
 				{
-					Bounds = new Rectangle(0,0,_texture.Width, _texture.Height);
+					Bounds = new Rectangle(0, 0, _texture.Width, _texture.Height);
 				}
-					
+
 			}
 		}
 

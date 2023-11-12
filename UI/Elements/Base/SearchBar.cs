@@ -1,16 +1,15 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
+using ParticleLibrary.UI.Interfaces;
+using ParticleLibrary.Utilities;
+using System;
+using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.UI;
-using Terraria;
-using Terraria.GameContent;
-using ParticleLibrary.Utilities;
-using System.Linq;
-using System;
-using ParticleLibrary.UI.Interfaces;
 
 namespace ParticleLibrary.UI.Elements.Base
 {

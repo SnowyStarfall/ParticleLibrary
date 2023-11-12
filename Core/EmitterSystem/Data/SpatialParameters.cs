@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.Graphics;
 
 namespace ParticleLibrary.Core.EmitterSystem.Data
 {

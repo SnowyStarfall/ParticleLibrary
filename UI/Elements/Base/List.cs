@@ -1,15 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using Terraria.UI;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Xml.Linq;
-using Terraria;
-using Terraria.GameContent.UI.Elements;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Utilities;
-using ParticleLibrary.UI.Primitives.Shapes;
-using ParticleLibrary.UI.Primitives.Complex;
+using Terraria.UI;
 
 namespace ParticleLibrary.UI.Elements.Base
 {

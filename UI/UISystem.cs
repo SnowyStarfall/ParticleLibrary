@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.UI.Interfaces;
-using ParticleLibrary.UI.Primitives;
 using ParticleLibrary.UI.Primitives.Complex;
-using ParticleLibrary.UI.Primitives.Shapes;
 using ParticleLibrary.UI.States;
 using System.Collections.Generic;
 using Terraria;

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.UI.Interfaces;
 using ParticleLibrary.UI.Primitives.Complex;
-using ParticleLibrary.UI.Primitives.Shapes;
 using ParticleLibrary.Utilities;
 using Terraria;
 using Terraria.GameContent;
@@ -158,7 +157,7 @@ namespace ParticleLibrary.UI.Elements.Base
 			Rectangle inner = GetInnerDimensions().ToRectangle();
 			float scale = Utils.Clamp(inner.Height / size.Y, 0f, 2f);
 
-			if ((position.X + (size.X * scale))> (inner.X + inner.Width))
+			if ((position.X + (size.X * scale)) > (inner.X + inner.Width))
 			{
 				_hiddenLength = ((position.X + size.X * scale) - (inner.X + inner.Width));
 				return true;

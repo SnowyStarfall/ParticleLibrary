@@ -24,7 +24,7 @@ namespace ParticleLibrary.Core.EmitterSystem.SpatialHash
 			//}
 
 			long key = GetKey((int)(obj.EmitterSettings.X / 128), (int)(obj.EmitterSettings.Y / 128));
-			if(_store.ContainsKey(key))
+			if (_store.ContainsKey(key))
 			{
 				_store[key].Remove(obj);
 			}

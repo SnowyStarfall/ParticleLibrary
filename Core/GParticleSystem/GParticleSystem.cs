@@ -12,7 +12,7 @@ using static ParticleLibrary.Resources;
 
 namespace ParticleLibrary.Core
 {
-    public class GParticleSystem : IDisposable
+	public class GParticleSystem : IDisposable
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
 

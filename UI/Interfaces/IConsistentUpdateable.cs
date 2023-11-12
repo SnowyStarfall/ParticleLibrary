@@ -1,7 +1,7 @@
 ﻿namespace ParticleLibrary.UI.Interfaces
 {
-    public interface IConsistentUpdateable
-    {
-        public void Update();
-    }
+	public interface IConsistentUpdateable
+	{
+		public void Update();
+	}
 }

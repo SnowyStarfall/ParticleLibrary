@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.UI.Interfaces;
 using ParticleLibrary.Utilities;
-using ReLogic.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.UI;

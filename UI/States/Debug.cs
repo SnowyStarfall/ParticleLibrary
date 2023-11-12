@@ -1,16 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using ParticleLibrary.Core;
 using ParticleLibrary.UI.Elements.Base;
 using ParticleLibrary.UI.Themes;
-using System.Collections.Generic;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
-using ParticleLibrary.Core;
-using System.Linq;
 
 namespace ParticleLibrary.UI.States
 {

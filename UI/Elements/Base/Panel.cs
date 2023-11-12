@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.UI.Interfaces;
 using ParticleLibrary.UI.Primitives.Complex;
-using ParticleLibrary.UI.Primitives.Shapes;
 using ParticleLibrary.Utilities;
 using Terraria;
 using Terraria.UI;

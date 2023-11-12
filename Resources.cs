@@ -2,14 +2,14 @@
 
 namespace ParticleLibrary
 {
-    /// <remarks>
-    /// This file originates from Nez, a Monogame library, which includes a T4 template that will auto-generate the content of this file.
-    /// Modified by SnowyStarfall to be more thorough.
+	/// <remarks>
+	/// This file originates from Nez, a Monogame library, which includes a T4 template that will auto-generate the content of this file.
+	/// Modified by SnowyStarfall to be more thorough.
 	/// To use, right click the Resources.tt file in Visual Studio and click "Run Custom Tool". It will generate Resources.cs nested below itself.
-    /// See: <see href="https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"/>
-    /// </remarks>
-    internal class Resources
-    {
+	/// See: <see href="https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"/>
+	/// </remarks>
+	internal class Resources
+	{
 		public static class Assets
 		{
 			public static class Effects
@@ -62,6 +62,6 @@ namespace ParticleLibrary
 
 		public const string Icon = @"ParticleLibrary/icon";
 		public const string Icon_workshop = @"ParticleLibrary/icon_workshop";
-    }
+	}
 }
 

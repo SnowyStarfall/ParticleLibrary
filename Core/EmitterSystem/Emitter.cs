@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core.EmitterSystem.Data;
-using ParticleLibrary.Core.EmitterSystem.Shapes;
-using ParticleLibrary.Properties;
-using System;
 
 using Terraria;
-using Terraria.Graphics.Renderers;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
