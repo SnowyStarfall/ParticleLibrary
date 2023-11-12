@@ -67,15 +67,6 @@ namespace ParticleLibrary.UI.States
 			SearchBar.Height.Set(0f, 0.1f);
 			SearchBar.MaxHeight.Set(24f, 0f);
 
-			SearchButton = new(Theme.Mid, Theme.High, Theme.LowAccent, Theme.HighAccent)
-			{
-				Content = "Test Content",
-				HAlign = 0.5f,
-				VAlign = 0.5f
-			};
-			SearchButton.Width.Set(64f, 0f);
-			SearchButton.Height.Set(32f, 0f);
-
 			SearchList = new(Theme.Low, Theme.LowAccent, 1f, 4f)
 			{
 				HAlign = 0.5f
@@ -92,7 +83,6 @@ namespace ParticleLibrary.UI.States
 			//Append(Base);
 
 			SearchPanel.Append(SearchBar);
-			SearchPanel.Append(SearchButton);
 			SearchPanel.Append(SearchList);
 			Append(SearchPanel);
 		}
@@ -154,12 +144,14 @@ namespace ParticleLibrary.UI.States
 		private void AddTypes()
 		{
 			int m = 0;
+			float c = 1.3f;
 
 			foreach (var item in CParticles)
 			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+					HideOverflow = true
 				});
 
 				m++;
@@ -167,9 +159,10 @@ namespace ParticleLibrary.UI.States
 
 			foreach (var item in GParticles)
 			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+					HideOverflow = true
 				});
 
 				m++;
@@ -177,9 +170,10 @@ namespace ParticleLibrary.UI.States
 
 			foreach (var item in Emitters)
 			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+					HideOverflow = true
 				});
 
 				m++;
@@ -187,9 +181,10 @@ namespace ParticleLibrary.UI.States
 
 			foreach (var item in GParticleSystems)
 			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+					HideOverflow = true
 				});
 
 				m++;
@@ -197,38 +192,44 @@ namespace ParticleLibrary.UI.States
 
 			foreach (var item in PointParticleSystems)
 			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+					HideOverflow = true
 				});
 
 				m++;
 			}
 
 			// TODO: Remove
-			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 			{
-				Content = $"ParticleLibrary Test 1"
+				Content = $"ParticleLibrary Test 1",
+				HideOverflow = true
 			});
 			m++;
-			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 			{
-				Content = $"ParticleLibrary Teeeeest 2"
+				Content = $"ParticleLibrary Teeeeest 2",
+				HideOverflow = true
 			});
 			m++;
-			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 			{
-				Content = $"ParticleLibrary Teeeeeeeeeeeeest 3"
+				Content = $"ParticleLibrary Teeeeeeeeeeeeest 3",
+				HideOverflow = true
 			});
 			m++;
-			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 			{
-				Content = $"ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4"
+				Content = $"ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4",
+				HideOverflow = true
 			});
 			m++;
-			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 			{
-				Content = $"ParticleLibrary AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				Content = $"ParticleLibrary AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				HideOverflow = true
 			});
 			m++;
 		}

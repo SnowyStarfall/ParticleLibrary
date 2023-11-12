@@ -84,9 +84,9 @@ namespace ParticleLibrary.UI.Elements.Base
 			}
 
 			if (_active)
-				Primitive.SetOutline(ActiveOutline);
+				Primitive.SetOutlineColor(ActiveOutline);
 			else
-				Primitive.SetOutline(Outline);
+				Primitive.SetOutlineColor(Outline);
 
 			spriteBatch.End();
 

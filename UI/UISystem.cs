@@ -80,7 +80,7 @@ namespace ParticleLibrary.UI
 				{
 					if (_lastUpdateUIGameTIme != null && DebugUILayer?.CurrentState != null)
 						DebugUIElement.Draw(Main.spriteBatch);
-					//DrawDebugHitbox(DebugUIElement, 1f);
+					DrawDebugHitbox(DebugUIElement, 1f);
 					//PrintHoveredElement(DebugUIElement, Color.Red);
 					return true;
 				}, InterfaceScaleType.UI));
@@ -94,7 +94,7 @@ namespace ParticleLibrary.UI
 				colorIntensity += 0.1f;
 			}
 
-			float alpha = 0.2f;
+			float alpha = 1f;
 			Color color;
 
 			Rectangle outerDimensions = element.GetInnerDimensions().ToRectangle();
@@ -103,17 +103,19 @@ namespace ParticleLibrary.UI
 
 			color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f) * (alpha / 2f);
 			Box.SetSize(outerDimensions);
-			Box.SetOutline(color);
+			Box.SetOutlineColor(color);
 			Box.Draw();
 
+			colorIntensity += 0.025f;
 			color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f) * alpha;
 			Box.SetSize(dimensions);
-			Box.SetOutline(color);
+			Box.SetOutlineColor(color);
 			Box.Draw();
 
+			colorIntensity += 0.025f;
 			color = Main.hslToRgb(colorIntensity, colorIntensity, 0.5f) * (alpha / 2f);
 			Box.SetSize(innerDimensions);
-			Box.SetOutline(color);
+			Box.SetOutlineColor(color);
 			Box.Draw();
 
 			//Rectangle.SetSize(innerDimensions);
@@ -126,7 +128,7 @@ namespace ParticleLibrary.UI
 
 			if (element is IDebuggable debuggable)
 			{
-				debuggable.DebugRender(Box, alpha);
+				debuggable.DebugRender(Box, ref colorIntensity, alpha);
 			}
 
 			foreach (UIElement e in element.Children)

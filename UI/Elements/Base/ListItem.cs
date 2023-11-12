@@ -13,16 +13,14 @@ namespace ParticleLibrary.UI.Elements.Base
 	{
 		public object Content { get; set; }
 
+		private TextShifter _textShifter;
 		private bool _overflows;
 		private float _hiddenLength;
-
-		private int _startCounter;
-		private int _moveCounter;
-		private int _endCounter;
 
 		public ListItem(object content)
 		{
 			Content = content;
+			_textShifter = new();
 			_overflows = Overflows();
 		}
 
@@ -30,46 +28,23 @@ namespace ParticleLibrary.UI.Elements.Base
 		{
 			if (_overflows)
 			{
-				if (_endCounter >= 60)
-				{
-					_startCounter = 0;
-					_moveCounter = 0;
-					_endCounter = 0;
-				}
-
-				if (_moveCounter >= 100 && _endCounter < 60)
-				{
-					_endCounter++;
-				}
-
-				if (_startCounter >= 60 && _moveCounter < 100)
-				{
-					_moveCounter++;
-				}
-
-				if (_startCounter < 60)
-				{
-					_startCounter++;
-				}
-
+				_textShifter.Update();
 				return;
 			}
 
-			_startCounter = 0;
-			_moveCounter = 0;
-			_endCounter = 0;
+			_textShifter.Reset();
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			_overflows = Overflows();
 
-			CalculatedStyle dim = GetInnerDimensions();
+			CalculatedStyle inner = GetInnerDimensions();
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(Content.ToString());
-			float scale = Utils.Clamp(dim.Height / size.Y, 0f, 2f);
-			Vector2 position = dim.Position() - new Vector2((_moveCounter / 100f) * _hiddenLength, 0f);
+			float scale = Utils.Clamp(inner.Height / size.Y, 0f, 2f);
+			Vector2 position = inner.Position() - new Vector2(_textShifter.Progress * _hiddenLength, 0f);
 
-			spriteBatch.DrawText(Content.ToString(), 1, position, Color.White, Color.Black);
+			spriteBatch.DrawText(Content.ToString(), 1, position, Color.White, Color.Black, scale: scale);
 		}
 
 		private bool Overflows()
@@ -77,17 +52,16 @@ namespace ParticleLibrary.UI.Elements.Base
 			Vector2 position = GetInnerDimensions().Position();
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(Content.ToString());
 
-			Rectangle dim = GetInnerDimensions().ToRectangle();
-			Rectangle textDim = new((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+			Rectangle inner = GetInnerDimensions().ToRectangle();
+			float scale = Utils.Clamp(inner.Height / size.Y, 0f, 2f);
 
-			if ((textDim.X + textDim.Width) > (dim.X + dim.Width))
+			if ((position.X + (size.X * scale)) > (inner.X + inner.Width))
 			{
-				_hiddenLength = (position.X + size.X) - (dim.X + dim.Width);
+				_hiddenLength = ((position.X + size.X * scale) - (inner.X + inner.Width));
 				return true;
 			}
 
 			_hiddenLength = 0f;
-
 			return false;
 		}
 	}

@@ -20,6 +20,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		public bool Draggable { get; set; }
 		public bool Resizable { get; set; }
 		public bool Screenlocked { get; set; }
+		public bool HideOverflow { get; set; }
 
 		protected CalculatedStyle _oldDimensions;
 
@@ -70,7 +71,7 @@ namespace ParticleLibrary.UI.Elements.Base
 				return;
 			}
 
-			Primitive.SetOutline(Outline);
+			Primitive.SetOutlineColor(Outline);
 
 			spriteBatch.End();
 
@@ -89,7 +90,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		public virtual void SetOutline(Color outline)
 		{
 			Outline = outline;
-			Primitive.SetOutline(outline);
+			Primitive.SetOutlineColor(outline);
 		}
 
 		// Events
@@ -148,15 +149,35 @@ namespace ParticleLibrary.UI.Elements.Base
 		}
 
 		// Debug
-		public virtual void DebugRender(Box box, float alpha)
+		public virtual void DebugRender(Box box, ref float colorIntensity, float alpha)
 		{
-			box.SetOutline(Color.Red.WithAlpha(alpha));
+			if (Draggable)
+			{
+				if (_dragging)
+				{
+					box.SetOutlineColor(new Color(0f, 1f, 0f, 1f) * alpha);
+				}
+				else
+				{
+					box.SetOutlineColor(Color.Red * alpha);
+				}
+				box.SetSize(_draggableArea);
+				box.Draw();
+			}
 
-			box.SetSize(_draggableArea);
-			box.Draw();
-
-			box.SetSize(_resizableArea);
-			box.Draw();
+			if (Resizable)
+			{
+				if (_resizing)
+				{
+					box.SetOutlineColor(new Color(0f, 1f, 0f, 1f) * alpha);
+				}
+				else
+				{
+					box.SetOutlineColor(Color.Red * alpha);
+				}
+				box.SetSize(_resizableArea);
+				box.Draw();
+			}
 		}
 
 		// Calculation

@@ -170,16 +170,5 @@ namespace ParticleLibrary.UI.Elements.Base
 
 			_selectedItems.Add(evt.Target);
 		}
-
-		public override void DebugRender(Box box, float alpha)
-		{
-			base.DebugRender(box, alpha);
-
-			foreach(UIElement item in Items)
-			{
-				box.SetSize(item.GetDimensions().ToRectangle());
-				box.Draw();
-			}
-		}
 	}
 }

@@ -4,18 +4,27 @@ using ReLogic.Graphics;
 using System;
 using TerraCompendium.Core.Utilities;
 using Terraria.GameContent;
+using Terraria.UI;
 
 namespace ParticleLibrary.Utilities
 {
 	public static class LibUtilities
 	{
-		public static SpriteBatchSettings DefaultUISettings { get; private set; }
-		public static SpriteBatchSettings ClarityUISettings { get; private set; }
+		public static SpriteBatchSettings DefaultUISettings { get; }
+		public static SpriteBatchSettings ClarityUISettings { get; }
+
+		public static RasterizerState OverflowHiddenRasterizerState { get; }
 
 		static LibUtilities()
 		{
 			DefaultUISettings = new(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, ui: true);
 			ClarityUISettings = new(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, ui: true);
+
+			OverflowHiddenRasterizerState = new RasterizerState
+			{
+				CullMode = CullMode.None,
+				ScissorTestEnable = true
+			};
 		}
 
 		public static Vector4 Vec4From2Vec2(Vector2 xy, Vector2 zw) => new(xy, zw.X, zw.Y);
@@ -36,6 +45,11 @@ namespace ParticleLibrary.Utilities
 			return new Color(color.R / 255f, color.G / 255f, color.B / 255f, alpha);
 		}
 
+		public static Rectangle GetClippingRectangle(this SpriteBatch spriteBatch, UIElement element)
+		{
+			return Rectangle.Intersect(element.GetClippingRectangle(spriteBatch), spriteBatch.GraphicsDevice.ScissorRectangle);
+		}
+
 		public static void Begin(this SpriteBatch spriteBatch, SpriteBatchSettings spriteBatchSettings, bool useMatrix = true)
 		{
 			if (useMatrix)
@@ -46,6 +60,60 @@ namespace ParticleLibrary.Utilities
 			{
 				spriteBatch.Begin(spriteBatchSettings.SortMode, spriteBatchSettings.BlendState, spriteBatchSettings.SamplerState, spriteBatchSettings.DepthStencilState, spriteBatchSettings.RasterizerState, spriteBatchSettings.Effect);
 			}
+		}
+
+		public static void BeginScissorIf(this SpriteBatch spriteBatch, bool condition, SpriteBatchSettings spriteBatchSettings, Rectangle scissorRectangle, bool useMatrix, /*out RasterizerState oldRasterizerState, */out Rectangle oldScissorRectangle)
+		{
+			if (condition)
+			{
+				spriteBatch.BeginScissor(spriteBatchSettings, scissorRectangle, useMatrix, out Rectangle old);
+				oldScissorRectangle = old;
+			}
+			else
+			{
+				spriteBatch.Begin(spriteBatchSettings, useMatrix);
+				oldScissorRectangle = Rectangle.Empty;
+			}
+		}
+
+		public static void EndScissorIf(this SpriteBatch spriteBatch, bool condition,/* RasterizerState oldRasterizerState,*/ in Rectangle oldScissorRectangle)
+		{
+			if (condition)
+			{
+				spriteBatch.EndScissor(oldScissorRectangle);
+			}
+			else
+			{
+				spriteBatch.End();
+			}
+		}
+
+		public static void BeginScissor(this SpriteBatch spriteBatch, SpriteBatchSettings spriteBatchSettings, Rectangle scissorRectangle, bool useMatrix, /*out RasterizerState oldRasterizerState, */out Rectangle oldScissorRectangle)
+		{
+			//oldRasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+			oldScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+
+			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+			spriteBatch.GraphicsDevice.RasterizerState = OverflowHiddenRasterizerState;
+
+			if (useMatrix)
+			{
+				spriteBatch.Begin(spriteBatchSettings.SortMode, spriteBatchSettings.BlendState, spriteBatchSettings.SamplerState, spriteBatchSettings.DepthStencilState, OverflowHiddenRasterizerState, spriteBatchSettings.Effect, spriteBatchSettings.UI ? spriteBatchSettings.UIScaleMatrix : spriteBatchSettings.TransformationMatrix);
+			}
+			else
+			{
+				spriteBatch.Begin(spriteBatchSettings.SortMode, spriteBatchSettings.BlendState, spriteBatchSettings.SamplerState, spriteBatchSettings.DepthStencilState, OverflowHiddenRasterizerState, spriteBatchSettings.Effect);
+			}
+		}
+
+		public static void EndScissor(this SpriteBatch spriteBatch,/* RasterizerState oldRasterizerState,*/ in Rectangle oldScissorRectangle)
+		{
+			var rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+
+			spriteBatch.End();
+
+			spriteBatch.GraphicsDevice.ScissorRectangle = oldScissorRectangle;
+			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
 		}
 
 		public static void DrawText(this SpriteBatch spriteBatch, string text, Vector2 position, Color color)

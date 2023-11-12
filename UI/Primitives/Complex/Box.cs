@@ -38,7 +38,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 
 		private bool Rounded => CornerRadius != 0f;
 
-		public Box(Vector2 position, Vector2 size, Color? fill = null, Color? outline = null, float cornerRadius = 16f, float outlineThickness = 1f)
+		public Box(Vector2 position, Vector2 size, Color? fill = null, Color? outline = null, float cornerRadius = 0f, float outlineThickness = 1f)
 		{
 			Position = position;
 			Size = size;
@@ -246,7 +246,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			_verticesDirty = true;
 		}
 
-		public void SetOutline(Color color)
+		public void SetOutlineColor(Color color)
 		{
 			Outline = color;
 			_outlineColor.SetValue(color.ToVector4());
