@@ -3,6 +3,10 @@
 	public enum Layer
 	{
 		/// <summary>
+		/// Will not draw
+		/// </summary>
+		None,
+		/// <summary>
 		/// Walls.
 		/// </summary>
 		BeforeWalls,

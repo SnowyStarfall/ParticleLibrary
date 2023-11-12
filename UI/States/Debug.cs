@@ -47,7 +47,7 @@ namespace ParticleLibrary.UI.States
 
 			Base = new();
 
-			SearchPanel = new(Theme.Low, Theme.LowAccent, 1f, 1f)
+			SearchPanel = new(Theme.Low, Theme.LowAccent, 1f, 4f)
 			{
 				Resizable = true,
 				Draggable = true,
@@ -86,12 +86,6 @@ namespace ParticleLibrary.UI.States
 
 			GetTypes();
 			AddTypes();
-
-			// TODO: Remove
-			SearchList.Add(new ListItem("ParticleLibrary Test 1"));
-			SearchList.Add(new ListItem("ParticleLibrary Teeeeest 2"));
-			SearchList.Add(new ListItem("ParticleLibrary Teeeeeeeeeeeeest 3"));
-			SearchList.Add(new ListItem("ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4"));
 
 			//// Append all panels to base
 			//Base.Append(SearchPanel);
@@ -159,30 +153,79 @@ namespace ParticleLibrary.UI.States
 
 		private void AddTypes()
 		{
+			int m = 0;
+
 			foreach (var item in CParticles)
 			{
-				SearchList.Add(new ListItem($"{item.Key.GetType().Name} {item.Value.GetType().Name}"));
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				{
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+				});
+
+				m++;
 			}
 
 			foreach (var item in GParticles)
 			{
-				SearchList.Add(new ListItem($"{item.Key.GetType().Name} {item.Value.GetType().Name}"));
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				{
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+				});
+
+				m++;
 			}
 
 			foreach (var item in Emitters)
 			{
-				SearchList.Add(new ListItem($"{item.Key.GetType().Name} {item.Value.GetType().Name}"));
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				{
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+				});
+
+				m++;
 			}
 
 			foreach (var item in GParticleSystems)
 			{
-				SearchList.Add(new ListItem($"{item.Key.GetType().Name} {item.Value.GetType().Name}"));
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				{
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+				});
+
+				m++;
 			}
 
 			foreach (var item in PointParticleSystems)
 			{
-				SearchList.Add(new ListItem($"{item.Key.GetType().Name} {item.Value.GetType().Name}"));
+				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+				{
+					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}"
+				});
+
+				m++;
 			}
+
+			// TODO: Remove
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			{
+				Content = $"ParticleLibrary Test 1"
+			});
+			m++;
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			{
+				Content = $"ParticleLibrary Teeeeest 2"
+			});
+			m++;
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			{
+				Content = $"ParticleLibrary Teeeeeeeeeeeeest 3"
+			});
+			m++;
+			SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * 1.1f, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+			{
+				Content = $"ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4"
+			});
+			m++;
 		}
 	}
 }

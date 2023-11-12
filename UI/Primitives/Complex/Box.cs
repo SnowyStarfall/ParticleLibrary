@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
@@ -29,8 +31,10 @@ namespace ParticleLibrary.UI.Primitives.Complex
 
 		private Effect _effect;
 		private EffectParameter _matrix;
-		private EffectParameter _outline;
-		private EffectParameter _texel;
+		private EffectParameter _outlineColor;
+		private EffectParameter _outlineThickness;
+		private EffectParameter _radius;
+		private EffectParameter _size;
 
 		private bool Rounded => CornerRadius != 0f;
 
@@ -44,7 +48,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			CornerRadius = MathF.Abs(cornerRadius);
 			_originalRadius = MathF.Abs(cornerRadius);
 
-			OutlineThickness = outlineThickness == 0f ? 0f : outlineThickness + 0.0001f;
+			OutlineThickness = outlineThickness /*== 0f ? 0f : outlineThickness + 0.0001f*/;
 
 			_vertices = new();
 			_indices = new();
@@ -54,12 +58,17 @@ namespace ParticleLibrary.UI.Primitives.Complex
 				_vertexBuffer = new(Main.graphics.GraphicsDevice, typeof(VertexPositionColorTexture), 16, BufferUsage.WriteOnly);
 				_indexBuffer = new(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 54, BufferUsage.WriteOnly);
 
-				_effect = ModContent.Request<Effect>(Effects.Shape, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value.Clone();
+				_effect = ModContent.Request<Effect>(Effects.Shape, AssetRequestMode.ImmediateLoad).Value.Clone();
 				_matrix = _effect.Parameters["UIScaleMatrix"];
-				_outline = _effect.Parameters["Outline"];
-				_texel = _effect.Parameters["Texel"];
+				_outlineColor = _effect.Parameters["OutlineColor"];
+				_outlineThickness = _effect.Parameters["OutlineThickness"];
+				_radius = _effect.Parameters["Radius"];
+				_size = _effect.Parameters["Size"];
 
-				_outline.SetValue(Outline.ToVector4());
+				_outlineColor.SetValue(Outline.ToVector4());
+				_outlineThickness.SetValue(OutlineThickness);
+				_radius.SetValue(CornerRadius);
+				_size.SetValue(Size);
 			});
 
 			_verticesDirty = true;
@@ -67,6 +76,11 @@ namespace ParticleLibrary.UI.Primitives.Complex
 
 		public void Draw()
 		{
+			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets))
+			{
+				ReloadEffect();
+			}
+
 			// Preventative measures to keep rounding from overflowing.
 			float min = MathF.Min(Size.X, Size.Y);
 			if (Rounded && (CornerRadius > min / 2f || CornerRadius < min / 2f && CornerRadius < _originalRadius))
@@ -86,34 +100,10 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			// Set parameters
 			_matrix.SetValue(Main.UIScaleMatrix);
 
-			Vector2 texel;
-
-			// Initialize value
-			if (Rounded)
-				texel = new(1f / CornerRadius / 2f * OutlineThickness);
-			else
-				texel = new(1f / Size.X / 2f * OutlineThickness, 1f / Size.Y / 2f * OutlineThickness);
-
-			// Prevent clipping
-			if (texel.X == 0.5f)
-				texel.X -= 0.0000001f;
-			if (texel.Y == 0.5f)
-				texel.Y -= 0.0000001f;
-
-			_texel.SetValue(texel);
-
 			int triCount = CornerRadius == 0f ? 2 : 18;
 
 			// Draw box
-			if (Rounded)
-			{
-				if (Soft)
-					_effect.CurrentTechnique.Passes["SoftCirclePass"].Apply();
-				else
-					_effect.CurrentTechnique.Passes["CirclePass"].Apply();
-			}
-			else
-				_effect.CurrentTechnique.Passes["BoxPass"].Apply();
+			_effect.CurrentTechnique.Passes[0].Apply();
 
 			Main.graphics.GraphicsDevice.SetVertexBuffer(_vertexBuffer);
 			Main.graphics.GraphicsDevice.Indices = _indexBuffer;
@@ -127,13 +117,14 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			_vertices.Clear();
 			_indices.Clear();
 
-			if (CornerRadius == 0f)
-			{
-				SimpleSquare();
-				return;
-			}
-
-			NineSlice();
+			//if (CornerRadius == 0f)
+			//{
+			SimpleSquare();
+			//}
+			//else
+			//{
+			//	NineSlice();
+			//}
 
 			_vertexBuffer.SetData(_vertices.ToArray(), SetDataOptions.Discard);
 			_indexBuffer.SetData(_indices.ToArray(), 0, _indices.Count, SetDataOptions.Discard);
@@ -163,9 +154,6 @@ namespace ParticleLibrary.UI.Primitives.Complex
 			_indices.Add(0);
 			_indices.Add(3);
 			_indices.Add(1);
-
-			_vertexBuffer.SetData(_vertices.ToArray(), SetDataOptions.Discard);
-			_indexBuffer.SetData(_indices.ToArray(), 0, _indices.Count, SetDataOptions.Discard);
 		}
 
 		private void NineSlice()
@@ -242,6 +230,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 		public void SetSize(Vector2 size)
 		{
 			Size = new Vector2(MathF.Abs(size.X), MathF.Abs(size.Y));
+			_size.SetValue(new Vector2(MathF.Abs(size.X), MathF.Abs(size.Y)));
 			_verticesDirty = true;
 		}
 
@@ -249,6 +238,7 @@ namespace ParticleLibrary.UI.Primitives.Complex
 		{
 			Position = new Vector2(size.X, size.Y);
 			Size = new Vector2(MathF.Abs(size.Width), MathF.Abs(size.Height));
+			_size.SetValue(new Vector2(MathF.Abs(size.Width), MathF.Abs(size.Height)));
 			_verticesDirty = true;
 		}
 
@@ -261,18 +251,44 @@ namespace ParticleLibrary.UI.Primitives.Complex
 		public void SetOutline(Color color)
 		{
 			Outline = color;
-			_outline.SetValue(color.ToVector4());
+			_outlineColor.SetValue(color.ToVector4());
 		}
 
 		public void SetCornerRadius(float cornerRadius)
 		{
 			CornerRadius = MathF.Abs(cornerRadius);
+			_radius.SetValue(MathF.Abs(cornerRadius));
 			_verticesDirty = true;
 		}
 
 		public void SetOutlineThickness(float thickness)
 		{
-			OutlineThickness = thickness == 0f ? 0f : thickness + 0.0001f;
+			OutlineThickness = MathF.Abs(thickness);
+			_outlineThickness.SetValue(MathF.Abs(thickness));
+		}
+
+		private void ReloadEffect()
+		{
+			// Create shader
+			string additionalPath = @"";
+			string fileName = "Shape";
+			string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+			FileStream stream = new(documents + $@"\My Games\Terraria\tModLoader\ModSources\ParticleLibrary\Assets\Effects\{additionalPath}{fileName}.xnb", FileMode.Open, FileAccess.Read);
+			_effect = Main.Assets.CreateUntracked<Effect>(stream, $"{fileName}.xnb", AssetRequestMode.ImmediateLoad).Value;
+
+			_matrix = _effect.Parameters["UIScaleMatrix"];
+			_outlineColor = _effect.Parameters["OutlineColor"];
+			_outlineThickness = _effect.Parameters["OutlineThickness"];
+			_radius = _effect.Parameters["Radius"];
+			_size = _effect.Parameters["Size"];
+
+			_outlineColor.SetValue(Outline.ToVector4());
+			_outlineThickness.SetValue(OutlineThickness);
+			_radius.SetValue(CornerRadius);
+			_size.SetValue(Size);
+
+			Main.NewText("Effect reloaded");
 		}
 
 		public void Dispose()

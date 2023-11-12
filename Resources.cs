@@ -61,6 +61,7 @@ namespace ParticleLibrary
 		}
 
 		public const string Icon = @"ParticleLibrary/icon";
+		public const string Icon_workshop = @"ParticleLibrary/icon_workshop";
     }
 }
 
