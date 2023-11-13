@@ -47,21 +47,22 @@ namespace ParticleLibrary.UI.Primitives
 			int height = Main.graphics.GraphicsDevice.Viewport.Height;
 			Vector2 zoom = Main.GameViewMatrix.Zoom;
 
-			Matrix projection = Matrix.CreateOrthographic(width, height, 0, 1000);
-
 			Matrix view = Matrix.CreateLookAt(Vector3.Zero, Vector3.UnitZ, Vector3.Up) *
 				Matrix.CreateTranslation(width / 2, height / -2, 0) *
 				Matrix.CreateRotationZ(MathHelper.Pi) *
 				Matrix.CreateScale(zoom.X, zoom.Y, 1f);
 
-			WorldViewProjection = projection * view;
+			Matrix projection = Matrix.CreateOrthographic(width, height, 0, 1000);
+
+
+			WorldViewProjection = view * projection;
 
 			WorldEffect.Projection = WorldViewProjection;
 			InterfaceEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
 
 			Main.QueueMainThreadAction(() =>
 			{
-				OnResolutionChanged(WorldViewProjection);
+				OnResolutionChanged?.Invoke(WorldViewProjection);
 			});
 		}
 	}

@@ -256,7 +256,7 @@ namespace ParticleLibrary.Core
 
 		private void ResolutionChanged(Matrix transformationMatrix)
 		{
-			_eTransformMatrixParameter?.SetValue(transformationMatrix);
+			_eTransformMatrixParameter.SetValue(transformationMatrix);
 		}
 
 		private void LoadEffect()
@@ -290,7 +290,7 @@ namespace ParticleLibrary.Core
 			_eTerminalGravity = _effect.Parameters["TerminalGravity"];
 			_eOffset = _effect.Parameters["Offset"];
 
-			_eTransformMatrixParameter?.SetValue(Primitive.WorldViewProjection);
+			_eTransformMatrixParameter.SetValue(Primitive.WorldViewProjection);
 			_eLifespan.SetValue(Lifespan);
 			_eFade.SetValue(Fade);
 			_eGravity.SetValue(Gravity);
