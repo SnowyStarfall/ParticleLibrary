@@ -19,6 +19,9 @@ namespace ParticleLibrary.Core
 		// Settings
 		public int MaxParticles { get; }
 
+		/// <summary>
+		/// The lifespan of the particles
+		/// </summary>
 		public int Lifespan
 		{
 			get => _lifespan;
@@ -33,6 +36,9 @@ namespace ParticleLibrary.Core
 		}
 		private int _lifespan;
 
+		/// <summary>
+		/// The layer the particles will draw on
+		/// </summary>
 		public Layer Layer
 		{
 			get => _layer;
@@ -46,6 +52,9 @@ namespace ParticleLibrary.Core
 		}
 		private Layer _layer;
 
+		/// <summary>
+		/// The BlendState used for the particles
+		/// </summary>
 		public BlendState BlendState
 		{
 			get => _blendState;
@@ -61,6 +70,9 @@ namespace ParticleLibrary.Core
 		}
 		private BlendState _blendState;
 
+		/// <summary>
+		/// Whether the particles should fade over their lifespan
+		/// </summary>
 		public bool Fade
 		{
 			get => _fade;
@@ -72,6 +84,9 @@ namespace ParticleLibrary.Core
 		}
 		private bool _fade;
 
+		/// <summary>
+		/// How much gravity should be applied to the particles
+		/// </summary>
 		public float Gravity
 		{
 			get => _gravity;
@@ -83,6 +98,9 @@ namespace ParticleLibrary.Core
 		}
 		private float _gravity;
 
+		/// <summary>
+		/// The maximum velocity from gravity a particle should recieve. Currently unimplemented
+		/// </summary>
 		public float TerminalGravity
 		{
 			get => _terminalGravity;

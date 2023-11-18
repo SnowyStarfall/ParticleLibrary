@@ -11,13 +11,19 @@ using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
 {
-	public class EmitterManager : ModSystem
+	/// <summary>
+	/// Manages the emitters in the world
+	/// </summary>
+	public class EmitterSystem : ModSystem
 	{
 		/// <summary>
 		/// List of emitters.
 		/// </summary>
 		public static FastList<Emitter> Emitters { get; private set; }
 
+		/// <summary>
+		/// Shorthand for screen location as rectangle
+		/// </summary>
 		public Rectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 
 		public override void Load()

@@ -1,4 +1,5 @@
 ﻿using ParticleLibrary.Utilities;
+using System;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
@@ -30,11 +31,27 @@ namespace ParticleLibrary.Core
 			Systems = new();
 
 			// Testing purposes
-			ParticleSystem = new(100000, 180);
+			//ParticleSystem = new(100000, 180);
 		}
 
 		public override void Unload()
 		{
+		}
+
+		internal static PointParticleSystem AddSystem(PointParticleSystem system)
+		{
+			if (system is null)
+				throw new ArgumentNullException(nameof(system));
+
+			return system;
+		}
+
+		internal static void RemoveSystem(PointParticleSystem system)
+		{
+			if (system is null)
+				throw new ArgumentNullException(nameof(system));
+
+			Systems.Remove(system);
 		}
 	}
 }

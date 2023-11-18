@@ -12,11 +12,17 @@ using static ParticleLibrary.Resources;
 
 namespace ParticleLibrary.Core
 {
+	/// <summary>
+	/// Represents a GPU particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer needing it
+	/// </summary>
 	public class GParticleSystem : IDisposable
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
 
 		// Settings
+		/// <summary>
+		/// The texture of the particles
+		/// </summary>
 		public Texture2D Texture
 		{
 			get => _texture;
@@ -33,8 +39,14 @@ namespace ParticleLibrary.Core
 		}
 		private Texture2D _texture;
 
+		/// <summary>
+		/// The maximum amount of particles. Cannot be changed after creation
+		/// </summary>
 		public int MaxParticles { get; }
 
+		/// <summary>
+		/// The lifespan of the particles
+		/// </summary>
 		public int Lifespan
 		{
 			get => _lifespan;
@@ -49,8 +61,14 @@ namespace ParticleLibrary.Core
 		}
 		private int _lifespan;
 
+		/// <summary>
+		/// The size of the batching buffer. Unused for now
+		/// </summary>
 		public int BufferSize { get; }
 
+		/// <summary>
+		/// The layer the particles will draw on
+		/// </summary>
 		public Layer Layer
 		{
 			get => _layer;
@@ -64,6 +82,9 @@ namespace ParticleLibrary.Core
 		}
 		private Layer _layer;
 
+		/// <summary>
+		/// The BlendState used for the particles
+		/// </summary>
 		public BlendState BlendState
 		{
 			get => _blendState;
@@ -79,6 +100,9 @@ namespace ParticleLibrary.Core
 		}
 		private BlendState _blendState;
 
+		/// <summary>
+		/// Whether the particles should fade over their lifespan
+		/// </summary>
 		public bool Fade
 		{
 			get => _fade;
@@ -90,6 +114,9 @@ namespace ParticleLibrary.Core
 		}
 		private bool _fade;
 
+		/// <summary>
+		/// How much gravity should be applied to the particles
+		/// </summary>
 		public float Gravity
 		{
 			get => _gravity;
@@ -101,6 +128,9 @@ namespace ParticleLibrary.Core
 		}
 		private float _gravity;
 
+		/// <summary>
+		/// The maximum velocity from gravity a particle should recieve. Currently unimplemented
+		/// </summary>
 		public float TerminalGravity
 		{
 			get => _terminalGravity;
@@ -146,6 +176,8 @@ namespace ParticleLibrary.Core
 		{
 			if (texture is null)
 				throw new ArgumentNullException(nameof(texture));
+
+			GParticleManager.AddSystem(this);
 
 			_texture = texture;
 			MaxParticles = maxParticles;
@@ -272,6 +304,12 @@ namespace ParticleLibrary.Core
 			_eScreenPosition.SetValue(Main.screenPosition);
 		}
 
+		/// <summary>
+		/// Adds a particle at the given position with the given velocity and base settings
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="velocity"></param>
+		/// <param name="particle"></param>
 		public void AddParticle(Vector2 position, Vector2 velocity, GParticle particle)
 		{
 			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);
@@ -393,6 +431,10 @@ namespace ParticleLibrary.Core
 
 		// Setters
 
+		/// <summary>
+		/// Sets the lifespan for the particles in the system
+		/// </summary>
+		/// <param name="value"></param>
 		public void SetLifespan(int value)
 		{
 			if (value < 0)
@@ -402,18 +444,30 @@ namespace ParticleLibrary.Core
 			_eLifespan.SetValue(value);
 		}
 
+		/// <summary>
+		/// Sets whether the particles should fade over their lifespan
+		/// </summary>
+		/// <param name="value"></param>
 		public void SetFade(bool value)
 		{
 			Fade = value;
 			_eFade.SetValue(value);
 		}
 
+		/// <summary>
+		/// Sets the gravity to apply to the particles
+		/// </summary>
+		/// <param name="value"></param>
 		public void SetGravity(float value)
 		{
 			Gravity = value;
 			_eGravity.SetValue(value);
 		}
 
+		/// <summary>
+		/// Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
+		/// </summary>
+		/// <param name="value"></param>
 		public void SetTerminalGravity(float value)
 		{
 			TerminalGravity = value;
@@ -771,6 +825,8 @@ namespace ParticleLibrary.Core
 					_effect.Dispose();
 					_vertexBuffer.Dispose();
 					_indexBuffer.Dispose();
+
+					GParticleManager.RemoveSystem(this);
 				}
 
 				_disposedValue = true;

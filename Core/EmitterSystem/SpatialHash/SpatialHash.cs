@@ -1,4 +1,4 @@
-﻿namespace ParticleLibrary.Core.EmitterSystem.SpatialHash
+﻿namespace ParticleLibrary.Core.SpatialHash
 {
 	// TODO: Implement spatial hash for efficient emitter updates
 	internal class SpatialHash

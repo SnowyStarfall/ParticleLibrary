@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 
-namespace ParticleLibrary.Core.EmitterSystem.Data
+namespace ParticleLibrary.Core.Data
 {
 	public class SpatialParameters
 	{

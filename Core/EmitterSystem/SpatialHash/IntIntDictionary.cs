@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ParticleLibrary.Core.EmitterSystem.SpatialHash
+namespace ParticleLibrary.Core.SpatialHash
 {
 	/// <summary>
 	/// Hashes an [int, int] coordinate into a UInt32, and wraps it with an Emitter to create fast lookup times.

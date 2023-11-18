@@ -5,7 +5,10 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
 {
-	public class GParticleManager : ModSystem
+	///// <summary>
+	///// This system manages the GPU particle systems. It's currently unused, but will be implemented at a later date
+	///// </summary>
+	internal class GParticleManager : ModSystem
 	{
 		/// <summary>
 		/// Access to the particle config
@@ -32,7 +35,7 @@ namespace ParticleLibrary.Core
 			Systems = new();
 
 			// Testing purposes
-			ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 10000000, 180/*, 1000*/);
+			//ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 10000000, 180/*, 1000*/);
 		}
 
 		public override void Unload()
@@ -45,6 +48,14 @@ namespace ParticleLibrary.Core
 				throw new ArgumentNullException(nameof(system));
 
 			return system;
+		}
+
+		internal static void RemoveSystem(GParticleSystem system)
+		{
+			if (system is null)
+				throw new ArgumentNullException(nameof(system));
+
+			Systems.Remove(system);
 		}
 	}
 }

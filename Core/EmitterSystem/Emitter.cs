@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Core.EmitterSystem.Data;
-
+using ParticleLibrary.Core.Data;
 using Terraria;
 using Terraria.ModLoader.IO;
 
@@ -33,7 +32,7 @@ namespace ParticleLibrary.Core
 		protected int SpawnCount;
 
 		/// <summary>
-		/// Creates a new emitter. You must call <see cref="EmitterManager.NewEmitter(Emitter)"/> or <see cref="EmitterManager.NewEmitter{T}(EmitterSettings, EmitterParticleSettings, EmitterColorSettings)"/> to add it to the system.
+		/// Creates a new emitter. You must call <see cref="EmitterSystem.NewEmitter(Emitter)"/> or <see cref="EmitterSystem.NewEmitter{T}(EmitterSettings, EmitterParticleSettings, EmitterColorSettings)"/> to add it to the system.
 		/// </summary>
 		/// <param name="emitterSettings"></param>
 		/// <param name="particleSettings"></param>
@@ -113,7 +112,7 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public void Kill()
 		{
-			EmitterManager.Emitters?.Remove(this);
+			EmitterSystem.Emitters?.Remove(this);
 		}
 
 		/// <summary>

@@ -12,9 +12,9 @@ using Terraria.ModLoader;
 namespace ParticleLibrary.Core
 {
 	/// <summary>
-	/// This class manages the particle system.
+	/// This class manages the CPU particle system.
 	/// </summary>
-	public class CParticleSystem : ModSystem
+	public class CParticleManager : ModSystem
 	{
 		/// <summary>
 		/// A list that contains all active particles.
@@ -24,9 +24,15 @@ namespace ParticleLibrary.Core
 		internal static FastList<CParticle> _particlesToAdd;
 		internal static FastList<CParticle> _particlesToRemove;
 
+		/// <summary>
+		/// The amount of particles currently maintained by the system.
+		/// </summary>
 		public static int ParticleCount { get; internal set; }
 		internal static double UpdateTime_InMilliseconds { get; private set; }
 
+		/// <summary>
+		/// Shorthand for screen location rectangle.
+		/// </summary>
 		public Rectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 
 		public override void OnModLoad()
@@ -122,7 +128,7 @@ namespace ParticleLibrary.Core
 
 
 				// Update particles in batch
-				Stopwatch s = Stopwatch.StartNew();
+				//Stopwatch s = Stopwatch.StartNew();
 
 				foreach (var p in _particles.Buffer)
 				{
@@ -139,10 +145,10 @@ namespace ParticleLibrary.Core
 
 					// TODO: Uncomment this
 					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeVelocity)
-					{
-						p.Position.X += p.Velocity.X;
-						p.Position.Y += p.Velocity.Y;
-					}
+					//{
+					p.Position.X += p.Velocity.X;
+					p.Position.Y += p.Velocity.Y;
+					//}
 
 					if (p.TileCollide)
 					{
@@ -159,21 +165,21 @@ namespace ParticleLibrary.Core
 
 					// TODO: Uncomment this
 					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI)
-					{
-						p.Update();
+					//{
+					p.Update();
 
-						if (--p.TimeLeft == 0)
-						{
-							p.Death();
-							_particlesToRemove.Add(p);
-							ParticleCount--;
-						}
+					if (--p.TimeLeft == 0)
+					{
+						p.Death();
+						_particlesToRemove.Add(p);
+						ParticleCount--;
 					}
+					//}
 				}
 
-				s.Stop();
+				//s.Stop();
 
-				UpdateTime_InMilliseconds = s.Elapsed.TotalMilliseconds;
+				//UpdateTime_InMilliseconds = s.Elapsed.TotalMilliseconds;
 			}
 		}
 
@@ -308,6 +314,12 @@ namespace ParticleLibrary.Core
 			if (Main.netMode == NetmodeID.Server)
 				return;
 
+			Rectangle previousScissor = Main.graphics.GraphicsDevice.ScissorRectangle;
+			RasterizerState previousRasterizer = Main.graphics.GraphicsDevice.RasterizerState;
+
+			Main.graphics.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+			Main.graphics.GraphicsDevice.RasterizerState = LibUtilities.OverflowHiddenRasterizerState;
+
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
 
 			foreach (var p in _particles.Buffer)
@@ -325,6 +337,9 @@ namespace ParticleLibrary.Core
 			}
 
 			Main.spriteBatch.End();
+
+			Main.graphics.GraphicsDevice.ScissorRectangle = previousScissor;
+			Main.graphics.GraphicsDevice.RasterizerState = previousRasterizer;
 		}
 
 		/// <summary>

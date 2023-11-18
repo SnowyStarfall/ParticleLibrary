@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ParticleLibrary.Core.EmitterSystem.Shapes
+namespace ParticleLibrary.Core.Shapes
 {
 	public abstract class EmitterShape
 	{

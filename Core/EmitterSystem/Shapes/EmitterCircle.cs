@@ -2,7 +2,7 @@
 using System;
 using Terraria;
 
-namespace ParticleLibrary.Core.EmitterSystem.Shapes
+namespace ParticleLibrary.Core.Shapes
 {
 	public class EmitterCircle : EmitterShape
 	{
