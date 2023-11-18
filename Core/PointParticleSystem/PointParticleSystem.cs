@@ -587,10 +587,6 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
-			// TODO: Move this
-			//if (Main.gameMenu && Main.hasFocus)
-			//	UpdateParticles();
-
 			Main.spriteBatch.End();
 			DrawParticles_OnLayer(Layer.BeforeMainMenu);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);

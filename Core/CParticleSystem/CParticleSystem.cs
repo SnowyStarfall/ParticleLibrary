@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Humanizer;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Utilities;
 using System;
@@ -34,7 +35,8 @@ namespace ParticleLibrary.Core
 			_particlesToAdd = new();
 			_particlesToRemove = new();
 
-			On_Dust.UpdateDust += UpdateParticles;
+			On_Dust.UpdateDust += UpdateWorldParticles;
+			On_Main.UpdateMenu += UpdateMenuParticles;
 			Main.QueueMainThreadAction(() =>
 			{
 				//On.Terraria.Main.DrawSurfaceBG += DrawParticles_BeforeSurfaceBackground;
@@ -79,9 +81,17 @@ namespace ParticleLibrary.Core
 			_particlesToRemove.Clear();
 		}
 
-		private void UpdateParticles(On_Dust.orig_UpdateDust orig)
+		private void UpdateWorldParticles(On_Dust.orig_UpdateDust orig)
 		{
 			Update();
+
+			orig();
+		}
+
+		private void UpdateMenuParticles(On_Main.orig_UpdateMenu orig)
+		{
+			if (Main.gameMenu && Main.hasFocus)
+				Update();
 
 			orig();
 		}
@@ -285,10 +295,6 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_BeforeAndAfterMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
-			// TODO: Move this
-			if (Main.gameMenu && Main.hasFocus)
-				Update();
-
 			Main.spriteBatch.End();
 			Draw(Layer.BeforeMainMenu);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);

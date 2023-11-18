@@ -54,7 +54,6 @@ namespace ParticleLibrary.UI.Primitives
 
 			Matrix projection = Matrix.CreateOrthographic(width, height, 0, 1000);
 
-
 			WorldViewProjection = view * projection;
 
 			WorldEffect.Projection = WorldViewProjection;

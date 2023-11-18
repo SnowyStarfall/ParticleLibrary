@@ -32,7 +32,7 @@ namespace ParticleLibrary.Core
 			Systems = new();
 
 			// Testing purposes
-			ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 100000, 180);
+			ParticleSystem = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 10000000, 180/*, 1000*/);
 		}
 
 		public override void Unload()

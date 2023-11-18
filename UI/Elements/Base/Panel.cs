@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.UI.Interfaces;
 using ParticleLibrary.UI.Primitives.Complex;
 using ParticleLibrary.Utilities;
 using Terraria;
@@ -8,7 +7,7 @@ using Terraria.UI;
 
 namespace ParticleLibrary.UI.Elements.Base
 {
-	public class Panel : UIElement, IDebuggable
+	public class Panel : Control
 	{
 		// Visual
 		public Box Primitive { get; protected set; }
@@ -18,7 +17,6 @@ namespace ParticleLibrary.UI.Elements.Base
 		public bool Visible { get; set; } = true;
 		public bool Draggable { get; set; }
 		public bool Resizable { get; set; }
-		public bool Screenlocked { get; set; }
 		public bool HideOverflow { get; set; }
 
 		protected CalculatedStyle _oldDimensions;
@@ -148,7 +146,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		}
 
 		// Debug
-		public virtual void DebugRender(Box box, ref float colorIntensity, float alpha)
+		public override void DebugRender(Box box, ref float colorIntensity, float alpha)
 		{
 			if (Draggable)
 			{
@@ -180,7 +178,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		}
 
 		// Calculation
-		protected void CalculateResize()
+		protected virtual void CalculateResize()
 		{
 			// Establish area
 			Rectangle parentDim = Parent.GetDimensions().ToRectangle();
@@ -259,7 +257,7 @@ namespace ParticleLibrary.UI.Elements.Base
 			}
 		}
 
-		private void CalculateAreas(CalculatedStyle style)
+		protected virtual void CalculateAreas(CalculatedStyle style)
 		{
 			_draggableArea.X = (int)style.X;
 			_draggableArea.Y = (int)style.Y;

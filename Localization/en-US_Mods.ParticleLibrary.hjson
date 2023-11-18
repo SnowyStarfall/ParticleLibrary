@@ -1,7 +1,12 @@
 Configs: {
 	ParticleLibraryConfig: {
 		DebugUI: {
-			Tooltip: Whether the Debug UI is enabled. Currently a WIP. Emitter debugging is not fully functional. The UI IS and WILL BE buggy. Texture errors are normal.
+			Tooltip:
+				'''
+				[c/757ec7:Currently Not Functional]
+				Whether the Debug UI is enabled.
+				Emitter debugging is not fully functional.
+				'''
 			Label: Debug UI
 		}
 
@@ -25,6 +30,7 @@ Configs: {
 		MaxGPUParticles: {
 			Tooltip:
 				'''
+				[c/757ec7:Currently Not Functional]
 				Maximum GPU particles allowed at once.
 				Note: Performance is tested with 50,000 as default max.
 				GPU particles are typically much more efficient than CPU particles, but they have less overall fidelity.

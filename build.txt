@@ -1,4 +1,4 @@
-displayName = [c/dafaf4:Particle][c/fad3a0:Library]
+displayName = [c/9ebae2:Particle][c/e8a272:Library]
 author = SnowyStarfall
 version = 2.0.0.0
 homepage = https://github.com/SnowyStarfall/ParticleLibrary

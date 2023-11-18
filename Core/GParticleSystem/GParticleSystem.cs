@@ -49,6 +49,8 @@ namespace ParticleLibrary.Core
 		}
 		private int _lifespan;
 
+		public int BufferSize { get; }
+
 		public Layer Layer
 		{
 			get => _layer;
@@ -136,10 +138,11 @@ namespace ParticleLibrary.Core
 
 		// Buffer management
 		private int _currentParticleIndex;
+		private int _currentBufferIndex;
 		private bool _setBuffers;
 		private int _startIndex;
 
-		public GParticleSystem(Texture2D texture, int maxParticles, int lifespan)
+		public GParticleSystem(Texture2D texture, int maxParticles, int lifespan/*, int bufferSize*/)
 		{
 			if (texture is null)
 				throw new ArgumentNullException(nameof(texture));
@@ -147,6 +150,7 @@ namespace ParticleLibrary.Core
 			_texture = texture;
 			MaxParticles = maxParticles;
 			_lifespan = lifespan;
+			//BufferSize = bufferSize;
 			Layer = Layer.BeforeDust;
 			_blendState = BlendState.AlphaBlend;
 			_fade = true;
@@ -234,10 +238,13 @@ namespace ParticleLibrary.Core
 					_indices = new int[MaxParticles * 6];
 
 					_currentParticleIndex = 0;
+					_currentBufferIndex = 0;
 					_currentTime = 0;
 
 					_setBuffers = false;
 				});
+
+				Main.NewText("GPU particle system reset");
 
 				ReloadEffect();
 			}
@@ -264,7 +271,6 @@ namespace ParticleLibrary.Core
 			_eTime.SetValue(_currentTime);
 			_eScreenPosition.SetValue(Main.screenPosition);
 		}
-
 
 		public void AddParticle(Vector2 position, Vector2 velocity, GParticle particle)
 		{
@@ -365,8 +371,22 @@ namespace ParticleLibrary.Core
 
 				// We reset since we batched
 				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
+				//_currentBufferIndex = 0;
 				return;
 			}
+
+			// Increment our buffer index and send our batch of new particles without waiting, but only if we didn't just batch
+			//if (++_currentBufferIndex >= BufferSize)
+			//{
+			//	_currentBufferIndex = 0;
+			//	_startIndex = _currentParticleIndex - BufferSize;
+
+			//	if (_currentParticleIndex != 0)
+			//	{
+			//		SetBuffers();
+			//		return;
+			//	}
+			//}
 
 			_setBuffers = true;
 		}
@@ -700,10 +720,6 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
-			// TODO: Move this
-			if (Main.gameMenu && Main.hasFocus)
-				Update();
-
 			Main.spriteBatch.End();
 			DrawParticles_OnLayer(Layer.BeforeMainMenu);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
