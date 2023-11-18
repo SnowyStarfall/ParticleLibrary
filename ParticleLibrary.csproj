@@ -14,6 +14,12 @@
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 	<ItemGroup>
+	  <AdditionalFiles Remove="Textures\**" />
+	  <Compile Remove="Textures\**" />
+	  <EmbeddedResource Remove="Textures\**" />
+	  <None Remove="Textures\**" />
+	</ItemGroup>
+	<ItemGroup>
 	  <Compile Remove="UI\OldDebug.cs" />
 	  <Compile Remove="UI\States\OldDebug.cs" />
 	</ItemGroup>
@@ -54,7 +60,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Textures\Examples\" />
-	  <Folder Include="Textures\" />
 	  <Folder Include="UI\Elements\Custom\" />
 	</ItemGroup>
 	<ItemGroup>

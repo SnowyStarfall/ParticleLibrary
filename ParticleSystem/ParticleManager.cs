@@ -109,14 +109,14 @@ namespace ParticleLibrary
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
 					particles[i].PreAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					particles[i].velocity = Vector2.Zero;
+					//particles[i].velocity = Vector2.Zero;
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
 					importantParticles[i].PreAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					importantParticles[i].velocity = Vector2.Zero;
+					//importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 
@@ -144,7 +144,7 @@ namespace ParticleLibrary
 						particle.TileCollision(oldVelocity);
 					}
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].velocity = Vector2.Zero;
+						//particles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -156,7 +156,8 @@ namespace ParticleLibrary
 					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
 						particle.TileCollision(oldVelocity);
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						particles[i].velocity = Vector2.Zero;
+						//particles[i].velocity = Vector2.Zero;
+
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -199,7 +200,7 @@ namespace ParticleLibrary
 						particle.TileCollision(oldVelocity);
 					}
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						importantParticles[i].velocity = Vector2.Zero;
+						//importantParticles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -211,7 +212,7 @@ namespace ParticleLibrary
 					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
 						particle.TileCollision(oldVelocity);
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						importantParticles[i].velocity = Vector2.Zero;
+						//importantParticles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -241,14 +242,14 @@ namespace ParticleLibrary
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
 					particles[i].PostAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					particles[i].velocity = Vector2.Zero;
+					//particles[i].velocity = Vector2.Zero;
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
 					importantParticles[i].PostAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					importantParticles[i].velocity = Vector2.Zero;
+					//importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 		#endregion

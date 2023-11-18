@@ -244,6 +244,8 @@ namespace ParticleLibrary.Content
 
 		private void Draw(On_Main.orig_DrawProjectiles orig, Main self)
 		{
+			orig(self);
+
 			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer);
 			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, CParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
 			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, CParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);

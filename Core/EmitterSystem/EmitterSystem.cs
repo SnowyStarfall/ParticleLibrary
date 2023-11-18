@@ -64,6 +64,9 @@ namespace ParticleLibrary.Core
 			{
 				foreach (var emitter in Emitters.Buffer)
 				{
+					if (emitter is null)
+						return;
+
 					if (Main.LocalPlayer?.active != true)
 						continue;
 
