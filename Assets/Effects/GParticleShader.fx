@@ -165,11 +165,11 @@ float4 QuadDebug(VertexShaderOutput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-	//float4 v = tex2D(TextureSampler, input.TexCoords);
+	float4 v = tex2D(TextureSampler, input.TexCoords);
 
-	//return v * input.Color;
+	return v * input.Color;
 	
-	return PointParticle(input);
+	//return PointParticle(input);
 	//return QuadDebug(input);
 }
 
