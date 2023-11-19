@@ -71,7 +71,7 @@ namespace ParticleLibrary.Core
 			Lifespan = lifespan;
 			//BufferSize = bufferSize;
 			Layer = layer;
-			BlendState = blendState;
+			BlendState = blendState ?? BlendState.AlphaBlend;
 			Fade = fade;
 			Gravity = gravity;
 			TerminalGravity = terminalGravity;
