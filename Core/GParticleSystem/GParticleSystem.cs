@@ -13,7 +13,7 @@ using static ParticleLibrary.Resources;
 namespace ParticleLibrary.Core
 {
 	/// <summary>
-	/// Represents a GPU particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer needing it
+	/// Represents a GPU particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
 	/// </summary>
 	public class GParticleSystem : IDisposable
 	{
@@ -189,7 +189,7 @@ namespace ParticleLibrary.Core
 			_gravity = 0f;
 			_terminalGravity = 0f;
 
-			//GParticleManager.AddSystem(this);
+			GParticleManager.AddSystem(this);
 
 			Main.QueueMainThreadAction(() =>
 			{
@@ -217,7 +217,7 @@ namespace ParticleLibrary.Core
 			_gravity = settings.Gravity;
 			_terminalGravity = settings.TerminalGravity;
 
-			//GParticleManager.AddSystem(this);
+			GParticleManager.AddSystem(this);
 
 			Main.QueueMainThreadAction(() =>
 			{
@@ -235,17 +235,6 @@ namespace ParticleLibrary.Core
 		}
 
 		// Function
-
-		protected void Draw()
-		{
-			// Don't draw or perform calculations if the most recent particle has expired, making the system idle
-			if (_lastParticleTime >= Lifespan)
-				return;
-
-			_effect.CurrentTechnique.Passes["Particles"].Apply();
-			Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, MaxParticles * 4, 0, MaxParticles * 2);
-		}
-
 		private void Update()
 		{
 			// Safeguard
@@ -255,32 +244,32 @@ namespace ParticleLibrary.Core
 				return;
 			}
 
-#if DEBUG
-			if (Main.keyState.IsKeyDown(Keys.RightControl))
-			{
-				Main.QueueMainThreadAction(() =>
-				{
-					_vertexBuffer.Dispose();
-					_indexBuffer.Dispose();
+			//#if DEBUG
+			//			if (Main.keyState.IsKeyDown(Keys.RightControl))
+			//			{
+			//				Main.QueueMainThreadAction(() =>
+			//				{
+			//					_vertexBuffer.Dispose();
+			//					_indexBuffer.Dispose();
 
-					_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
-					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
+			//					_vertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
+			//					_indexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
 
-					_vertices = new GParticleVertex[MaxParticles * 4];
-					_indices = new int[MaxParticles * 6];
+			//					_vertices = new GParticleVertex[MaxParticles * 4];
+			//					_indices = new int[MaxParticles * 6];
 
-					_currentParticleIndex = 0;
-					_currentBufferIndex = 0;
-					_currentTime = 0;
+			//					_currentParticleIndex = 0;
+			//					_currentBufferIndex = 0;
+			//					_currentTime = 0;
 
-					_setBuffers = false;
-				});
+			//					_setBuffers = false;
+			//				});
 
-				Main.NewText("GPU particle system reset");
+			//				Main.NewText("GPU particle system reset");
 
-				ReloadEffect();
-			}
-#endif
+			//				ReloadEffect();
+			//			}
+			//#endif
 
 			// Batched data transfer
 			if (_setBuffers)
@@ -302,6 +291,44 @@ namespace ParticleLibrary.Core
 			// Set effect values
 			_eTime.SetValue(_currentTime);
 			_eScreenPosition.SetValue(Main.screenPosition);
+		}
+
+		protected void Draw(Layer layer = Layer.None)
+		{
+			// Safeguard
+			if (_effect is null)
+			{
+				LoadEffect();
+				return;
+			}
+
+			if (layer is Layer.BeforeWater)
+			{
+				_eOffset.SetValue(new Vector2(Main.offScreenRange));
+			}
+			else
+			{
+				_eOffset.SetValue(Vector2.Zero);
+			}
+
+			// Set blend state
+			var previousBlendState = Device.BlendState;
+			Device.BlendState = BlendState;
+
+			// Set buffers
+			Device.SetVertexBuffer(_vertexBuffer);
+			Device.Indices = _indexBuffer;
+
+			// Do particle pass
+			// Don't draw or perform calculations if the most recent particle has expired, making the system idle
+			if (_lastParticleTime < Lifespan)
+			{
+				_effect.CurrentTechnique.Passes["Particles"].Apply();
+				Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, MaxParticles * 4, 0, MaxParticles * 2);
+			}
+
+			// Reset blend state
+			Device.BlendState = previousBlendState;
 		}
 
 		/// <summary>
@@ -409,7 +436,7 @@ namespace ParticleLibrary.Core
 
 				// We reset since we batched
 				_currentParticleIndex = 0; // This effectively means that particles will be overwritten
-				//_currentBufferIndex = 0;
+										   //_currentBufferIndex = 0;
 				return;
 			}
 
@@ -525,6 +552,9 @@ namespace ParticleLibrary.Core
 		{
 			switch (layer)
 			{
+				case Layer.BeforeBackground:
+					On_Main.DrawSurfaceBG += DrawParticles_BeforeBackground;
+					break;
 				case Layer.BeforeWalls:
 					On_Main.DoDraw_WallsAndBlacks += DrawParticles_BeforeWalls;
 					break;
@@ -583,6 +613,9 @@ namespace ParticleLibrary.Core
 		{
 			switch (layer)
 			{
+				case Layer.BeforeBackground:
+					On_Main.DrawSurfaceBG -= DrawParticles_BeforeBackground;
+					break;
 				case Layer.BeforeWalls:
 					On_Main.DoDraw_WallsAndBlacks -= DrawParticles_BeforeWalls;
 					break;
@@ -656,10 +689,23 @@ namespace ParticleLibrary.Core
 			orig();
 		}
 
+		private void DrawParticles_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
+		{
+			Main.spriteBatch.End();
+			Draw(Layer.BeforeBackground);
+
+			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
+			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
+
+			orig(self);
+		}
+
 		private void DrawParticles_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeWalls);
+			Draw(Layer.BeforeWalls);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -668,7 +714,7 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeNonSolidTiles);
+			Draw(Layer.BeforeNonSolidTiles);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -676,14 +722,14 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
 		{
-			DrawParticles_OnLayer(Layer.BeforeTiles);
+			Draw(Layer.BeforeTiles);
 
 			orig(self);
 		}
 
 		private void DrawParticles_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
 		{
-			DrawParticles_OnLayer(Layer.BeforePlayersBehindNPCs);
+			Draw(Layer.BeforePlayersBehindNPCs);
 
 			orig(self);
 		}
@@ -693,13 +739,13 @@ namespace ParticleLibrary.Core
 			if (behindTiles)
 			{
 				Main.spriteBatch.End();
-				DrawParticles_OnLayer(Layer.BeforeNPCsBehindTiles);
+				Draw(Layer.BeforeNPCsBehindTiles);
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 			else
 			{
 				Main.spriteBatch.End();
-				DrawParticles_OnLayer(Layer.BeforeNPCs);
+				Draw(Layer.BeforeNPCs);
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 
@@ -708,14 +754,14 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
 		{
-			DrawParticles_OnLayer(Layer.BeforeProjectiles);
+			Draw(Layer.BeforeProjectiles);
 
 			orig(self);
 		}
 
 		private void DrawParticles_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
 		{
-			DrawParticles_OnLayer(Layer.BeforePlayers);
+			Draw(Layer.BeforePlayers);
 
 			orig(self);
 		}
@@ -723,7 +769,7 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeItems(On_Main.orig_DrawItems orig, Main self)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeItems);
+			Draw(Layer.BeforeItems);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -732,7 +778,7 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeRain(On_Main.orig_DrawRain orig, Main self)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeRain);
+			Draw(Layer.BeforeRain);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -741,7 +787,7 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeGore(On_Main.orig_DrawGore orig, Main self)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeGore);
+			Draw(Layer.BeforeGore);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -749,7 +795,7 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_BeforeDust(On_Main.orig_DrawDust orig, Main self)
 		{
-			DrawParticles_OnLayer(Layer.BeforeDust);
+			Draw(Layer.BeforeDust);
 
 			orig(self);
 		}
@@ -757,7 +803,7 @@ namespace ParticleLibrary.Core
 		private void DrawParticles_BeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeWater);
+			Draw(Layer.BeforeWater);
 			Main.spriteBatch.Begin();
 
 			orig(self, isBackground);
@@ -765,54 +811,21 @@ namespace ParticleLibrary.Core
 
 		private void DrawParticles_OnInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
 		{
-			DrawParticles_OnLayer(Layer.BeforeUI);
+			Draw(Layer.BeforeUI);
 
 			orig(self, gameTime);
 
-			DrawParticles_OnLayer(Layer.AfterUI);
+			Draw(Layer.AfterUI);
 		}
 
 		private void DrawParticles_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			Main.spriteBatch.End();
-			DrawParticles_OnLayer(Layer.BeforeMainMenu);
+			Draw(Layer.BeforeMainMenu);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
 
 			orig(self, gameTime);
-			DrawParticles_OnLayer(Layer.AfterMainMenu);
-		}
-
-		private void DrawParticles_OnLayer(Layer layer)
-		{
-			// Safeguard
-			if (_effect is null)
-			{
-				LoadEffect();
-				return;
-			}
-
-			if (layer is Layer.BeforeWater)
-			{
-				_eOffset.SetValue(new Vector2(Main.offScreenRange));
-			}
-			else
-			{
-				_eOffset.SetValue(Vector2.Zero);
-			}
-
-			// Set blend state
-			var previousBlendState = Device.BlendState;
-			Device.BlendState = BlendState;
-
-			// Set buffers
-			Device.SetVertexBuffer(_vertexBuffer);
-			Device.Indices = _indexBuffer;
-
-			// Do particle pass
-			Draw();
-
-			// Reset blend state
-			Device.BlendState = previousBlendState;
+			Draw(Layer.AfterMainMenu);
 		}
 
 		protected virtual void Dispose(bool disposing)
