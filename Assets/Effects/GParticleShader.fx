@@ -120,12 +120,12 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	// The size at this point in the particle's life, multiplied by the corner to be an offset for the rotation
 	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
 	// The rotation matrix. We only calculate when rotation is relevant
-	float2x2 rotation = input.Rotation.z == 0 && input.Rotation.w == 0 ? float2x2(1, 0, 0, 1) : ComputeRotation(input.Rotation.zw, time);
+	float2x2 rotation = /*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? float2x2(1, 0, 0, 1) :*/ ComputeRotation(input.Rotation.zw, time);
 	
 	// Calculate the position over time
 	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
 	// Apply rotation over time. We only mul when rotation is relevant
-	output.Position.xy += -size + (input.Rotation.z == 0 && input.Rotation.w == 0 ? 0 : mul(size, rotation));
+	output.Position.xy += -size + (/*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? 0 : */ mul(size, rotation));
 	// Apply offset for when drawing on the same layer as water
 	output.Position.xy += Offset;
 	// Apply matrix and offset for screen view
