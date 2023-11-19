@@ -188,7 +188,7 @@ namespace ParticleLibrary.Core
 			Main.spriteBatch.End();
 			Draw(Layer.BeforeBackground);
 
-            Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
+			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
 			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
@@ -350,17 +350,21 @@ namespace ParticleLibrary.Core
 
 			foreach (var p in _particles.Buffer)
 			{
-				if (p is null)
+				if (p is null || p.Layer != layer)
+				{
 					continue;
+				}
 
 				Rectangle r = (Rectangle)p.Bounds;
 				ScreenLocation.Intersects(ref r, out bool intersects);
-				if (p.Layer == layer && (p.Bounds is null || intersects))
+				if (!(p.Bounds is null || intersects))
 				{
-					// Compensate for offset on water layer
-					Vector2 position = p.Layer == Layer.BeforeWater ? p.VisualPosition + new Vector2(Main.offScreenRange) : p.VisualPosition;
-					p.Draw(Main.spriteBatch, position);
+					continue;
 				}
+
+				// Compensate for offset on water layer
+				Vector2 position = p.Layer == Layer.BeforeWater ? p.VisualPosition + new Vector2(Main.offScreenRange) : p.VisualPosition;
+				p.Draw(Main.spriteBatch, position);
 			}
 
 			Main.spriteBatch.End();
