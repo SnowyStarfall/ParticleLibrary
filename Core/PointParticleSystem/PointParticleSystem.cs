@@ -646,7 +646,7 @@ namespace ParticleLibrary.Core
 			Device.BlendState = previousBlendState;
 		}
 
-		protected void Dispose(bool disposing)
+		public virtual void Dispose(bool disposing)
 		{
 			if (!_disposedValue)
 			{
@@ -666,7 +666,7 @@ namespace ParticleLibrary.Core
 		//	Dispose(disposing: false);
 		//}
 
-		void IDisposable.Dispose()
+		public void Dispose()
 		{
 			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
 			Dispose(disposing: true);
