@@ -45,7 +45,7 @@ namespace ParticleLibrary.Core
 			On_Main.UpdateMenu += UpdateMenuParticles;
 			Main.QueueMainThreadAction(() =>
 			{
-				//On.Terraria.Main.DrawSurfaceBG += DrawParticles_BeforeSurfaceBackground;
+				On_Main.DrawSurfaceBG += DrawParticles_BeforeBackground;
 				On_Main.DoDraw_WallsAndBlacks += DrawParticles_BeforeWalls;
 				On_Main.DoDraw_Tiles_NonSolid += DrawParticles_BeforeNonSolidTiles;
 				On_Main.DrawPlayers_BehindNPCs += DrawParticles_BeforePlayersBehindNPCs;
@@ -181,6 +181,19 @@ namespace ParticleLibrary.Core
 
 				//UpdateTime_InMilliseconds = s.Elapsed.TotalMilliseconds;
 			}
+		}
+
+		private void DrawParticles_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
+		{
+			Main.spriteBatch.End();
+			Draw(Layer.BeforeBackground);
+
+            Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
+			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
+
+			orig(self);
 		}
 
 		private void DrawParticles_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
@@ -320,7 +333,20 @@ namespace ParticleLibrary.Core
 			Main.graphics.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 			Main.graphics.GraphicsDevice.RasterizerState = LibUtilities.OverflowHiddenRasterizerState;
 
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			Matrix matrix;
+
+			// Compensate for matrix on background layer
+			if (layer is Layer.BeforeBackground)
+			{
+				matrix = Main.BackgroundViewMatrix.TransformationMatrix;
+				matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+			}
+			else
+			{
+				matrix = Main.GameViewMatrix.TransformationMatrix;
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);
 
 			foreach (var p in _particles.Buffer)
 			{
@@ -331,8 +357,9 @@ namespace ParticleLibrary.Core
 				ScreenLocation.Intersects(ref r, out bool intersects);
 				if (p.Layer == layer && (p.Bounds is null || intersects))
 				{
-					Vector2 offset = p.Layer == Layer.BeforeWater ? new Vector2(Main.offScreenRange, Main.offScreenRange) : Vector2.Zero;
-					p.Draw(Main.spriteBatch, p.VisualPosition + offset);
+					// Compensate for offset on water layer
+					Vector2 position = p.Layer == Layer.BeforeWater ? p.VisualPosition + new Vector2(Main.offScreenRange) : p.VisualPosition;
+					p.Draw(Main.spriteBatch, position);
 				}
 			}
 
