@@ -1,13 +1,13 @@
 Configs: {
 	ParticleLibraryConfig: {
 		DebugUI: {
+			Label: Debug UI
 			Tooltip:
 				'''
 				[c/ff0000:Currently Not Functional]
 				Whether the Debug UI is enabled.
 				Emitter debugging is not fully functional.
 				'''
-			Label: Debug UI
 		}
 
 		Headers: {
@@ -17,10 +17,18 @@ Configs: {
 
 		MaxParticles: {
 			Label: Max Particles
-			Tooltip: ""
+			Tooltip:
+				'''
+				Maximum normal particles allowed at once.
+				Note: Performance is tested with 15,000 as default max.
+				Normal particles are typically much less efficient than Quad particles, but they have more overall fidelity.
+				Good performance cannot be entirely guaranteed with values above the default amount.
+				A value of 0 will disable the system.
+				'''
 		}
 
 		MaxQuadParticles: {
+			Label: Max Quad Particles
 			Tooltip:
 				'''
 				[c/ff0000:Currently Not Functional]
@@ -30,12 +38,19 @@ Configs: {
 				Good performance cannot be entirely guaranteed with values above the default amount.
 				A value of 0 will disable the system.
 				'''
-			Label: Max Quad Particles
 		}
 
 		MaxPointParticles: {
 			Label: Max Point Particles
-			Tooltip: ""
+			Tooltip:
+				'''
+				[c/ff0000:Currently Not Functional]
+				Maximum Point particles allowed at once.
+				Note: Performance is tested with 100,000 as default max.
+				Point particles are much more efficient than normal particles, and more than Quad particles, but they have less overall fidelity.
+				Good performance cannot be entirely guaranteed with values above the default amount.
+				A value of 0 will disable the system.
+				'''
 		}
 
 		DisplayName: Particle Library Config
