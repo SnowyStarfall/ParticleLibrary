@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Core;
+using ParticleLibrary.Core.Data;
 using ReLogic.Graphics;
 using System;
 using TerraCompendium.Core.Utilities;
@@ -148,6 +150,21 @@ namespace ParticleLibrary.Utilities
 		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 start, float radians, float length, Color color, float thickness)
 		{
 			spriteBatch.Draw(ParticleLibrary.WhitePixel, start, ParticleLibrary.WhitePixel.Bounds, color, radians, new Vector2(0f, 0.5f), new Vector2(length, thickness), SpriteEffects.None, 0);
+		}
+
+		public static T FromEmitter<T>(this T particle, SpatialParameters spatial, VisualParameters visual) where T : GPUParticle
+		{
+			particle.StartColor = visual.StartColor;
+			particle.EndColor = visual.EndColor;
+			particle.VelocityAcceleration = spatial.VelocityAcceleration;
+			particle.Scale = spatial.Scale;
+			particle.ScaleVelocity = spatial.ScaleVelocity;
+			particle.Rotation = spatial.Rotation;
+			particle.RotationVelocity = spatial.RotationVelocity;
+			particle.Depth = spatial.Depth;
+			particle.DepthVelocity = spatial.DepthVelocity;
+
+			return particle;
 		}
 	}
 }

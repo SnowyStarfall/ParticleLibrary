@@ -20,9 +20,9 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		internal string Type { get; }
 
-		public EmitterSettings EmitterSettings { get; private set; }
-		public EmitterParticleSettings ParticleSettings { get; private set; }
-		public EmitterColorSettings ColorSettings { get; private set; }
+		public EmitterSettings EmitterSettings { get; set; }
+		public EmitterParticleSettings ParticleSettings { get; set; }
+		public EmitterColorSettings ColorSettings { get; set; }
 
 		public Rectangle Bounds => EmitterSettings.Bounds;
 

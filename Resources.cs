@@ -54,9 +54,9 @@ namespace ParticleLibrary
 			public const string Devtool = @"ParticleLibrary/Content/Devtool";
 		}
 
-		public static class ExampleParticles
+		public static class Examples
 		{
-			public const string GlowParticle = @"ParticleLibrary/ExampleParticles/GlowParticle";
+			public const string ExampleParticle = @"ParticleLibrary/Examples/ExampleParticle";
 		}
 
 		public static class ParticleSystem
