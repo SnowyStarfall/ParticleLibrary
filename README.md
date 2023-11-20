@@ -1,16 +1,64 @@
+## With the release of API 2.0, any and all bug reports are very much appreciated!
+## I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF
+## Note that this mod DOES NOT CHANGE GAMEPLAY unless explicitly used by other mods!!
+___
 # Particle Library
-A library that aims to improve upon the existing Dusts system in Terraria by creating a Particle system focused on control and fidelity.  
-**Note that this mod does not change gameplay unless explicitly used by other mods.**
+A library that provides a heavily customizable API to allow modders to create performant Particles - serving as an alternative to Terraria's Dust and Particles.
 
-Modders who do not plan to modify the library should rely on the library as a strong mod reference, as this is the safest dependency route.
-Modders who plan to modify the library are highly encouraged to open a PR to the repo on GitHub once the changes are tested and verified as safe.
+## CPU Particles
+CPU Particles are modeled to feel much like Projectiles. They have Update and Draw methods. They also have a Layer, which determines their place in the draw order. 
+Generally CPU Particles are limited by the power of the CPU. While they are much more customizable, the other Particle variants are more performant at the cost of control.
 
-Modders and Players are encouraged to report bugs and talk about improvements in our server.  
-**GitHub**: here  
-**Discord**, in the Particle Library category:  
+## Quad Particles
+Quad Particles live entirely on the GPU. They sacrifice control for very high performance. This comes at the cost of RAM usage, however.
+
+## Point Particles
+Point Particles are much like Quad particles; they live entirely on the GPU and sacrifice control for performance gains. 
+The notable difference is Point Particles only render as a single pixel and are much more performant than Quad particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
+
+## Emitters
+Emitters are designed to be customizable objects that provide functionality for spawning particles. They can be overridden for custom functionality or can be quickly created with the provided settings.
+They can save and load with the world. They also have Update and Draw methods, and by default can only render before Dust. They can also store data in the form of a string as well as a plethora of customization settings.
+
+## Examples
+The 1.4 examples have been refurbished for the API 2.0 update. If you have more intricate questions or run into issues, please join my Discord server: https://discord.gg/bhCuppRdVF
+
+## Players & Installation
+Just subscribe <3 c:
+
+## Modders & Installation
+**This library is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well.**
+
+- Subscribe to Particle Library
+	- Steam Workshop: https://steamcommunity.com/workshop/filedetails/?id=2760520795 
+- Go to the GitHub here:
+	- You're already here!
+- Download the Particle Library DLL and XML files
+- Place them somewhere on your PC, or conventionally in a "lib" folder in your mod project
+- In Visual Studio, right-click your csproj and hover over Add, then click Add COM Reference
+- Navigate to the DLL from before and select it
+- Open your mod's build.txt
+- In your modReferences, add ParticleLibrary
+	- modReferences = ParticleLibrary
+	- (modReferences can be split by commas 'A, B, C')
+	- [build.txt guide](https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties)
+
+
+## Credits & Contribution 
+**Icon by [Maskano](https://mobile.twitter.com/maskanomask) on Twitter, go check them out they're COOL!!!**
+
+Modders and Players are encouraged to report bugs in the pinned discussion on the steam workshop page or preferably in my Discord server!
+GitHub: https://github.com/SnowyStarfall/ParticleLibrary
+Discord: https://discord.gg/bhCuppRdVF in the Particle Library category
+
+If your mod uses Particle Library, feel free to contact me via my Discord server and I will add it to this list. 
+It must be a released mod. A Steam Workshop link will suffice.
+
+Mods that use Particle Library:
+- [Mod of Redemption](https://steamcommunity.com/sharedfiles/filedetails/?id=2893332653)
+- Shadows of Abaddon
+- [Lunar Veil](https://steamcommunity.com/sharedfiles/filedetails/?id=3019925104)
+
 <a href="https://discord.gg/bhCuppRdVF">
    <img src="https://discordapp.com/api/guilds/757480831886426282/widget.png?style=banner2" alt="Discord Banner 3"/>
 </a>
-
-( Huge Thanks! )  
-Mod icon by Maskano: https://mobile.twitter.com/maskanomask

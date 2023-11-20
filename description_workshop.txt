@@ -1,6 +1,6 @@
 [h2] With the release of API 2.0, any and all bug reports are very much appreciated! [/h2]
 [h2] I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF [/h2]
-[h2] Note that this mod does not change gameplay unless explicitly used by other mods. [/h2]
+[h2] Note that this mod DOES NOT CHANGE GAMEPLAY unless explicitly used by other mods!! [/h2]
 
 [h1] Particle Library [/h1]
 A library that provides a heavily customizable API to allow modders to create performant Particles - serving as an alternative to Terraria's Dust and Particles.
@@ -14,7 +14,7 @@ Quad Particles live entirely on the GPU. They sacrifice control for very high pe
 
 [h2] Point Particles [/h2]
 Point Particles are much like Quad particles; they live entirely on the GPU and sacrifice control for performance gains. 
-The notable difference is Point Particles only render as a single pixel and are much much more performant than Quad particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
+The notable difference is Point Particles only render as a single pixel and are much more performant than Quad particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
 
 [h2] Emitters [/h2]
 Emitters are designed to be customizable objects that provide functionality for spawning particles. They can be overridden for custom functionality or can be quickly created with the provided settings.
@@ -27,14 +27,14 @@ The 1.4 examples have been refurbished for the API 2.0 update. If you have more 
 Just subscribe <3 c:
 
 [h1] Modders & Installation [/h1]
-[b] This library is liscensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
+[b] This library is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
 [olist]
     [*]Subscribe to Particle Library
     [*]Go to the GitHub here:
           Terraria 1.3: https://github.com/SnowyStarfall/ParticleLibrary/tree/main
           Terraria 1.4: https://github.com/SnowyStarfall/ParticleLibrary/tree/1.4
     [*]Download the Particle Library DLL and XML files
-    [*]Place them somewhere on your PC, or conventially in a "lib" folder in your mod project
+    [*]Place them somewhere on your PC, or conventionally in a "lib" folder in your mod project
     [*]In Visual Studio, right-click your csproj and hover over Add, then click Add COM Reference
     [*]Navigate to the DLL from before and select it
     [*]Open your mod's build.txt
@@ -44,15 +44,15 @@ Just subscribe <3 c:
 [/olist]
 
 [h1] Credits & Contribution [/h1]
+[b] Icon by [url=https://mobile.twitter.com/maskanomask] Maskano [/url] on Twitter, go check them out they're COOL!!! [/b]
+
 Modders and Players are encouraged to report bugs in the pinned discussion here or preferably in my Discord server!
 GitHub: https://github.com/SnowyStarfall/ParticleLibrary
 Discord: https://discord.gg/bhCuppRdVF in the Particle Library category
 
-Icon by [url=https://mobile.twitter.com/maskanomask] Maskano [/url] on Twitter
-
 If your mod uses Particle Library, feel free to contact me via my Discord server and I will add it to this list. It must be a released mod.
 
 Mods that use Particle Library:
-- Mod of Redemption
+- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2893332653] Mod of Redemption [/url]
 - Shadows of Abaddon
-- Stellamod
+- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3019925104] Lunar Veil [/url]
