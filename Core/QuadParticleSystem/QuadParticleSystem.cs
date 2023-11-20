@@ -16,7 +16,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents a Quad particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
 	/// </summary>
-	public class QuadParticleSystem : BaseGPUParticleSystem<QuadParticleSystemSettings, QuadParticle, QuadParticleVertex>, IDisposable
+	public class QuadParticleSystem : GPUParticleSystem<QuadParticleSystemSettings, QuadParticle, QuadParticleVertex>, IDisposable
 	{
 		// Buffers
 		protected override DynamicVertexBuffer VertexBuffer { get; set; }

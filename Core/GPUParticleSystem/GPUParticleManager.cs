@@ -62,9 +62,9 @@ namespace ParticleLibrary.Core
 		{
 		}
 
-		internal static BaseGPUParticleSystem<TSettings, TParticle, TVertex> AddSystem<TSettings, TParticle, TVertex>(BaseGPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : BaseGPUSystemSettings
-			where TParticle : BaseGPUParticle
+		internal static GPUParticleSystem<TSettings, TParticle, TVertex> AddSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
+			where TSettings : GPUSystemSettings
+			where TParticle : GPUParticle
 			where TVertex : IVertexType
 		{
 			if (system is null)
@@ -84,9 +84,9 @@ namespace ParticleLibrary.Core
 			return system;
 		}
 
-		internal static void RemoveSystem<TSettings, TParticle, TVertex>(BaseGPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : BaseGPUSystemSettings
-			where TParticle : BaseGPUParticle
+		internal static void RemoveSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
+			where TSettings : GPUSystemSettings
+			where TParticle : GPUParticle
 			where TVertex : IVertexType
 		{
 			if (system is null)

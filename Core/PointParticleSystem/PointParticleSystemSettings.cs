@@ -6,7 +6,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents the settings for a <see cref="PointParticleSystem"/>
 	/// </summary>
-	public class PointParticleSystemSettings : BaseGPUSystemSettings
+	public class PointParticleSystemSettings : GPUSystemSettings
 	{
 		/// <summary>
 		/// The maximum amount of particles

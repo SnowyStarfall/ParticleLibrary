@@ -5,7 +5,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// The base for a PointParticle
 	/// </summary>
-	public class PointParticle : BaseGPUParticle
+	public class PointParticle : GPUParticle
 	{
 		/// <summary>
 		/// The start color

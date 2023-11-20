@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework;
 
 namespace ParticleLibrary.Core
 {
-	public abstract class BaseGPUParticleSystem<TSettings, TParticle, TVertex> : IBaseGPUParticleSystem<TParticle>, IDisposable
-		where TSettings : BaseGPUSystemSettings
-		where TParticle : BaseGPUParticle
+	public abstract class GPUParticleSystem<TSettings, TParticle, TVertex> : IGPUParticleSystem<TParticle>, IDisposable
+		where TSettings : GPUSystemSettings
+		where TParticle : GPUParticle
 		where TVertex : IVertexType
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
@@ -93,7 +93,7 @@ namespace ParticleLibrary.Core
 		protected abstract bool SendBatch { get; set; }
 		protected abstract int StartIndex { get; set; }
 
-		public BaseGPUParticleSystem(TSettings settings)
+		public GPUParticleSystem(TSettings settings)
 		{
 			Texture = settings.Texture;
 			MaxParticles = settings.MaxParticles;

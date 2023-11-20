@@ -16,7 +16,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents a point particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
 	/// </summary>
-	public class PointParticleSystem : BaseGPUParticleSystem<PointParticleSystemSettings, PointParticle, PointParticleVertex>, IDisposable
+	public class PointParticleSystem : GPUParticleSystem<PointParticleSystemSettings, PointParticle, PointParticleVertex>, IDisposable
 	{
 		// Buffers
 		protected override DynamicVertexBuffer VertexBuffer { get; set; }
