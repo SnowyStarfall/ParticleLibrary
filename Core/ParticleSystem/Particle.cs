@@ -10,9 +10,9 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Base class for all particles. Inherit this class to create your own particle.
 	/// </summary>
-	public abstract class CParticle
+	public abstract class Particle
 	{
-		protected CParticle()
+		protected Particle()
 		{
 			Spawn();
 			PrivateSpawn();
@@ -164,8 +164,8 @@ namespace ParticleLibrary.Core
 		public void Kill()
 		{
 			Death();
-			CParticleManager._particlesToRemove?.Add(this);
-			CParticleManager.ParticleCount--;
+			NewParticleManager._particlesToRemove?.Add(this);
+			NewParticleManager.ParticleCount--;
 		}
 	}
 }

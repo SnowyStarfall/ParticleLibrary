@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary.ExampleParticles
 {
-	public class GlowParticle : CParticle
+	public class GlowParticle : Core.Particle
 	{
 		public override void Spawn()
 		{

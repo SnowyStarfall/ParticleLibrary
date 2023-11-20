@@ -26,7 +26,7 @@ sampler TextureSampler = sampler_state
 	AddressV = Clamp;
 };
 
-// GPU Particle structs
+// Quad Particle structs
 struct GVertexShaderInput
 {
 	float4 Position : POSITION0;
@@ -141,7 +141,7 @@ float4 QuadDebug(GVertexShaderOutput input)
 	return float4(0, 0, 0, 0);
 }
 
-// GPU Particles
+// Quad Particles
 GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
 {
 	GVertexShaderOutput output;
@@ -241,7 +241,7 @@ float4 PPixelShaderFunction(PVertexShaderOutput input) : COLOR0
 
 technique DefaultTechnique
 {
-	pass GPU
+	pass Quad
 	{
 		VertexShader = compile vs_2_0 GVertexShaderFunction();
 		PixelShader = compile ps_2_0 GPixelShaderFunction();

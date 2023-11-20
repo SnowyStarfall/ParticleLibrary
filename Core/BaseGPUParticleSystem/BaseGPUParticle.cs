@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ParticleLibrary.Core
 {
-	public abstract class BaseParticle
+	public abstract class BaseGPUParticle
 	{
 		/// <summary>
 		/// The start color

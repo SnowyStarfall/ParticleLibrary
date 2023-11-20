@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ParticleLibrary.Core
 {
-	public struct GParticleVertex : IVertexType
+	public struct QuadParticleVertex : IVertexType
 	{
 		/// <summary>
 		/// Position of particle

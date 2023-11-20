@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParticleLibrary.Core
 {
-	public abstract class BaseSystemSettings
+	public abstract class BaseGPUSystemSettings
 	{
 		/// <summary>
 		/// The texture of the particles

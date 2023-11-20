@@ -9,12 +9,12 @@ A library that provides a heavily customizable API to allow modders to create pe
 CPU Particles are modeled to feel much like Projectiles. They have Update and Draw methods. They also have a Layer, which determines their place in the draw order. 
 Generally CPU Particles are limited by the power of the CPU. While they are much more customizable, the other Particle variants are more performant at the cost of control.
 
-[h2] GPU Particles [/h2]
-GPU Particles live entirely on the GPU. They sacrifice control for very high performance. This comes at the cost of RAM usage, however.
+[h2] Quad Particles [/h2]
+Quad Particles live entirely on the GPU. They sacrifice control for very high performance. This comes at the cost of RAM usage, however.
 
 [h2] Point Particles [/h2]
-Point Particles are much like GPU particles; they live entirely on the GPU and sacrifice control for performance gains. 
-The notable difference is Point Particles only render as a single pixel and are much much more performant than GPU particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
+Point Particles are much like Quad particles; they live entirely on the GPU and sacrifice control for performance gains. 
+The notable difference is Point Particles only render as a single pixel and are much much more performant than Quad particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
 
 [h2] Emitters [/h2]
 Emitters are designed to be customizable objects that provide functionality for spawning particles. They can be overridden for custom functionality or can be quickly created with the provided settings.
@@ -24,7 +24,7 @@ They can save and load with the world. They also have Update and Draw methods, a
 The 1.4 examples have been refurbished for the API 2.0 update. If you have more intricate questions or run into issues, please join my Discord server: https://discord.gg/bhCuppRdVF
 
 [h1] Players & Installation [/h1]
-Just subscribe c:
+Just subscribe <3 c:
 
 [h1] Modders & Installation [/h1]
 [b] This library is liscensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well. [/b]

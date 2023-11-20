@@ -5,7 +5,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// The base for a GParticle.
 	/// </summary>
-	public class GParticle : BaseParticle
+	public class QuadParticle : BaseGPUParticle
 	{
 		/// <summary>
 		/// The start color

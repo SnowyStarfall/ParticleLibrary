@@ -37,7 +37,7 @@ namespace ParticleLibrary
 
 		public override void OnModLoad()
 		{
-			particles = new(ParticleLibraryConfig.Instance.MaxCPUParticles);
+			particles = new(ParticleLibraryConfig.Instance.MaxParticles);
 			importantParticles = new();
 			On_Dust.UpdateDust += UpdateParticles;
 			Main.QueueMainThreadAction(() =>
@@ -518,9 +518,9 @@ namespace ParticleLibrary
 		{
 			Particle ??= (Particle)Activator.CreateInstance(Particle.GetType());
 
-			if (!Important && particles?.Count > ParticleLibraryConfig.Instance.MaxCPUParticles)
+			if (!Important && particles?.Count > ParticleLibraryConfig.Instance.MaxParticles)
 				particles.TrimExcess();
-			if (!Important && particles?.Count == ParticleLibraryConfig.Instance.MaxCPUParticles)
+			if (!Important && particles?.Count == ParticleLibraryConfig.Instance.MaxParticles)
 				return null;
 
 			Particle.position = Position;

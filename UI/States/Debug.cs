@@ -17,10 +17,10 @@ namespace ParticleLibrary.UI.States
 		public bool Visible => ParticleLibraryConfig.Instance.DebugUI;
 		public Theme Theme => ParticleLibraryConfig.CurrentTheme;
 
-		public Dictionary<Mod, CParticle> CParticles { get; private set; }
-		public Dictionary<Mod, GParticle> GParticles { get; private set; }
+		public Dictionary<Mod, Core.Particle> CParticles { get; private set; }
+		public Dictionary<Mod, QuadParticle> GParticles { get; private set; }
 		public Dictionary<Mod, Emitter> Emitters { get; private set; }
-		public Dictionary<Mod, GParticleSystem> GParticleSystems { get; private set; }
+		public Dictionary<Mod, QuadParticleSystem> GParticleSystems { get; private set; }
 		public Dictionary<Mod, PointParticleSystem> PointParticleSystems { get; private set; }
 
 		public UIElement Base { get; set; }
@@ -113,14 +113,14 @@ namespace ParticleLibrary.UI.States
 				Mod mod = ModLoader.Mods[i];
 				Assembly assembly = mod.Code;
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(CParticle))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle))))
 				{
-					CParticles.Add(mod, Activator.CreateInstance(p) as CParticle);
+                    CParticles.Add(mod, Activator.CreateInstance(p) as Core.Particle);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(GParticle))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle))))
 				{
-					GParticles.Add(mod, Activator.CreateInstance(p) as GParticle);
+					GParticles.Add(mod, Activator.CreateInstance(p) as QuadParticle);
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Emitter))))
@@ -128,9 +128,9 @@ namespace ParticleLibrary.UI.States
 					Emitters.Add(mod, Activator.CreateInstance(p) as Emitter);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(GParticleSystem))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticleSystem))))
 				{
-					GParticleSystems.Add(mod, Activator.CreateInstance(p) as GParticleSystem);
+					GParticleSystems.Add(mod, Activator.CreateInstance(p) as QuadParticleSystem);
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(PointParticleSystem))))

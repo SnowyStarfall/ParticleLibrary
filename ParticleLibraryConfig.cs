@@ -14,12 +14,17 @@ namespace ParticleLibrary
 		[DefaultValue(15000)]
 		[Range(0, 50000)]
 		[Increment(1000)]
-		public int MaxCPUParticles;
+		public int MaxParticles;
 
 		[DefaultValue(50000)]
 		[Range(0, 250000)]
 		[Increment(1000)]
-		public int MaxGPUParticles;
+		public int MaxQuadParticles;
+
+		[DefaultValue(100000)]
+		[Range(0, 500000)]
+		[Increment(1000)]
+		public int MaxPointParticles;
 
 		[Header("Debug")]
 		[DefaultValue(false)]

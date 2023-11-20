@@ -29,6 +29,7 @@ namespace ParticleLibrary
 		/// </summary>
 		public override Vector2 VisualPosition => AnchorPosition + position - Main.screenPosition;
 
+		[Obsolete("This type is obsolete, use ParticleLibrary.Core.Layer instead")]
 		public enum Layer
 		{
 			/// <summary>

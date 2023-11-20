@@ -9,7 +9,7 @@ using Terraria.Graphics.Renderers;
 
 namespace ParticleLibrary.Core
 {
-	public interface IBaseParticleSystem<T> where T : class
+	public interface IBaseGPUParticleSystem<T> where T : class
 	{
 		public void Draw(Layer layer = Layer.None);
 

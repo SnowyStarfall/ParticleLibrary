@@ -18,26 +18,26 @@ Configs: {
 		MaxCPUParticles: {
 			Tooltip:
 				'''
-				Maximum CPU particles allowed at once.
+				Maximum normal particles allowed at once.
 				Note: Performance is tested with 15,000 as default max.
-				CPU particles are typically much less efficient than GPU particles, but they have more overall fidelity.
+				Normal particles are typically much less efficient than Quad particles, but they have more overall fidelity.
 				Good performance cannot be entirely guaranteed with values above the default amount.
 				A value of 0 will disable the system.
 				'''
 			Label: Max CPU Particles
 		}
 
-		MaxGPUParticles: {
+		MaxQuadParticles: {
 			Tooltip:
 				'''
 				[c/757ec7:Currently Not Functional]
-				Maximum GPU particles allowed at once.
+				Maximum Quad particles allowed at once.
 				Note: Performance is tested with 50,000 as default max.
-				GPU particles are typically much more efficient than CPU particles, but they have less overall fidelity.
+				Quad particles are typically much more efficient than CPU particles, but they have less overall fidelity.
 				Good performance cannot be entirely guaranteed with values above the default amount.
 				A value of 0 will disable the system.
 				'''
-			Label: Max GPU Particles
+			Label: Max Quad Particles
 		}
 
 		DisplayName: Particle Library Config

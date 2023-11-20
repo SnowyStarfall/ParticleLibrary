@@ -14,15 +14,15 @@ using static ParticleLibrary.Resources.Assets;
 namespace ParticleLibrary.Core
 {
 	/// <summary>
-	/// Represents a GPU particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
+	/// Represents a Quad particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
 	/// </summary>
-	public class GParticleSystem : BaseParticleSystem<GParticleSystemSettings, GParticle, GParticleVertex>, IDisposable
+	public class QuadParticleSystem : BaseGPUParticleSystem<QuadParticleSystemSettings, QuadParticle, QuadParticleVertex>, IDisposable
 	{
 		// Buffers
 		protected override DynamicVertexBuffer VertexBuffer { get; set; }
 		protected override DynamicIndexBuffer IndexBuffer { get; set; }
 
-		protected override GParticleVertex[] Vertices { get; set; }
+		protected override QuadParticleVertex[] Vertices { get; set; }
 		protected override int[] Indices { get; set; }
 
 		// Misc
@@ -35,8 +35,9 @@ namespace ParticleLibrary.Core
 		protected override bool SendBatch { get; set; }
 		protected override int StartIndex { get; set; }
 
-		public GParticleSystem(GParticleSystemSettings settings) : base(settings)
+		public QuadParticleSystem(QuadParticleSystemSettings settings) : base(settings)
 		{
+			GPUParticleManager.AddSystem(this);
 		}
 
 		// Function
@@ -84,11 +85,11 @@ namespace ParticleLibrary.Core
 		/// <param name="position"></param>
 		/// <param name="velocity"></param>
 		/// <param name="particle"></param>
-		public override void AddParticle(Vector2 position, Vector2 velocity, GParticle particle)
+		public override void AddParticle(Vector2 position, Vector2 velocity, QuadParticle particle)
 		{
 			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);
 
-			Vertices[CurrentParticleIndex * 4] = new GParticleVertex()
+			Vertices[CurrentParticleIndex * 4] = new QuadParticleVertex()
 			{
 				Position = new Vector4(position.X - size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(),
@@ -103,7 +104,7 @@ namespace ParticleLibrary.Core
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, CurrentTime)
 			};
-			Vertices[CurrentParticleIndex * 4 + 1] = new GParticleVertex()
+			Vertices[CurrentParticleIndex * 4 + 1] = new QuadParticleVertex()
 			{
 				Position = new Vector4(position.X - size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(0f, 1f),
@@ -118,7 +119,7 @@ namespace ParticleLibrary.Core
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, CurrentTime)
 			};
-			Vertices[CurrentParticleIndex * 4 + 2] = new GParticleVertex()
+			Vertices[CurrentParticleIndex * 4 + 2] = new QuadParticleVertex()
 			{
 				Position = new Vector4(position.X + size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(1f, 0f),
@@ -133,7 +134,7 @@ namespace ParticleLibrary.Core
 
 				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, CurrentTime)
 			};
-			Vertices[CurrentParticleIndex * 4 + 3] = new GParticleVertex()
+			Vertices[CurrentParticleIndex * 4 + 3] = new QuadParticleVertex()
 			{
 				Position = new Vector4(position.X + size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(1f),
@@ -206,16 +207,16 @@ namespace ParticleLibrary.Core
 		// Effect
 		protected override void CreateBuffers()
 		{
-			VertexBuffer = new(Device, typeof(GParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
+			VertexBuffer = new(Device, typeof(QuadParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
 			IndexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
 
-			Vertices = new GParticleVertex[MaxParticles * 4];
+			Vertices = new QuadParticleVertex[MaxParticles * 4];
 			Indices = new int[MaxParticles * 6];
 		}
 
 		protected override void SetBuffers()
 		{
-			VertexBuffer.SetData(GParticleVertex.SizeInBytes * StartIndex * 4, Vertices, StartIndex, (CurrentParticleIndex - StartIndex) * 4, GParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
+			VertexBuffer.SetData(QuadParticleVertex.SizeInBytes * StartIndex * 4, Vertices, StartIndex, (CurrentParticleIndex - StartIndex) * 4, QuadParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
 			IndexBuffer.SetData(sizeof(int) * StartIndex * 6, Indices, StartIndex, (CurrentParticleIndex - StartIndex) * 6, SetDataOptions.NoOverwrite);
 
 			// Reset
@@ -225,7 +226,7 @@ namespace ParticleLibrary.Core
 
 		protected override void SetPass()
 		{
-			Pass = Effect.CurrentTechnique.Passes["GPU"];
+			Pass = Effect.CurrentTechnique.Passes["Quad"];
 		}
 
 		// Dispose
@@ -239,7 +240,7 @@ namespace ParticleLibrary.Core
 			{
 				if (disposing)
 				{
-					//GParticleManager.RemoveSystem(this);
+					GPUParticleManager.RemoveSystem(this);
 				}
 
 				_disposedValue = true;

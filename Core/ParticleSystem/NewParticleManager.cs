@@ -14,15 +14,15 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// This class manages the CPU particle system.
 	/// </summary>
-	public class CParticleManager : ModSystem
+	public class NewParticleManager : ModSystem
 	{
 		/// <summary>
 		/// A list that contains all active particles.
 		/// </summary>
-		public static IReadOnlyCollection<CParticle> Particles => Array.AsReadOnly(_particles.Buffer);
-		internal static FastList<CParticle> _particles;
-		internal static FastList<CParticle> _particlesToAdd;
-		internal static FastList<CParticle> _particlesToRemove;
+		public static IReadOnlyCollection<Particle> Particles => Array.AsReadOnly(_particles.Buffer);
+		internal static FastList<Particle> _particles;
+		internal static FastList<Particle> _particlesToAdd;
+		internal static FastList<Particle> _particlesToRemove;
 
 		/// <summary>
 		/// The amount of particles currently maintained by the system.
@@ -37,7 +37,7 @@ namespace ParticleLibrary.Core
 
 		public override void OnModLoad()
 		{
-			_particles = new(ParticleLibraryConfig.Instance.MaxCPUParticles);
+			_particles = new(ParticleLibraryConfig.Instance.MaxParticles);
 			_particlesToAdd = new();
 			_particlesToRemove = new();
 
@@ -241,9 +241,9 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static CParticle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, float scale, Layer layer = Layer.BeforeDust) where T : CParticle
+		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, float scale, Layer layer = Layer.BeforeDust) where T : Particle
 		{
-			CParticle particle = Activator.CreateInstance<T>();
+			Particle particle = Activator.CreateInstance<T>();
 			return NewParticle(position, velocity, particle, color, new Vector2(scale), layer);
 		}
 
@@ -256,9 +256,9 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static CParticle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, Vector2 scale, Layer layer = Layer.BeforeDust) where T : CParticle
+		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, Vector2 scale, Layer layer = Layer.BeforeDust) where T : Particle
 		{
-			CParticle particle = Activator.CreateInstance<T>();
+			Particle particle = Activator.CreateInstance<T>();
 			return NewParticle(position, velocity, particle, color, scale, layer);
 		}
 
@@ -272,7 +272,7 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static CParticle NewParticle(Vector2 position, Vector2 velocity, CParticle particle, Color color, float scale, Layer layer = Layer.BeforeDust)
+		public static Particle NewParticle(Vector2 position, Vector2 velocity, Particle particle, Color color, float scale, Layer layer = Layer.BeforeDust)
 		{
 			return NewParticle(position, velocity, particle, color, new Vector2(scale), layer);
 		}
@@ -287,12 +287,12 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static CParticle NewParticle(Vector2 position, Vector2 velocity, CParticle particle, Color color, Vector2 scale, Layer layer = Layer.BeforeDust)
+		public static Particle NewParticle(Vector2 position, Vector2 velocity, Particle particle, Color color, Vector2 scale, Layer layer = Layer.BeforeDust)
 		{
 			if (particle is null)
 				throw new ArgumentNullException(nameof(particle));
 
-			if (ParticleCount >= ParticleLibraryConfig.Instance.MaxCPUParticles)
+			if (ParticleCount >= ParticleLibraryConfig.Instance.MaxParticles)
 				return null;
 
 			particle.Position = position;

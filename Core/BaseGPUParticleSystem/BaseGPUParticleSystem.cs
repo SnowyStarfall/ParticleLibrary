@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework;
 
 namespace ParticleLibrary.Core
 {
-	public abstract class BaseParticleSystem<TSettings, TParticle, TVertex> : IBaseParticleSystem<TParticle>, IDisposable
-		where TSettings : BaseSystemSettings
-		where TParticle : BaseParticle
+	public abstract class BaseGPUParticleSystem<TSettings, TParticle, TVertex> : IBaseGPUParticleSystem<TParticle>, IDisposable
+		where TSettings : BaseGPUSystemSettings
+		where TParticle : BaseGPUParticle
 		where TVertex : IVertexType
 	{
 		public GraphicsDevice Device => Main.graphics.GraphicsDevice;
@@ -93,7 +93,7 @@ namespace ParticleLibrary.Core
 		protected abstract bool SendBatch { get; set; }
 		protected abstract int StartIndex { get; set; }
 
-		public BaseParticleSystem(TSettings settings)
+		public BaseGPUParticleSystem(TSettings settings)
 		{
 			Texture = settings.Texture;
 			MaxParticles = settings.MaxParticles;
@@ -103,8 +103,6 @@ namespace ParticleLibrary.Core
 			Fade = settings.Fade;
 			Gravity = settings.Gravity;
 			TerminalGravity = settings.TerminalGravity;
-
-			ParticleSystemManager.AddSystem(this);
 
 			Main.QueueMainThreadAction(() =>
 			{
@@ -309,7 +307,7 @@ namespace ParticleLibrary.Core
 					Effect?.Dispose();
 					VertexBuffer?.Dispose();
 					IndexBuffer?.Dispose();
-					ParticleSystemManager.RemoveSystem(this);
+					GPUParticleManager.RemoveSystem(this);
 				}
 
 				_disposedValue = true;

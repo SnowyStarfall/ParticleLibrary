@@ -73,7 +73,7 @@ namespace ParticleLibrary.Content
 							Vector2 position = Main.MouseWorld + shift;
 							Vector2 velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 4f);
 
-							GParticle settings = new()
+							QuadParticle settings = new()
 							{
 								StartColor = new(1f, 0f, 0f, 0f),
 								EndColor = new(0f, 1f, 0f, 0f),
@@ -87,7 +87,7 @@ namespace ParticleLibrary.Content
 								DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 							};
 
-							ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
+							GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
 						}
 					}
 					return true;
@@ -103,7 +103,7 @@ namespace ParticleLibrary.Content
 						Vector2 position = Main.MouseWorld + shift;
 						Vector2 velocity = Vector2.Zero;
 
-						GParticle settings = new()
+						QuadParticle settings = new()
 						{
 							StartColor = new(1f, 0f, 0f, 0f),
 							EndColor = new(0f, 1f, 0f, 0f),
@@ -117,7 +117,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
+						GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
 					}
 				}
 				return true;
@@ -133,7 +133,7 @@ namespace ParticleLibrary.Content
 				Vector2 position = Main.MouseWorld;
 				Vector2 velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 4f);
 
-				GParticle settings = new()
+				QuadParticle settings = new()
 				{
 					StartColor = new(1f, 0f, 0f, 0f),
 					EndColor = new(0f, 1f, 0f, 0f),
@@ -143,7 +143,7 @@ namespace ParticleLibrary.Content
 					RotationVelocity = -0.1f
 				};
 
-				ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
+				GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
 
 				return true;
 			}
@@ -174,7 +174,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						ParticleSystemManager.TestPParticleSystem.AddParticle(position, velocity, settings);
+						GPUParticleManager.TestPointParticleSystem.AddParticle(position, velocity, settings);
 					}
 				}
 
@@ -247,8 +247,8 @@ namespace ParticleLibrary.Content
 			orig(self);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer);
-			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, CParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
-			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, CParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
+            Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
+            Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
 			Main.spriteBatch.End();
 		}
 

@@ -4,9 +4,9 @@ using System;
 namespace ParticleLibrary.Core
 {
 	/// <summary>
-	/// Represents the settings for a <see cref="GParticleSystem"/>
+	/// Represents the settings for a <see cref="QuadParticleSystem"/>
 	/// </summary>
-	public class GParticleSystemSettings : BaseSystemSettings
+	public class QuadParticleSystemSettings : BaseGPUSystemSettings
 	{
 		/// <summary>
 		/// The texture of the particles
@@ -46,7 +46,7 @@ namespace ParticleLibrary.Core
 		public override float TerminalGravity { get; internal set; }
 
 		/// <summary>
-		/// Creates a new settings present for a <see cref="GParticleSystem"/>
+		/// Creates a new settings present for a <see cref="QuadParticleSystem"/>
 		/// </summary>
 		/// <param name="texture">The texture of the particles</param>
 		/// <param name="maxParticles">The maximum amount of particles</param>
@@ -58,7 +58,7 @@ namespace ParticleLibrary.Core
 		/// <param name="terminalGravity">The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now</param>
 		/// <exception cref="ArgumentNullException">Ensure that texture is not null</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Ensure that max particles is greater than 0</exception>
-		public GParticleSystemSettings(Texture2D texture, int maxParticles, int lifespan, /*int bufferSize,*/ Layer layer = Layer.BeforeDust, BlendState blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
+		public QuadParticleSystemSettings(Texture2D texture, int maxParticles, int lifespan, /*int bufferSize,*/ Layer layer = Layer.BeforeDust, BlendState blendState = null, bool fade = true, float gravity = 0f, float terminalGravity = 0)
 		{
 			if (texture is null)
 				throw new ArgumentNullException(nameof(texture), "Texture cannot be null.");
