@@ -49,10 +49,6 @@ namespace ParticleLibrary.Core
 			Initialize();
 		}
 
-		public Emitter() : this(null, null, null)
-		{
-		}
-
 		/// <summary>
 		/// Runs on instantiation.
 		/// </summary>

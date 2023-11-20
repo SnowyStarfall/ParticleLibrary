@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Core.Shapes;
-
+using System;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -211,12 +211,12 @@ namespace ParticleLibrary.Core
 		{
 			tag.Set("Shape Assembly", Shape.Assembly);
 			tag.Set("Shape Type", Shape.Type);
-			tag.Set("Origin", Origin);
+			tag.Set("Origin", (int)Origin);
 			tag.Set("Position", Position);
 			tag.Set("Size", new Vector3(Width, Height, Padding));
 			tag.Set("Interval", new Vector2(MinimumInterval, MaximumInterval));
 			tag.Set("Spawns", new Vector2(MinimumSpawns, MaximumSpawns));
-			tag.Set("Data", Data);
+			tag.Set("Data", Data ?? string.Empty);
 			tag.Set("Save", Save);
 		}
 
@@ -235,8 +235,7 @@ namespace ParticleLibrary.Core
 				Shape = result.Code.CreateInstance(shapeType) as EmitterShape;
 			}
 
-			Shape = tag.Get<EmitterShape>("Shape");
-			Origin = tag.Get<EmitterOrigin>("Origin");
+			Origin = (EmitterOrigin)tag.GetInt("Origin");
 			Position = tag.Get<Vector2>("Position");
 
 			Vector3 size = tag.Get<Vector3>("Size");

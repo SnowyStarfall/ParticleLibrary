@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary.Utilities;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
@@ -50,10 +51,14 @@ namespace ParticleLibrary.Core
 			tag.Set("MaximumStartColor", MaximumStartColor);
 			tag.Set("MinimumEndColor", MinimumEndColor);
 			tag.Set("MaximumEndColor", MaximumEndColor);
-			tag.Set("MinimumStartHSLA", MinimumStartHSLA);
-			tag.Set("MaximumStartHSLA", MaximumStartHSLA);
-			tag.Set("MinimumEndHSLA", MinimumEndHSLA);
-			tag.Set("MaximumEndHSLA", MaximumEndHSLA);
+			tag.Set("MinimumStartHSLAXY", new Vector2(MinimumStartHSLA.X, MinimumStartHSLA.Y));
+			tag.Set("MinimumStartHSLAZW", new Vector2(MinimumStartHSLA.Z, MinimumStartHSLA.W));
+			tag.Set("MaximumStartHSLAXY", new Vector2(MaximumStartHSLA.X, MaximumStartHSLA.Y));
+			tag.Set("MaximumStartHSLAZW", new Vector2(MaximumStartHSLA.Z, MaximumStartHSLA.W));
+			tag.Set("MinimumEndHSLAXY", new Vector2(MinimumEndHSLA.X, MinimumEndHSLA.Y));
+			tag.Set("MinimumEndHSLAZW", new Vector2(MinimumEndHSLA.Z, MinimumEndHSLA.Y));
+			tag.Set("MaximumEndHSLAXY", new Vector2(MaximumEndHSLA.X, MaximumEndHSLA.Y));
+			tag.Set("MaximumEndHSLAZW", new Vector2(MaximumEndHSLA.Z, MaximumEndHSLA.Y));
 		}
 
 		internal void LoadData(TagCompound tag)
@@ -63,10 +68,10 @@ namespace ParticleLibrary.Core
 			MaximumStartColor = tag.Get<Color>("MaximumStartColor");
 			MinimumEndColor = tag.Get<Color>("MinimumEndColor");
 			MaximumEndColor = tag.Get<Color>("MaximumEndColor");
-			MinimumStartHSLA = tag.Get<Vector4>("MinimumStartHSLA");
-			MaximumStartHSLA = tag.Get<Vector4>("MaximumStartHSLA");
-			MinimumEndHSLA = tag.Get<Vector4>("MinimumEndHSLA");
-			MaximumEndHSLA = tag.Get<Vector4>("MaximumEndHSLA");
+			MinimumStartHSLA = LibUtilities.Vec4From2Vec2(tag.Get<Vector2>("MinimumStartHSLAXY"), tag.Get<Vector2>("MinimumStartHSLAZW"));
+			MaximumStartHSLA = LibUtilities.Vec4From2Vec2(tag.Get<Vector2>("MaximumStartHSLAXY"), tag.Get<Vector2>("MaximumStartHSLAZW"));
+			MinimumEndHSLA = LibUtilities.Vec4From2Vec2(tag.Get<Vector2>("MinimumEndHSLAXY"), tag.Get<Vector2>("MinimumEndHSLAZW"));
+			MaximumEndHSLA = LibUtilities.Vec4From2Vec2(tag.Get<Vector2>("MaximumEndHSLAXY"), tag.Get<Vector2>("MaximumEndHSLAZW"));
 		}
 	}
 }

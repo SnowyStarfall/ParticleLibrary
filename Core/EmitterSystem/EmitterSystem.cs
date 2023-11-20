@@ -101,7 +101,7 @@ namespace ParticleLibrary.Core
 		/// <param name="particle">Particle spawn settings.</param>
 		/// <param name="color">Particle color settings.</param>
 		/// <returns>The resulting emitter.</returns>
-		public static Emitter NewEmitter<T>(EmitterSettings settings, EmitterParticleSettings particle, EmitterColorSettings color) where T : Emitter
+		public static Emitter NewEmitter<T>(EmitterSettings settings = null, EmitterParticleSettings particle = null, EmitterColorSettings color = null) where T : Emitter
 		{
 			Emitter emitter = (Emitter)Activator.CreateInstance(typeof(T), settings, particle, color);
 			return NewEmitter(emitter);

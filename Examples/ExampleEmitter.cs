@@ -9,16 +9,24 @@ using Terraria.ModLoader.IO;
 namespace ParticleLibrary.Examples
 {
 	/// <summary>
-	/// This class demonstrates how to create a custom emitter.
-	/// Alternatively, you can create an emitter by instantiating it and using <see cref="Core.EmitterSystem.NewEmitter(Emitter)"/> or <see cref="Core.EmitterSystem.NewEmitter{T}(EmitterSettings, EmitterParticleSettings, EmitterColorSettings)"/>
+	/// This class demonstrates how to create an emitter.
+	/// It's required that you create a custom emitter class, since <see cref="Emitter.SpawnParticle(Vector2, SpatialParameters, VisualParameters)"/> won't spawn particles for you.
+	/// Emitters provide the calculation functionality, expecting it to be used to create any kind of particle.
 	/// </summary>
 	public class ExampleEmitter : Emitter
 	{
-		public ExampleEmitter()
+		public ExampleEmitter(EmitterSettings emitterSettings = null, EmitterParticleSettings particleSettings = null, EmitterColorSettings colorSettings = null) : base(emitterSettings, particleSettings, colorSettings)
 		{
 			// It's recommended to have a look through EmitterSettings, EmitterParticleSettings, and EmitterColorSettings
 			// I won't go over them in detail since they're completely documented, but an Emitter can be completely customized
 			// Alternatively, you can completely ignore the settings.
+			// Here is an example of how you would spawn this emitter in.
+			// Please don't uncomment this code...I promise a stack overflow exception!!! c:
+
+			//Core.EmitterSystem.NewEmitter<ExampleEmitter>(new EmitterSettings
+			//{
+			//	Position = Main.MouseWorld
+			//});
 		}
 
 		/// <summary>

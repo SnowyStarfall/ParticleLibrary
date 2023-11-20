@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core;
+using ParticleLibrary.Examples;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.GameContent;
@@ -152,6 +153,10 @@ namespace ParticleLibrary.Content
 			{
 				if (rightClick)
 				{
+					Core.EmitterSystem.NewEmitter<ExampleEmitter>(new EmitterSettings
+					{
+						Position = Main.MouseWorld
+					});
 					return true;
 				}
 

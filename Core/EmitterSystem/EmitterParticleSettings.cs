@@ -106,7 +106,8 @@ namespace ParticleLibrary.Core
 		internal void SaveData(TagCompound tag)
 		{
 			tag.Set("UseScalarVelocity", UseScalarVelocity);
-			tag.Set("ScalarVelocity", new Vector4(MinimumScalarVelocity, MaximumScalarVelocity, MinimumScalarVelocityAcceleration, MaximumScalarVelocityAcceleration));
+			tag.Set("ScalarVelocity", new Vector2(MinimumScalarVelocity, MaximumScalarVelocity));
+			tag.Set("ScalarVelocityAcceleration", new Vector2(MinimumScalarVelocityAcceleration, MaximumScalarVelocityAcceleration));
 			tag.Set("Radians", new Vector2(MinimumRadians, MaximumRadians));
 			tag.Set("MinimumDirectionalVelocity", MinimumDirectionalVelocity);
 			tag.Set("MaximumDirectionalVelocity", MaximumDirectionalVelocity);
@@ -116,19 +117,23 @@ namespace ParticleLibrary.Core
 			tag.Set("MaximumScale", MaximumScale);
 			tag.Set("MinimumScaleVelocity", MinimumScaleVelocity);
 			tag.Set("MaximumScaleVelocity", MaximumScaleVelocity);
-			tag.Set("Rotation", new Vector4(MinimumRotation, MaximumRotation, MinimumRotationVelocity, MaximumRotationVelocity));
-			tag.Set("Depth", new Vector4(MinimumDepth, MaximumDepth, MinimumDepthVelocity, MaximumDepthVelocity));
+			tag.Set("Rotation", new Vector2(MinimumRotation, MaximumRotation));
+			tag.Set("RotationVelocity", new Vector2(MinimumRotationVelocity, MaximumRotationVelocity));
+			tag.Set("Depth", new Vector2(MinimumDepth, MaximumDepth));
+			tag.Set("DepthVelocity", new Vector2(MinimumDepthVelocity, MaximumDepthVelocity));
 		}
 
 		internal void LoadData(TagCompound tag)
 		{
 			UseScalarVelocity = tag.GetBool("UseScalarVelocity");
 
-			Vector4 scalar = tag.Get<Vector4>("ScalarVelocity");
+			Vector2 scalar = tag.Get<Vector2>("ScalarVelocity");
 			MinimumScalarVelocity = scalar.X;
 			MaximumScalarVelocity = scalar.Y;
-			MinimumScalarVelocityAcceleration = scalar.Z;
-			MaximumScalarVelocityAcceleration = scalar.W;
+
+			Vector2 scalarAcceleration = tag.Get<Vector2>("ScalarVelocityAcceleration");
+			MinimumScalarVelocityAcceleration = scalarAcceleration.X;
+			MaximumScalarVelocityAcceleration = scalarAcceleration.Y;
 
 			Vector2 radians = tag.Get<Vector2>("Radians");
 			MinimumRadians = radians.X;
@@ -143,17 +148,21 @@ namespace ParticleLibrary.Core
 			MinimumScaleVelocity = tag.Get<Vector2>("MinimumScaleVelocity");
 			MaximumScaleVelocity = tag.Get<Vector2>("MaximumScaleVelocity");
 
-			Vector4 rotation = tag.Get<Vector4>("Rotation");
+			Vector2 rotation = tag.Get<Vector2>("Rotation");
 			MinimumRotation = rotation.X;
 			MaximumRotation = rotation.Y;
-			MinimumRotationVelocity = rotation.Z;
-			MaximumRotationVelocity = rotation.W;
 
-			Vector4 depth = tag.Get<Vector4>("Depth");
+			Vector2 rotationVelocity = tag.Get<Vector2>("RotationVelocity");
+			MinimumRotationVelocity = rotationVelocity.X;
+			MaximumRotationVelocity = rotationVelocity.Y;
+
+			Vector2 depth = tag.Get<Vector2>("Depth");
 			MinimumDepth = depth.X;
 			MaximumDepth = depth.Y;
-			MinimumDepthVelocity = depth.Z;
-			MaximumDepthVelocity = depth.W;
+
+			Vector2 depthVelocity = tag.Get<Vector2>("DepthVelocity");
+			MinimumDepthVelocity = depthVelocity.X;
+			MaximumDepthVelocity = depthVelocity.Y;
 		}
 	}
 }

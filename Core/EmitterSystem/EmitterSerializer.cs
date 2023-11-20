@@ -42,14 +42,16 @@ namespace ParticleLibrary.Core
 				return null;
 			}
 
-			Emitter e = result.Code.CreateInstance(type) as Emitter;
-			if (e is not null)
-			{
-				e.EmitterSettings.LoadData(tag);
-				e.ParticleSettings.LoadData(tag);
-				e.ColorSettings.LoadData(tag);
-			}
+			EmitterSettings settings = new();
+			EmitterParticleSettings particleSettings = new();
+			EmitterColorSettings colorSettings = new();
 
+			settings.LoadData(tag);
+			particleSettings.LoadData(tag);
+			colorSettings.LoadData(tag);
+
+			Type t = result.Code.GetType(type) ?? typeof(Emitter);
+			Emitter e = Activator.CreateInstance(t, settings, particleSettings, colorSettings) as Emitter;
 			return new(e);
 		}
 	}
