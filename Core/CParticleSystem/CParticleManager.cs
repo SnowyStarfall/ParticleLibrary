@@ -41,25 +41,27 @@ namespace ParticleLibrary.Core
 			_particlesToAdd = new();
 			_particlesToRemove = new();
 
-			On_Dust.UpdateDust += UpdateWorldParticles;
-			On_Main.UpdateMenu += UpdateMenuParticles;
+			DrawHooks.OnUpdateDust += UpdateWorldParticles;
+			DrawHooks.OnUpdateMenu += UpdateMenuParticles;
 			Main.QueueMainThreadAction(() =>
 			{
-				On_Main.DrawSurfaceBG += DrawParticles_BeforeBackground;
-				On_Main.DoDraw_WallsAndBlacks += DrawParticles_BeforeWalls;
-				On_Main.DoDraw_Tiles_NonSolid += DrawParticles_BeforeNonSolidTiles;
-				On_Main.DrawPlayers_BehindNPCs += DrawParticles_BeforePlayersBehindNPCs;
-				On_Main.DrawNPCs += DrawParticles_BeforeNPCs;
-				On_Main.DoDraw_Tiles_Solid += DrawParticles_BeforeSolidTiles;
-				On_Main.DrawProjectiles += DrawParticles_BeforeProjectiles;
-				On_Main.DrawPlayers_AfterProjectiles += DrawParticles_BeforePlayers;
-				On_Main.DrawItems += DrawParticles_BeforeItems;
-				On_Main.DrawRain += DrawParticles_BeforeRain;
-				On_Main.DrawGore += DrawParticles_BeforeGore;
-				On_Main.DrawDust += DrawParticles_BeforeDust;
-				On_Main.DrawWaters += DrawParticles_BeforeWater;
-				On_Main.DrawInterface += DrawParticles_BeforeInterface;
-				On_Main.DrawMenu += DrawParticles_BeforeAndAfterMainMenu;
+				DrawHooks.OnDraw_BeforeBackground += Draw;
+				DrawHooks.OnDraw_BeforeWalls += Draw;
+				DrawHooks.OnDraw_BeforeNonSolidTiles += Draw;
+				DrawHooks.OnDraw_BeforePlayersBehindNPCs += Draw;
+				DrawHooks.OnDraw_BeforeNPCs += Draw;
+				DrawHooks.OnDraw_BeforeSolidTiles += Draw;
+				DrawHooks.OnDraw_BeforeProjectiles += Draw;
+				DrawHooks.OnDraw_BeforePlayers += Draw;
+				DrawHooks.OnDraw_BeforeItems += Draw;
+				DrawHooks.OnDraw_BeforeRain += Draw;
+				DrawHooks.OnDraw_BeforeGore += Draw;
+				DrawHooks.OnDraw_BeforeDust += Draw;
+				DrawHooks.OnDraw_BeforeWater += Draw;
+				DrawHooks.OnDraw_BeforeInterface += Draw;
+				DrawHooks.OnDraw_AfterInterface += Draw;
+				DrawHooks.OnDraw_BeforeMainMenu += Draw;
+				DrawHooks.OnDraw_AfterMainMenu += Draw;
 			});
 		}
 
@@ -87,19 +89,15 @@ namespace ParticleLibrary.Core
 			_particlesToRemove.Clear();
 		}
 
-		private void UpdateWorldParticles(On_Dust.orig_UpdateDust orig)
+		private void UpdateWorldParticles()
 		{
 			Update();
-
-			orig();
 		}
 
-		private void UpdateMenuParticles(On_Main.orig_UpdateMenu orig)
+		private void UpdateMenuParticles()
 		{
-			if (Main.gameMenu && Main.hasFocus)
+			if (Main.gameMenu)
 				Update();
-
-			orig();
 		}
 
 		private void Update()
@@ -181,145 +179,6 @@ namespace ParticleLibrary.Core
 
 				//UpdateTime_InMilliseconds = s.Elapsed.TotalMilliseconds;
 			}
-		}
-
-		private void DrawParticles_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeBackground);
-
-			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
-			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeWalls);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeNonSolidTiles);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
-		{
-			Draw(Layer.BeforeTiles);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
-		{
-			Draw(Layer.BeforePlayersBehindNPCs);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeNPCs(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
-		{
-			if (behindTiles)
-			{
-				Main.spriteBatch.End();
-				Draw(Layer.BeforeNPCsBehindTiles);
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-			}
-			else
-			{
-				Main.spriteBatch.End();
-				Draw(Layer.BeforeNPCs);
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-			}
-
-			orig(self, behindTiles);
-		}
-
-		private void DrawParticles_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
-		{
-			Draw(Layer.BeforeProjectiles);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
-		{
-			Draw(Layer.BeforePlayers);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeItems(On_Main.orig_DrawItems orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeItems);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeRain(On_Main.orig_DrawRain orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeRain);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeGore(On_Main.orig_DrawGore orig, Main self)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeGore);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeDust(On_Main.orig_DrawDust orig, Main self)
-		{
-			Draw(Layer.BeforeDust);
-
-			orig(self);
-		}
-
-		private void DrawParticles_BeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeWater);
-			Main.spriteBatch.Begin();
-
-			orig(self, isBackground);
-		}
-
-		private void DrawParticles_BeforeInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
-		{
-			Draw(Layer.BeforeUI);
-
-			orig(self, gameTime);
-
-			Draw(Layer.AfterUI);
-		}
-
-		private void DrawParticles_BeforeAndAfterMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
-		{
-			Main.spriteBatch.End();
-			Draw(Layer.BeforeMainMenu);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
-
-			orig(self, gameTime);
-			Draw(Layer.AfterMainMenu);
 		}
 
 		private void Draw(Layer layer)

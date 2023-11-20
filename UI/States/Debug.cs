@@ -230,7 +230,6 @@ namespace ParticleLibrary.UI.States
 				Content = $"ParticleLibrary AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				HideOverflow = true
 			});
-			m++;
 		}
 	}
 }

@@ -25,7 +25,7 @@
 		/// <summary>
 		/// Tiles.
 		/// </summary>
-		BeforeTiles,
+		BeforeSolidTiles,
 		/// <summary>
 		/// Player details drawn behind NPCs.
 		/// </summary>
@@ -65,11 +65,11 @@
 		/// <summary>
 		/// Before UI.
 		/// </summary>
-		BeforeUI,
+		BeforeInterface,
 		/// <summary>
 		/// After UI.
 		/// </summary>
-		AfterUI,
+		AfterInterface,
 		/// <summary>
 		/// Before Main Menu.
 		/// </summary>

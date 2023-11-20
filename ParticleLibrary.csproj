@@ -24,8 +24,7 @@
 	  <Compile Remove="UI\States\OldDebug.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="Assets\Effects\GParticleShader.fx" />
-		<None Remove="Assets\Effects\PointParticleShader.fx" />
+		<None Remove="Assets\Effects\Particle.fx" />
 		<None Remove="Assets\Effects\Shape.fx" />
 		<None Remove="Assets\Textures\EmptyPixel.png" />
 		<None Remove="Assets\Textures\Star.png" />

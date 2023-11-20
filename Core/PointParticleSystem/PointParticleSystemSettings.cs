@@ -6,40 +6,40 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents the settings for a <see cref="PointParticleSystem"/>
 	/// </summary>
-	public class PointParticleSystemSettings
+	public class PointParticleSystemSettings : BaseSystemSettings
 	{
 		/// <summary>
 		/// The maximum amount of particles
 		/// </summary>
-		public int MaxParticles { get; }
+		public override int MaxParticles { get; }
 		/// <summary>
 		/// The lifespan of the particles
 		/// </summary>
-		public int Lifespan { get; internal set; }
+		public override int Lifespan { get; internal set; }
 		/// <summary>
 		/// The size of the batching buffer. Currently unimplemented for now
 		/// </summary>
-		public int BufferSize { get; }
+		public override int BufferSize { get; }
 		/// <summary>
 		/// The layer the particles are drawn on
 		/// </summary>
-		public Layer Layer { get; }
+		public override Layer Layer { get; }
 		/// <summary>
 		/// The BlendState the particles are drawn with
 		/// </summary>
-		public BlendState BlendState { get; }
+		public override BlendState BlendState { get; }
 		/// <summary>
 		/// Whether the particles should fade over their lifespan
 		/// </summary>
-		public bool Fade { get; internal set; }
+		public override bool Fade { get; internal set; }
 		/// <summary>
 		/// How much gravity to apply to the particles
 		/// </summary>
-		public float Gravity { get; internal set; }
+		public override float Gravity { get; internal set; }
 		/// <summary>
 		/// The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
 		/// </summary>
-		public float TerminalGravity { get; internal set; }
+		public override float TerminalGravity { get; internal set; }
 
 		/// <summary>
 		/// Creates a new settings present for a <see cref="PointParticleSystem"/>
@@ -61,7 +61,7 @@ namespace ParticleLibrary.Core
 			MaxParticles = maxParticles;
 			Lifespan = lifespan;
 			Layer = layer;
-			BlendState = blendState;
+			BlendState = blendState ?? BlendState.AlphaBlend;
 			Fade = fade;
 			Gravity = gravity;
 			TerminalGravity = terminalGravity;

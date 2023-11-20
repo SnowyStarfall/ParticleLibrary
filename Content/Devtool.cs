@@ -87,7 +87,7 @@ namespace ParticleLibrary.Content
 								DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 							};
 
-							GParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+							ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
 						}
 					}
 					return true;
@@ -117,7 +117,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						GParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+						ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
 					}
 				}
 				return true;
@@ -143,7 +143,7 @@ namespace ParticleLibrary.Content
 					RotationVelocity = -0.1f
 				};
 
-				GParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+				ParticleSystemManager.TestGParticleSystem.AddParticle(position, velocity, settings);
 
 				return true;
 			}
@@ -174,7 +174,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						PointParticleManager.ParticleSystem.AddParticle(position, velocity, settings);
+						ParticleSystemManager.TestPParticleSystem.AddParticle(position, velocity, settings);
 					}
 				}
 

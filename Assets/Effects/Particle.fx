@@ -26,7 +26,8 @@ sampler TextureSampler = sampler_state
 	AddressV = Clamp;
 };
 
-struct VertexShaderInput
+// GPU Particle structs
+struct GVertexShaderInput
 {
 	float4 Position : POSITION0;
 	float4 TexCoords : TEXCOORD0;
@@ -42,13 +43,33 @@ struct VertexShaderInput
 	float3 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
 };
 
-struct VertexShaderOutput
+struct GVertexShaderOutput
 {
 	float4 Position : POSITION0;
 	float2 TexCoords : TEXCOORD0;
 	float4 Color : COLOR0;
 };
 
+// Point Particle structs
+struct PVertexShaderInput
+{
+	float4 Position : POSITION0;
+	
+	float4 StartColor : COLOR0;
+	float4 EndColor : COLOR1;
+	
+	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
+
+	float3 DepthTime : NORMAL1; // X Depth | Y Velocity | Z Time
+};
+
+struct PVertexShaderOutput
+{
+	float4 Position : POSITION0;
+	float4 Color : COLOR0;
+};
+
+// Vertex functions
 float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
 {
 	// Displacement
@@ -96,9 +117,34 @@ float ComputeDepth(float depth, float velocity, float time)
 	return d;
 }
 
-VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
+// Pixel functions
+float4 PointParticle(GVertexShaderOutput input)
 {
-	VertexShaderOutput output;
+	float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
+	float n = pow(m, 15);
+	
+	return float4(n, n, n, 0) * input.Color;
+}
+
+float4 QuadDebug(GVertexShaderOutput input)
+{
+		// Quad debugging
+	if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
+		return float4(1, 0, 0, 1);
+	if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)
+		return float4(1, 1, 0, 1);
+	if (input.TexCoords.x < 0.1 && input.TexCoords.y > 0.9)
+		return float4(0, 1, 0, 1);
+	if (input.TexCoords.x > 0.9 && input.TexCoords.y > 0.9)
+		return float4(0, 0, 1, 1);
+	
+	return float4(0, 0, 0, 0);
+}
+
+// GPU Particles
+GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
+{
+	GVertexShaderOutput output;
 	
 	// Set up our reference variables
 	
@@ -106,7 +152,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	float time = Time - input.DepthTime.z;
 	
 	// Branching here is worth the performance gain
-	if(time >= Lifespan)
+	if(time >= Lifespan && Lifespan != -1)
 	{
 		output.Position = 0;
 		output.TexCoords = 0;
@@ -140,30 +186,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	return output;
 }
 
-float4 PointParticle(VertexShaderOutput input)
-{
-	float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
-	float n = pow(m, 15);
-	
-	return float4(n, n, n, 0) * input.Color;
-}
-
-float4 QuadDebug(VertexShaderOutput input)
-{
-		// Quad debugging
-	if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
-		return float4(1, 0, 0, 1);
-	if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)
-		return float4(1, 1, 0, 1);
-	if (input.TexCoords.x < 0.1 && input.TexCoords.y > 0.9)
-		return float4(0, 1, 0, 1);
-	if (input.TexCoords.x > 0.9 && input.TexCoords.y > 0.9)
-		return float4(0, 0, 1, 1);
-	
-	return float4(0, 0, 0, 0);
-}
-
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+float4 GPixelShaderFunction(GVertexShaderOutput input) : COLOR0
 {
 	float4 v = tex2D(TextureSampler, input.TexCoords);
 
@@ -173,11 +196,59 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	//return QuadDebug(input);
 }
 
+// Point Particles
+PVertexShaderOutput PVertexShaderFunction(PVertexShaderInput input)
+{
+	PVertexShaderOutput output;
+	
+	// Set up our reference variables
+	
+	// The total time elapsed since this particle spawned
+	float time = Time - input.DepthTime.z;
+	
+	// Branching here is worth the performance gain
+	if (time >= Lifespan && Lifespan != -1)
+	{
+		output.Position = 0;
+		output.Color = 0;
+		
+		return output;
+	}
+
+	// The normalized age of this particle
+	float age = clamp(time / Lifespan, 0.0, 1.0);
+	
+	// Calculate the position over time
+	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
+	// Apply offset for when drawing on the same layer as water
+	output.Position.xy += Offset;
+	// Apply matrix and offset for screen view
+	output.Position = mul(output.Position - float4(ScreenPosition, 0, 0), TransformMatrix);
+	// Apply depth over time (automatically handled after this function returns)
+	output.Position.w = ComputeDepth(input.DepthTime.x, input.DepthTime.y, time);
+
+	// Assign the rest of the values
+	output.Color = ComputeColor(input.StartColor, input.EndColor, age);
+	
+	return output;
+}
+
+float4 PPixelShaderFunction(PVertexShaderOutput input) : COLOR0
+{
+	return input.Color;
+}
+
+
 technique DefaultTechnique
 {
-	pass Particles
+	pass GPU
 	{
-		VertexShader = compile vs_2_0 VertexShaderFunction();
-		PixelShader = compile ps_2_0 PixelShaderFunction();
+		VertexShader = compile vs_2_0 GVertexShaderFunction();
+		PixelShader = compile ps_2_0 GPixelShaderFunction();
+	}
+	pass Point
+	{
+		VertexShader = compile vs_2_0 PVertexShaderFunction();
+		PixelShader = compile ps_2_0 PPixelShaderFunction();
 	}
 }
