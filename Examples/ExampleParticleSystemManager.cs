@@ -31,7 +31,7 @@ namespace ParticleLibrary.Examples
 		public override void OnModLoad()
 		{
 			// Demonstrates creating a Quad particle system.
-			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 5000, 300);
+			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300);
 			ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);
 			ExampleQuadParticle = new()
 			{
@@ -45,7 +45,7 @@ namespace ParticleLibrary.Examples
 			};
 
 			// Demonstrates creating a Point particle system.
-			ExamplePointSettings = new(10000, 300);
+			ExamplePointSettings = new(500, 300);
 			ExamplePointSystem = new PointParticleSystem(ExamplePointSettings);
 			ExamplePointParticle = new()
 			{
