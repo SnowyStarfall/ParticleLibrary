@@ -87,6 +87,10 @@ namespace ParticleLibrary.Core
 		/// The color of this particle.
 		/// </summary>
 		public Color Color;
+	/// <summary>
+		/// The opacity of this particle.
+		/// </summary>
+		public float Opacity;
 		/// <summary>
 		/// The frame of this particle.
 		/// </summary>
@@ -140,7 +144,7 @@ namespace ParticleLibrary.Core
 		/// <returns>bool</returns>
 		public virtual void Draw(SpriteBatch spriteBatch, Vector2 location)
 		{
-			spriteBatch.Draw(_texture, location, Frame, Color, Rotation, _texture.Size() * 0.5f, Scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(_texture, location, Frame, Color * Opacity, Rotation, _texture.Size() * 0.5f, Scale, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>
