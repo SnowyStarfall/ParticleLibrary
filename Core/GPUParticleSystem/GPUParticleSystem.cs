@@ -304,9 +304,12 @@ namespace ParticleLibrary.Core
 				if (disposing)
 				{
 					Texture = null;
-					Effect?.Dispose();
-					VertexBuffer?.Dispose();
-					IndexBuffer?.Dispose();
+					Main.QueueMainThreadAction(() =>
+					{
+						Effect?.Dispose();
+						VertexBuffer?.Dispose();
+						IndexBuffer?.Dispose();
+					});
 					GPUParticleManager.RemoveSystem(this);
 				}
 
