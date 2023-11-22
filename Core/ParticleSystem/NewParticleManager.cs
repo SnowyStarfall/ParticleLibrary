@@ -214,9 +214,13 @@ namespace ParticleLibrary.Core
 					continue;
 				}
 
+				// We cull only if there is a defined bounds (not null)
+				// if the screen location does not intersect (does not fully contain)
+				// and if the screen location does not contain (fully encloses) the bounds
 				Rectangle r = (Rectangle)p.Bounds;
 				ScreenLocation.Intersects(ref r, out bool intersects);
-				if (!(p.Bounds is null || intersects))
+				ScreenLocation.Contains(ref r, out bool contains);
+				if (p.Bounds is not null && !intersects && !contains)
 				{
 					continue;
 				}
