@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Core;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -36,6 +37,28 @@ namespace ParticleLibrary.Examples
 		/// </summary>
 		public override Rectangle? Bounds => new Rectangle((int)Position.X - Sprite.Width / 2, (int)Position.Y - Sprite.Height / 2, Sprite.Width, Sprite.Height);
 
+		public float VelocityMult { get; init; }
+
+		/// <summary>
+		/// With the removal of the AI array, you can no longer pass data into a particle via <see cref="NewParticleManager.NewParticle(Vector2, Vector2, Core.Particle, Color, Vector2, Layer)"/>
+		/// Instead, with recent fixes, you can instantiate the particle's constructor and pass it in that way. This way, code is much more readable.
+		/// <para>
+		/// NOTE: If you plan on allowing your particle to be automatically instantiated with the NewParticle(T) methods, you MUST have a parameterless constructor
+		/// </para>
+		/// </summary>
+		/// <param name="timeLeft"></param>
+		/// <param name="velocityMult"></param>
+		public ExampleParticle(int timeLeft, float velocityMult = 0.96f)
+		{
+			TimeLeft = timeLeft;
+			VelocityMult = velocityMult;
+		}
+		/// <summary>
+		/// This parameterless constructor allows us to use our particle in the NewParticle(T) methods without errors
+		/// It's a good idea to provide default values for your parameter constructor unless it's not necessary
+		/// </summary>
+		public ExampleParticle() : this(120, 0.96f) { }
+
 		/// <summary>
 		/// Runs when the particle is created
 		/// </summary>
@@ -51,7 +74,7 @@ namespace ParticleLibrary.Examples
 		public override void Update()
 		{
 			Scale = (120 - TimeLeft) / 120;
-			Velocity *= 0.96f;
+			Velocity *= VelocityMult;
 		}
 
 		/// <summary>

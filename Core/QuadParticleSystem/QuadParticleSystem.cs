@@ -94,8 +94,8 @@ namespace ParticleLibrary.Core
 				Position = new Vector4(position.X - size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(),
 
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
+				StartColor = particle.StartQuad?.TopLeft ?? particle.StartColor,
+				EndColor = particle.EndQuad?.TopLeft ?? particle.EndColor,
 
 				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
@@ -109,8 +109,8 @@ namespace ParticleLibrary.Core
 				Position = new Vector4(position.X - size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(0f, 1f),
 
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
+				StartColor = particle.StartQuad?.BottomLeft ?? particle.StartColor,
+				EndColor = particle.EndQuad?.BottomLeft ?? particle.EndColor,
 
 				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
@@ -124,8 +124,8 @@ namespace ParticleLibrary.Core
 				Position = new Vector4(position.X + size.X / 2f, position.Y - size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(1f, 0f),
 
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
+				StartColor = particle.StartQuad?.TopRight ?? particle.StartColor,
+				EndColor = particle.EndQuad?.TopRight ?? particle.EndColor,
 
 				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),
@@ -139,8 +139,8 @@ namespace ParticleLibrary.Core
 				Position = new Vector4(position.X + size.X / 2f, position.Y + size.Y / 2f, 0f, 1f),
 				TexCoord = new Vector2(1f),
 
-				StartColor = particle.StartColor,
-				EndColor = particle.EndColor,
+				StartColor = particle.StartQuad?.BottomRight ?? particle.StartColor,
+				EndColor = particle.EndQuad?.BottomRight ?? particle.EndColor,
 
 				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 				Size = new Vector2(Texture.Width, Texture.Height),

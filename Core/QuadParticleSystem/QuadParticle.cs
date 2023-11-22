@@ -8,6 +8,15 @@ namespace ParticleLibrary.Core
 	public class QuadParticle : GPUParticle
 	{
 		/// <summary>
+		/// Sets the starting color for each corner of the particle.
+		/// </summary>
+		public RenderQuad StartQuad { get; set; } = null;
+		/// <summary>
+		/// Sets the ending color for each corner of the particle.
+		/// </summary>
+		public RenderQuad EndQuad { get; set; } = null;
+
+		/// <summary>
 		/// The start color
 		/// </summary>
 		public override Color StartColor { get; set; } = Color.White;
