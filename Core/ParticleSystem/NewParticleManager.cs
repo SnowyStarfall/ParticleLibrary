@@ -166,7 +166,7 @@ namespace ParticleLibrary.Core
 					//{
 					p.Update();
 
-					if (--p.TimeLeft == 0)
+					if (p.TimeLeft-- == 0)
 					{
 						p.Death();
 						_particlesToRemove.Add(p);
@@ -308,6 +308,7 @@ namespace ParticleLibrary.Core
 			particle.Color = color;
 			particle.Scale2D = scale;
 			particle.Layer = layer;
+			particle.Spawn();
 
 			_particlesToAdd.Add(particle);
 			ParticleCount++;

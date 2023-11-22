@@ -12,10 +12,12 @@ namespace ParticleLibrary.Core
 	/// </summary>
 	public abstract class Particle
 	{
+		/// <summary>
+		/// Runs before <see cref="Spawn"/>.
+		/// </summary>
 		protected Particle()
 		{
-			Spawn();
-			PrivateSpawn();
+			Initialize();
 		}
 
 		/// <summary>
@@ -112,7 +114,7 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public int TimeLeft;
 
-		private void PrivateSpawn()
+		private void Initialize()
 		{
 			if (Main.netMode is not NetmodeID.Server && Sprite is null)
 			{
@@ -122,7 +124,7 @@ namespace ParticleLibrary.Core
 		}
 
 		/// <summary>
-		/// Runs when the particle spawns.
+		/// Runs when the particle spawns, AFTER constructors and AFTER <see cref="Position"/>, <see cref="Velocity"/>, <see cref="Color"/>, <see cref="Scale"/>, and <see cref="Layer"/> are set.
 		/// </summary>
 		public virtual void Spawn()
 		{
