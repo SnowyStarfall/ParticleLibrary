@@ -98,7 +98,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 		/// The opacity of this particle.
 		/// </summary>
-		public float Opacity;
+		public float Opacity = 1f;
 		/// <summary>
 		/// The frame of this particle.
 		/// </summary>
