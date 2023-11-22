@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
+using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,12 @@ namespace ParticleLibrary.Examples
 		public override void OnModLoad()
 		{
 			// Demonstrates creating a Quad particle system.
-			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300);
+			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
 			ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);
 			ExampleQuadParticle = new()
 			{
-				StartColor = Color.White,
-				EndColor = Color.Black,
+				StartColor = Color.White.WithAlpha(0f),
+				EndColor = Color.Black.WithAlpha(0f),
 				Scale = new Vector2(1f),
 				Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
 				RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
@@ -49,8 +50,8 @@ namespace ParticleLibrary.Examples
 			ExamplePointSystem = new PointParticleSystem(ExamplePointSettings);
 			ExamplePointParticle = new()
 			{
-				StartColor = Color.White,
-				EndColor = Color.Black,
+				StartColor = Color.White.WithAlpha(0f),
+				EndColor = Color.Black.WithAlpha(0f),
 				Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
 				DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
 			};

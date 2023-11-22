@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
 using ParticleLibrary.Core.Data;
+using ParticleLibrary.Core.Shapes;
 using ParticleLibrary.Utilities;
 using Terraria;
 using Terraria.ModLoader.IO;
@@ -27,6 +28,23 @@ namespace ParticleLibrary.Examples
 			//{
 			//	Position = Main.MouseWorld
 			//});
+
+			EmitterSettings = new()
+			{
+				Shape = new EmitterCircle(),
+				Origin = EmitterOrigin.Rim,
+				Width = 512f,
+				Height = 256f,
+				Position = EmitterSettings.Position
+			};
+
+			ColorSettings = new()
+			{
+				MinimumStartColor = Color.White.WithAlpha(0f),
+				MaximumStartColor = Color.White.WithAlpha(0f),
+				MinimumEndColor = Color.White.WithAlpha(0f),
+				MaximumEndColor = Color.White.WithAlpha(0f)
+			};
 		}
 
 		/// <summary>
@@ -91,6 +109,8 @@ namespace ParticleLibrary.Examples
 			ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, spatial.Velocity, new PointParticle().FromEmitter(spatial, visual));
 
 			ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExamplePointParticle);
+	
+			// If you're curious about how the particle's center stays so bright as it fades, that's because there is a Point particle overlapping the Quad particle.
 		}
 
 		/// <summary>

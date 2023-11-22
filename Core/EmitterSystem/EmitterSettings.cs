@@ -15,12 +15,12 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// The shape of the emitter.
 		/// </summary>
-		public EmitterShape Shape { get; private set; } = Point;
+		public EmitterShape Shape { get; set; } = Point;
 
 		/// <summary>
 		/// How the emitter distributes particles.
 		/// </summary>
-		public EmitterOrigin Origin { get; private set; }
+		public EmitterOrigin Origin { get; set; }
 
 		/// <summary>
 		/// The position of the emitter, originating from the center.
