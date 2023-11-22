@@ -19,6 +19,11 @@ namespace ParticleLibrary.Core
 		}
 
 		/// <summary>
+		/// Texture property for a particle. Override this to directly specify a texture.
+		/// </summary>
+		public virtual Texture2D Sprite { get; set; }
+
+		/// <summary>
 		/// Texture path for a particle. Override this to specify a custom path.
 		/// </summary>
 		public virtual string Texture => GetType().Namespace.Replace(".", "/") + "/" + GetType().Name;
@@ -28,7 +33,7 @@ namespace ParticleLibrary.Core
 		/// X and Y are used for position offset. Width and Height are the size of the bounds.
 		/// Defaults to null. The particle will never be culled.
 		/// </summary>
-		public virtual Rectangle? Bounds { get; set; }
+		public virtual Rectangle? Bounds { get; set; } = null;
 
 		/// <summary>
 		/// The visual position taking into account Main.screenPosition;
@@ -52,6 +57,9 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public Vector2 AnchorPosition;
 
+		/// <summary>
+		/// Float representation of scale.
+		/// </summary>
 		public float Scale { get => Scale2D.X; set => Scale2D = new Vector2(value, value); }
 		/// <summary>
 		/// The scale of this particle.
@@ -104,21 +112,12 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public int TimeLeft;
 
-		private Texture2D _texture;
-
-
 		private void PrivateSpawn()
 		{
-			if (Main.netMode is not NetmodeID.Server && _texture is null)
+			if (Main.netMode is not NetmodeID.Server && Sprite is null)
 			{
-				try { _texture = ModContent.Request<Texture2D>(Texture).Value; }
-				catch { _texture = ParticleLibrary.EmptyPixel; }
-
-				if (!Bounds.HasValue && _texture is not null)
-				{
-					Bounds = new Rectangle(0, 0, _texture.Width, _texture.Height);
-				}
-
+				try { Sprite = ModContent.Request<Texture2D>(Texture).Value; }
+				catch { Sprite = ParticleLibrary.EmptyPixel; }
 			}
 		}
 
@@ -144,7 +143,7 @@ namespace ParticleLibrary.Core
 		/// <returns>bool</returns>
 		public virtual void Draw(SpriteBatch spriteBatch, Vector2 location)
 		{
-			spriteBatch.Draw(_texture, location, Frame, Color * Opacity, Rotation, _texture.Size() * 0.5f, Scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(Sprite, location, Frame, Color * Opacity, Rotation, Sprite.Size() * 0.5f, Scale, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>

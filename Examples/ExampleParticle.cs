@@ -27,6 +27,14 @@ namespace ParticleLibrary.Examples
 		public override string Texture => Resources.Examples.ExampleParticle;
 		//public override string Texture => "ParticleLibrary/Examples/ExampleParticle";
 
+		/// <summary>
+		/// You can override the bounds to skip draw calls for this particle if it wouldn't be visible.
+		/// Currently, the library already calculates whether these bounds would intersect the player's vision,
+		/// This means you only need to specify where the particle is and how much space it's using.
+		/// Alternatively, you can leave this as null to prevent culling altogether.
+		/// You can also set it to something like Rectangle.Empty to prevent the particle from being drawn.
+		/// </summary>
+		public override Rectangle? Bounds => new Rectangle((int)Position.X - Sprite.Width / 2, (int)Position.Y - Sprite.Height / 2, Sprite.Width, Sprite.Height);
 
 		/// <summary>
 		/// Runs when the particle is created
@@ -53,8 +61,7 @@ namespace ParticleLibrary.Examples
 		/// <param name="location">The visual location, already taking into account <see cref="Main.screenPosition"/></param>
 		public override void Draw(SpriteBatch spriteBatch, Vector2 location)
 		{
-			Texture2D texture = ModContent.Request<Texture2D>(Texture, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-			spriteBatch.Draw(texture, location, texture.Bounds, new Color(0.05f, 0f, 0.1f, 0f), 0f, texture.Size() * 0.5f, 0.1f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(Sprite, location, Sprite.Bounds, new Color(0.05f, 0f, 0.1f, 0f), 0f, Sprite.Size() * 0.5f, 0.1f, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>

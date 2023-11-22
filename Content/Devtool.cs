@@ -271,10 +271,10 @@ namespace ParticleLibrary.Content
 			if (_counter >= 1)
 			{
 				_counter = 0;
-				//for (int i = 0; i < 300; i++)
-				//{
-				//	CParticleSystem.NewParticle<GlowParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f, layer: Layer.BeforeTiles);
-				//}
+				for (int i = 0; i < 300; i++)
+				{
+					NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f);
+				}
 
 				//PointParticle settings = new()
 				//{
