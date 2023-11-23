@@ -131,7 +131,18 @@ namespace ParticleLibrary.Core
 				foreach (var p in _particles.Buffer)
 				{
 					if (p is null)
+					{
 						continue;
+					}
+
+					// We started at 0
+					if (p.TimeLeft == 0 || p.TimeLeft < -1)
+					{
+						p.Death();
+						_particlesToRemove.Add(p);
+						ParticleCount--;
+						continue;
+					}
 
 					p.Rotation += p.RotationVelocity;
 					p.RotationVelocity += p.RotationAcceleration;
@@ -166,7 +177,7 @@ namespace ParticleLibrary.Core
 					//{
 					p.Update();
 
-					if (p.TimeLeft-- == 0)
+					if (--p.TimeLeft == 0 || p.TimeLeft < -1)
 					{
 						p.Death();
 						_particlesToRemove.Add(p);
