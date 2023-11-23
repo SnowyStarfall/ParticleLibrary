@@ -152,7 +152,7 @@ namespace ParticleLibrary.Core
 
 		public abstract void Draw(Layer layer = Layer.None);
 
-		public abstract void AddParticle(Vector2 position, Vector2 velocity, TParticle particle, int? lifespan = null);
+		public abstract void NewParticle(Vector2 position, Vector2 velocity, TParticle particle, int? lifespan = null);
 
 		// Setters
 		/// <summary>

@@ -29,7 +29,7 @@ namespace ParticleLibrary.Examples
 		/// <param name="particle">The particle settings.</param>
 		public void AddParticle(Vector2 position, Vector2 velocity, T particle)
 		{
-			System.AddParticle(position, velocity, particle);
+			System.NewParticle(position, velocity, particle);
 		}
 	}
 }

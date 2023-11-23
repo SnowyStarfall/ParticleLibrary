@@ -13,7 +13,7 @@ namespace ParticleLibrary.Core
 	{
 		public void Draw(Layer layer = Layer.None);
 
-		public void AddParticle(Vector2 position, Vector2 velocity, T particle, int? lifespan = null);
+		public void NewParticle(Vector2 position, Vector2 velocity, T particle, int? lifespan = null);
 
 		// Setters
 		/// <summary>

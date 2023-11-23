@@ -81,7 +81,7 @@ namespace ParticleLibrary.Core
 			}
 		}
 
-		public override void AddParticle(Vector2 position, Vector2 velocity, PointParticle particle, int? lifespan = null)
+		public override void NewParticle(Vector2 position, Vector2 velocity, PointParticle particle, int? lifespan = null)
 		{
 			int lifeSpan = lifespan ?? Lifespan;
 

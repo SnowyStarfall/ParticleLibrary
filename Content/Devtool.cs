@@ -88,7 +88,7 @@ namespace ParticleLibrary.Content
 								DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 							};
 
-							GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
+							GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
 						}
 					}
 					return true;
@@ -118,7 +118,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
+						GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
 					}
 				}
 				return true;
@@ -144,7 +144,7 @@ namespace ParticleLibrary.Content
 					RotationVelocity = -0.1f
 				};
 
-				GPUParticleManager.TestQuadParticleSystem.AddParticle(position, velocity, settings);
+				GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
 
 				return true;
 			}
@@ -179,7 +179,7 @@ namespace ParticleLibrary.Content
 							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
 						};
 
-						GPUParticleManager.TestPointParticleSystem.AddParticle(position, velocity, settings);
+						GPUParticleManager.TestPointParticleSystem.NewParticle(position, velocity, settings);
 					}
 				}
 
@@ -278,8 +278,8 @@ namespace ParticleLibrary.Content
 
 				for (int i = 0; i < 120; i++)
 				{
-					ExampleParticleSystemManager.ExampleQuadSystem.AddParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExampleQuadParticle, i * 3);
-					ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExamplePointParticle, i * 3);
+					ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExampleQuadParticle, i * 3);
+					ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExamplePointParticle, i * 3);
 
 				}
 

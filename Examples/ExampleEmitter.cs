@@ -76,7 +76,7 @@ namespace ParticleLibrary.Examples
 		public override void SpawnParticle(Vector2 position, SpatialParameters spatial, VisualParameters visual)
 		{
 			// You can spawn your particles like this, but if this is too much code to look at, then use the method below.
-			ExampleParticleSystemManager.ExampleQuadSystem.AddParticle(position, spatial.Velocity, new QuadParticle()
+			ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, spatial.Velocity, new QuadParticle()
 			{
 				StartColor = visual.StartColor,
 				EndColor = visual.EndColor,
@@ -90,14 +90,14 @@ namespace ParticleLibrary.Examples
 			});
 
 			// This showcases a smaller way of creating the QuadParticle settings
-			ExampleParticleSystemManager.ExampleQuadSystem.AddParticle(position, spatial.Velocity, new QuadParticle().FromEmitter(spatial, visual));
+			ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, spatial.Velocity, new QuadParticle().FromEmitter(spatial, visual));
 
 			// Alternatively, we can choose not to use the parameters given to us
-			ExampleParticleSystemManager.ExampleQuadSystem.AddParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExampleQuadParticle);
+			ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExampleQuadParticle);
 
 			// For the sake of being thorough, here is the same code but for our Point particles.
 			// Point particles need much fewer parameters than QuadParticles
-			ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, spatial.Velocity, new PointParticle()
+			ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, spatial.Velocity, new PointParticle()
 			{
 				StartColor = visual.StartColor,
 				EndColor = visual.EndColor,
@@ -106,9 +106,9 @@ namespace ParticleLibrary.Examples
 				DepthVelocity = spatial.DepthVelocity,
 			});
 
-			ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, spatial.Velocity, new PointParticle().FromEmitter(spatial, visual));
+			ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, spatial.Velocity, new PointParticle().FromEmitter(spatial, visual));
 
-			ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExamplePointParticle);
+			ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExamplePointParticle);
 	
 			// If you're curious about how the particle's center stays so bright as it fades, that's because there is a Point particle overlapping the Quad particle.
 		}
