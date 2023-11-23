@@ -123,6 +123,11 @@ namespace ParticleLibrary.Core
 			SendBatch = true;
 		}
 
+		public override void Clear()
+		{
+			VertexBuffer.SetData(Array.Empty<PointParticleVertex>(), SetDataOptions.Discard);
+		}
+
 		// Setters
 		protected override void CreateBuffers()
 		{

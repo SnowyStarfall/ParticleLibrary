@@ -18,11 +18,13 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// All registered <see cref="QuadParticleSystem"/>
 		/// </summary>
-		public static FastList<QuadParticleSystem> QuadSystems { get; private set; }
+		public static IReadOnlyCollection<QuadParticleSystem> QuadSystems { get => _quadSystems.Buffer.ToList().AsReadOnly(); }
+		private static FastList<QuadParticleSystem> _quadSystems;
 		/// <summary>
 		/// All registered <see cref="QuadParticleSystem"/>
 		/// </summary>
-		public static FastList<PointParticleSystem> PointSystems { get; private set; }
+		public static IReadOnlyCollection<PointParticleSystem> PointSystems{ get => _pointSystems.Buffer.ToList().AsReadOnly(); }
+		private static FastList<PointParticleSystem> _pointSystems;
 
 		/// <summary>
 		/// The maximum amount of Quad particles allowed
@@ -47,8 +49,8 @@ namespace ParticleLibrary.Core
 
 		public override void Load()
 		{
-			QuadSystems = new();
-			PointSystems = new();
+			_quadSystems = new();
+			_pointSystems = new();
 
 			// Testing purposes
 			//GParticleSystemSettings gs = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, 10000, 180/*, 1000*/);
@@ -56,6 +58,19 @@ namespace ParticleLibrary.Core
 
 			//TestGParticleSystem = new(gs);
 			//TestPParticleSystem = new(ps);
+		}
+
+		public override void OnWorldUnload()
+		{
+			foreach (var system in _quadSystems.Buffer)
+			{
+				system.Clear();
+			}
+
+			foreach (var system in _pointSystems.Buffer)
+			{
+				system.Clear();
+			}
 		}
 
 		public override void Unload()
@@ -74,12 +89,15 @@ namespace ParticleLibrary.Core
 
 			if (system is QuadParticleSystem g)
 			{
-				QuadSystems.Add(g);
+				_quadSystems.Add(g);
+				FreeQuadParticleBudget -= g.MaxParticles;
 			}
 			else if (system is PointParticleSystem p)
 			{
-				PointSystems.Add(p);
+				_pointSystems.Add(p);
+				FreePointParticleBudget -= p.MaxParticles;
 			}
+
 
 			return system;
 		}
@@ -96,11 +114,13 @@ namespace ParticleLibrary.Core
 
 			if (system is QuadParticleSystem g)
 			{
-				QuadSystems.Remove(g);
+				_quadSystems.Remove(g);
+				FreeQuadParticleBudget += g.MaxParticles;
 			}
 			else if (system is PointParticleSystem p)
 			{
-				PointSystems.Remove(p);
+				_pointSystems.Remove(p);
+				FreePointParticleBudget += p.MaxParticles;
 			}
 		}
 	}

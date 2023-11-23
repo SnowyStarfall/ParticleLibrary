@@ -212,6 +212,12 @@ namespace ParticleLibrary.Core
 			SendBatch = true;
 		}
 
+		public override void Clear()
+		{
+			VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
+			IndexBuffer.SetData(Array.Empty<int>());
+		}
+
 		// Effect
 		protected override void CreateBuffers()
 		{

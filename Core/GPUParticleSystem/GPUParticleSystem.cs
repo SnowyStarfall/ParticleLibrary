@@ -154,6 +154,8 @@ namespace ParticleLibrary.Core
 
 		public abstract void NewParticle(Vector2 position, Vector2 velocity, TParticle particle, int? lifespan = null);
 
+		public abstract void Clear();
+
 		// Setters
 		/// <summary>
 		/// Sets the texture to use for the particles.
