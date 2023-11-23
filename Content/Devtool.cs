@@ -252,8 +252,8 @@ namespace ParticleLibrary.Content
 			orig(self);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer);
-            Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
-            Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
+			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
+			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
 			Main.spriteBatch.End();
 		}
 
@@ -266,14 +266,21 @@ namespace ParticleLibrary.Content
 			if (Main.gamePaused)
 				return;
 
-			//Vector2 position = new(x * 16, y * 16);
+			Vector2 position = new(X * 16, Y * 16);
 
-			if (_counter >= 1)
+			if (_counter >= 120)
 			{
 				_counter = 0;
-				for (int i = 0; i < 300; i++)
+				//for (int i = 0; i < 300; i++)
+				//{
+				//	NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f);
+				//}
+
+				for (int i = 0; i < 120; i++)
 				{
-					NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f);
+					ExampleParticleSystemManager.ExampleQuadSystem.AddParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExampleQuadParticle, i * 3);
+					ExampleParticleSystemManager.ExamplePointSystem.AddParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExamplePointParticle, i * 3);
+
 				}
 
 				//PointParticle settings = new()

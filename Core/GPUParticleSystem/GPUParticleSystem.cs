@@ -86,6 +86,7 @@ namespace ParticleLibrary.Core
 		// Misc
 		protected abstract int CurrentTime { get; set; }
 		protected abstract int LastParticleTime { get; set; }
+		protected abstract int LastParticleLifespan { get; set; }
 
 		// Buffer management
 		protected abstract int CurrentParticleIndex { get; set; }
@@ -139,7 +140,7 @@ namespace ParticleLibrary.Core
 
 			// Update the system's time
 			CurrentTime++;
-			if (LastParticleTime < Lifespan)
+			if (LastParticleTime != -1 && LastParticleTime < LastParticleLifespan)
 			{
 				LastParticleTime++;
 			}
@@ -151,7 +152,7 @@ namespace ParticleLibrary.Core
 
 		public abstract void Draw(Layer layer = Layer.None);
 
-		public abstract void AddParticle(Vector2 position, Vector2 velocity, TParticle particle);
+		public abstract void AddParticle(Vector2 position, Vector2 velocity, TParticle particle, int? lifespan = null);
 
 		// Setters
 		/// <summary>
@@ -277,7 +278,6 @@ namespace ParticleLibrary.Core
 
 			TransformMatrixParameter.SetValue(Primitive.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
-			LifespanParameter.SetValue(Lifespan);
 			FadeParameter.SetValue(Fade);
 			GravityParameter.SetValue(Gravity);
 			TerminalGravityParameter.SetValue(TerminalGravity);

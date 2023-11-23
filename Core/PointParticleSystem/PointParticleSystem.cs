@@ -28,6 +28,7 @@ namespace ParticleLibrary.Core
 		// Misc
 		protected override int CurrentTime { get; set; }
 		protected override int LastParticleTime { get; set; }
+		protected override int LastParticleLifespan { get; set; }
 
 		// Buffer management
 		protected override int CurrentParticleIndex { get; set; }
@@ -50,37 +51,40 @@ namespace ParticleLibrary.Core
 				return;
 			}
 
-			if (layer is Layer.BeforeWater)
-			{
-				OffsetParameter.SetValue(new Vector2(Main.offScreenRange));
-			}
-			else
-			{
-				OffsetParameter.SetValue(Vector2.Zero);
-			}
-
-			// Set blend state
-			var previousBlendState = Device.BlendState;
-			Device.BlendState = BlendState;
-
-			// Set buffers
-			Device.SetVertexBuffer(VertexBuffer);
-			Device.Indices = null;
-
-			// Do particle pass
 			// Don't draw or perform calculations if the most recent particle has expired, making the system idle
-			if (LastParticleTime < Lifespan)
+			if (LastParticleTime < LastParticleLifespan)
 			{
+				// Ensure offsets
+				if (layer is Layer.BeforeWater)
+				{
+					OffsetParameter.SetValue(new Vector2(Main.offScreenRange));
+				}
+				else
+				{
+					OffsetParameter.SetValue(Vector2.Zero);
+				}
+
+				// Set blend state
+				var previousBlendState = Device.BlendState;
+				Device.BlendState = BlendState;
+
+				// Set buffers
+				Device.SetVertexBuffer(VertexBuffer);
+				Device.Indices = null;
+
+				// Do particle pass
 				Pass.Apply();
 				Device.DrawPrimitives(PrimitiveType.PointListEXT, 0, MaxParticles);
-			}
 
-			// Reset blend state
-			Device.BlendState = previousBlendState;
+				// Reset blend state
+				Device.BlendState = previousBlendState;
+			}
 		}
 
-		public override void AddParticle(Vector2 position, Vector2 velocity, PointParticle particle)
+		public override void AddParticle(Vector2 position, Vector2 velocity, PointParticle particle, int? lifespan = null)
 		{
+			int lifeSpan = lifespan ?? Lifespan;
+
 			Vertices[CurrentParticleIndex] = new PointParticleVertex()
 			{
 				Position = new Vector4(position, 0f, 1f),
@@ -90,7 +94,7 @@ namespace ParticleLibrary.Core
 
 				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
 
-				DepthTime = new Vector3(particle.Depth, particle.DepthVelocity, CurrentTime),
+				DepthTime = new Vector4(particle.Depth, particle.DepthVelocity, CurrentTime, lifeSpan),
 			};
 
 			// This means that we just started adding particles since the last batch
@@ -99,7 +103,12 @@ namespace ParticleLibrary.Core
 				StartIndex = CurrentParticleIndex;
 			}
 
-			LastParticleTime = 0;
+			// Set idle checking parameters
+			if (LastParticleTime != -1 && LastParticleLifespan - LastParticleTime < lifeSpan)
+			{
+				LastParticleTime = 0;
+				LastParticleLifespan = lifeSpan;
+			}
 
 			// We wrap back to zero and immediately send our batch of new particles without waiting
 			if (++CurrentParticleIndex >= MaxParticles)

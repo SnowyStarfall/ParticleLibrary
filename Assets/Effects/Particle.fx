@@ -4,7 +4,6 @@
 matrix TransformMatrix;
 
 float Time;
-float Lifespan;
 
 float2 ScreenPosition;
 float2 Offset;
@@ -40,7 +39,7 @@ struct GVertexShaderInput
 	float4 Scale : NORMAL2; // XY Scale | ZW Velocity
 	float4 Rotation : NORMAL3; // XY Corner | Z Rotation | W Velocity
 
-	float3 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
+	float4 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
 };
 
 struct GVertexShaderOutput
@@ -60,7 +59,7 @@ struct PVertexShaderInput
 	
 	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
 
-	float3 DepthTime : NORMAL1; // X Depth | Y Velocity | Z Time
+	float4 DepthTime : NORMAL1; // X Depth | Y Velocity | Z Time
 };
 
 struct PVertexShaderOutput
@@ -152,7 +151,7 @@ GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
 	float time = Time - input.DepthTime.z;
 	
 	// Branching here is worth the performance gain
-	if(time >= Lifespan && Lifespan != -1)
+	if (time >= input.DepthTime.w && input.DepthTime.w != -1)
 	{
 		output.Position = 0;
 		output.TexCoords = 0;
@@ -162,7 +161,7 @@ GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
 	}
 
 	// The normalized age of this particle
-	float age = clamp(time / Lifespan, 0.0, 1.0);
+	float age = clamp(time / input.DepthTime.w, 0.0, 1.0);
 	// The size at this point in the particle's life, multiplied by the corner to be an offset for the rotation
 	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
 	// The rotation matrix. We only calculate when rotation is relevant
@@ -207,7 +206,7 @@ PVertexShaderOutput PVertexShaderFunction(PVertexShaderInput input)
 	float time = Time - input.DepthTime.z;
 	
 	// Branching here is worth the performance gain
-	if (time >= Lifespan && Lifespan != -1)
+	if (time >= input.DepthTime.w && input.DepthTime.w != -1)
 	{
 		output.Position = 0;
 		output.Color = 0;
@@ -216,7 +215,7 @@ PVertexShaderOutput PVertexShaderFunction(PVertexShaderInput input)
 	}
 
 	// The normalized age of this particle
-	float age = clamp(time / Lifespan, 0.0, 1.0);
+	float age = clamp(time / input.DepthTime.w, 0.0, 1.0);
 	
 	// Calculate the position over time
 	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
