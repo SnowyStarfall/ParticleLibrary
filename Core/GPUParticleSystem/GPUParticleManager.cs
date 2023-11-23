@@ -3,8 +3,6 @@ using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
@@ -23,7 +21,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// All registered <see cref="QuadParticleSystem"/>
 		/// </summary>
-		public static IReadOnlyCollection<PointParticleSystem> PointSystems{ get => _pointSystems.Buffer.ToList().AsReadOnly(); }
+		public static IReadOnlyCollection<PointParticleSystem> PointSystems { get => _pointSystems.Buffer.ToList().AsReadOnly(); }
 		private static FastList<PointParticleSystem> _pointSystems;
 
 		/// <summary>
@@ -64,12 +62,12 @@ namespace ParticleLibrary.Core
 		{
 			foreach (var system in _quadSystems.Buffer)
 			{
-				system.Clear();
+				system?.Clear();
 			}
 
 			foreach (var system in _pointSystems.Buffer)
 			{
-				system.Clear();
+				system?.Clear();
 			}
 		}
 
