@@ -152,7 +152,7 @@ namespace ParticleLibrary.Utilities
 			spriteBatch.Draw(ParticleLibrary.WhitePixel, start, ParticleLibrary.WhitePixel.Bounds, color, radians, new Vector2(0f, 0.5f), new Vector2(length, thickness), SpriteEffects.None, 0);
 		}
 
-		public static T FromEmitter<T>(this T particle, SpatialParameters spatial, VisualParameters visual) where T : GPUParticle
+		public static QuadParticle FromEmitter(this QuadParticle particle, SpatialParameters spatial, VisualParameters visual)
 		{
 			particle.StartColor = visual.StartColor;
 			particle.EndColor = visual.EndColor;
@@ -161,6 +161,17 @@ namespace ParticleLibrary.Utilities
 			particle.ScaleVelocity = spatial.ScaleVelocity;
 			particle.Rotation = spatial.Rotation;
 			particle.RotationVelocity = spatial.RotationVelocity;
+			particle.Depth = spatial.Depth;
+			particle.DepthVelocity = spatial.DepthVelocity;
+
+			return particle;
+		}
+
+		public static PointParticle FromEmitter(this PointParticle particle, SpatialParameters spatial, VisualParameters visual)
+		{
+			particle.StartColor = visual.StartColor;
+			particle.EndColor = visual.EndColor;
+			particle.VelocityAcceleration = spatial.VelocityAcceleration;
 			particle.Depth = spatial.Depth;
 			particle.DepthVelocity = spatial.DepthVelocity;
 
