@@ -10,8 +10,8 @@ float2 Offset;
 
 bool Fade;
 
-float Gravity;
-float TerminalGravity;
+//float Gravity;
+//float TerminalGravity;
 
 // Current time in frames.
 texture Texture;

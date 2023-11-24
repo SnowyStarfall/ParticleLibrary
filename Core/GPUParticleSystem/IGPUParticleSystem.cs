@@ -49,16 +49,16 @@ namespace ParticleLibrary.Core
 		/// <param name="value"></param>
 		public void SetFade(bool value);
 
-		/// <summary>
-		/// Sets the gravity to apply to the particles
-		/// </summary>
-		/// <param name="value"></param>
-		public void SetGravity(float value);
+		///// <summary>
+		///// Sets the gravity to apply to the particles
+		///// </summary>
+		///// <param name="value"></param>
+		//public void SetGravity(float value);
 
-		/// <summary>
-		/// Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
-		/// </summary>
-		/// <param name="value"></param>
-		public void SetTerminalGravity(float value);
+		///// <summary>
+		///// Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
+		///// </summary>
+		///// <param name="value"></param>
+		//public void SetTerminalGravity(float value);
 	}
 }

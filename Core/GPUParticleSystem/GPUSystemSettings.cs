@@ -37,13 +37,13 @@ namespace ParticleLibrary.Core
 		/// Whether the particles should fade over their lifespan
 		/// </summary>
 		public abstract bool Fade { get; internal set; }
-		/// <summary>
-		/// How much gravity to apply to the particles
-		/// </summary>
-		public abstract float Gravity { get; internal set; }
-		/// <summary>
-		/// The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
-		/// </summary>
-		public abstract float TerminalGravity { get; internal set; }
+		///// <summary>
+		///// How much gravity to apply to the particles
+		///// </summary>
+		//public abstract float Gravity { get; internal set; }
+		///// <summary>
+		///// The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
+		///// </summary>
+		//public abstract float TerminalGravity { get; internal set; }
 	}
 }

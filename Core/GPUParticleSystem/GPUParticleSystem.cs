@@ -52,15 +52,15 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public bool Fade { get; private set; }
 
-		/// <summary>
-		/// How much gravity should be applied to the particles
-		/// </summary>
-		public float Gravity { get; private set; }
+		///// <summary>
+		///// How much gravity should be applied to the particles
+		///// </summary>
+		//public float Gravity { get; private set; }
 
-		/// <summary>
-		/// The maximum velocity from gravity a particle should recieve. Currently unimplemented
-		/// </summary>
-		public float TerminalGravity { get; private set; }
+		///// <summary>
+		///// The maximum velocity from gravity a particle should recieve. Currently unimplemented
+		///// </summary>
+		//public float TerminalGravity { get; private set; }
 
 		// Effect
 		protected Effect Effect { get; private set; }
@@ -71,8 +71,8 @@ namespace ParticleLibrary.Core
 		protected EffectParameter ScreenPositionParameter { get; private set; }
 		protected EffectParameter FadeParameter { get; private set; }
 		protected EffectParameter LifespanParameter { get; private set; }
-		protected EffectParameter GravityParameter { get; private set; }
-		protected EffectParameter TerminalGravityParameter { get; private set; }
+		//protected EffectParameter GravityParameter { get; private set; }
+		//protected EffectParameter TerminalGravityParameter { get; private set; }
 		protected EffectParameter TextureParameter { get; private set; }
 		protected EffectParameter OffsetParameter { get; private set; }
 
@@ -102,8 +102,8 @@ namespace ParticleLibrary.Core
 			Layer = settings.Layer;
 			BlendState = settings.BlendState;
 			Fade = settings.Fade;
-			Gravity = settings.Gravity;
-			TerminalGravity = settings.TerminalGravity;
+			//Gravity = settings.Gravity;
+			//TerminalGravity = settings.TerminalGravity;
 
 			Main.QueueMainThreadAction(() =>
 			{
@@ -225,25 +225,25 @@ namespace ParticleLibrary.Core
 			FadeParameter.SetValue(value);
 		}
 
-		/// <summary>
-		/// Sets the gravity to apply to the particles
-		/// </summary>
-		/// <param name="value"></param>
-		public void SetGravity(float value)
-		{
-			Gravity = value;
-			GravityParameter.SetValue(value);
-		}
+		///// <summary>
+		///// Sets the gravity to apply to the particles
+		///// </summary>
+		///// <param name="value"></param>
+		//public void SetGravity(float value)
+		//{
+		//	Gravity = value;
+		//	GravityParameter.SetValue(value);
+		//}
 
-		/// <summary>
-		/// Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
-		/// </summary>
-		/// <param name="value"></param>
-		public void SetTerminalGravity(float value)
-		{
-			TerminalGravity = value;
-			TerminalGravityParameter.SetValue(value);
-		}
+		///// <summary>
+		///// Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
+		///// </summary>
+		///// <param name="value"></param>
+		//public void SetTerminalGravity(float value)
+		//{
+		//	TerminalGravity = value;
+		//	TerminalGravityParameter.SetValue(value);
+		//}
 
 		// Effect
 		protected void LoadEffect()
@@ -273,16 +273,16 @@ namespace ParticleLibrary.Core
 			ScreenPositionParameter = Effect.Parameters["ScreenPosition"];
 			LifespanParameter = Effect.Parameters["Lifespan"];
 			FadeParameter = Effect.Parameters["Fade"];
-			GravityParameter = Effect.Parameters["Gravity"];
-			TerminalGravityParameter = Effect.Parameters["TerminalGravity"];
+			//GravityParameter = Effect.Parameters["Gravity"];
+			//TerminalGravityParameter = Effect.Parameters["TerminalGravity"];
 			TextureParameter = Effect.Parameters["Texture"];
 			OffsetParameter = Effect.Parameters["Offset"];
 
 			TransformMatrixParameter.SetValue(Primitive.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
 			FadeParameter.SetValue(Fade);
-			GravityParameter.SetValue(Gravity);
-			TerminalGravityParameter.SetValue(TerminalGravity);
+			//GravityParameter.SetValue(Gravity);
+			//TerminalGravityParameter.SetValue(TerminalGravity);
 		}
 
 		protected abstract void CreateBuffers();
