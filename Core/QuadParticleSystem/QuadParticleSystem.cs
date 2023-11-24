@@ -192,7 +192,7 @@ namespace ParticleLibrary.Core
 
 				// We reset since we batched
 				CurrentParticleIndex = 0; // This effectively means that particles will be overwritten
-				//_currentBufferIndex = 0;
+										  //_currentBufferIndex = 0;
 				return;
 			}
 
@@ -214,8 +214,11 @@ namespace ParticleLibrary.Core
 
 		public override void Clear()
 		{
-			VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
-			IndexBuffer.SetData(Array.Empty<int>());
+			Main.QueueMainThreadAction(() =>
+			{
+				VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
+				IndexBuffer.SetData(Array.Empty<int>());
+			});
 		}
 
 		// Effect

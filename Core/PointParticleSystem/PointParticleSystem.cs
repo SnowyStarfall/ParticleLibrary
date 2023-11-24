@@ -125,7 +125,10 @@ namespace ParticleLibrary.Core
 
 		public override void Clear()
 		{
-			VertexBuffer.SetData(Array.Empty<PointParticleVertex>(), SetDataOptions.Discard);
+			Main.QueueMainThreadAction(() =>
+			{
+				VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
+			});
 		}
 
 		// Setters
