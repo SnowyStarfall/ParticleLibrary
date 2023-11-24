@@ -100,7 +100,8 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartQuad?.TopLeft ?? particle.StartColor,
 				EndColor = particle.EndQuad?.TopLeft ?? particle.EndColor,
 
-				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityDeviation),
+				Acceleration = particle.VelocityAcceleration,
 				Size = new Vector2(Texture.Width, Texture.Height),
 				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
@@ -115,7 +116,8 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartQuad?.BottomLeft ?? particle.StartColor,
 				EndColor = particle.EndQuad?.BottomLeft ?? particle.EndColor,
 
-				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityDeviation),
+				Acceleration = particle.VelocityAcceleration,
 				Size = new Vector2(Texture.Width, Texture.Height),
 				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(-0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),
@@ -130,7 +132,8 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartQuad?.TopRight ?? particle.StartColor,
 				EndColor = particle.EndQuad?.TopRight ?? particle.EndColor,
 
-				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityDeviation),
+				Acceleration = particle.VelocityAcceleration,
 				Size = new Vector2(Texture.Width, Texture.Height),
 				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, -0.5f, particle.Rotation, particle.RotationVelocity),
@@ -145,7 +148,8 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartQuad?.BottomRight ?? particle.StartColor,
 				EndColor = particle.EndQuad?.BottomRight ?? particle.EndColor,
 
-				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityDeviation),
+				Acceleration = particle.VelocityAcceleration,
 				Size = new Vector2(Texture.Width, Texture.Height),
 				Scale = LibUtilities.Vec4From2Vec2(particle.Scale, particle.ScaleVelocity),
 				Rotation = new Vector4(0.5f, 0.5f, particle.Rotation, particle.RotationVelocity),

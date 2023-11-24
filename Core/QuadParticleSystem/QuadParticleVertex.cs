@@ -26,9 +26,14 @@ namespace ParticleLibrary.Core
 		public Color EndColor;
 
 		/// <summary>
-		/// Packed Velocity (XY), and Velocity Acceleration (ZW)
+		/// Packed Velocity (XY), and Velocity Deviation (ZW)
 		/// </summary>
 		public Vector4 Velocity;
+
+		/// <summary>
+		/// Acceleration
+		/// </summary>
+		public Vector2 Acceleration;
 
 		/// <summary>
 		/// Texture width and height
@@ -62,17 +67,19 @@ namespace ParticleLibrary.Core
 
 			new VertexElement(sizeof(float) * 8, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0), // Velocity
 
-			new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector2, VertexElementUsage.Normal, 1), // Size
+			new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector2, VertexElementUsage.Normal, 1), // Acceleration
 
-			new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector4, VertexElementUsage.Normal, 2), // Scale
+			new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector2, VertexElementUsage.Normal, 2), // Size
 
-			new VertexElement(sizeof(float) * 18, VertexElementFormat.Vector4, VertexElementUsage.Normal, 3), // Rotation
+			new VertexElement(sizeof(float) * 16, VertexElementFormat.Vector4, VertexElementUsage.Normal, 3), // Scale
 
-			new VertexElement(sizeof(float) * 22, VertexElementFormat.Vector4, VertexElementUsage.Normal, 4) // Depth Time
+			new VertexElement(sizeof(float) * 20, VertexElementFormat.Vector4, VertexElementUsage.Normal, 4), // Rotation
+
+			new VertexElement(sizeof(float) * 24, VertexElementFormat.Vector4, VertexElementUsage.Normal, 5) // Depth Time
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
 
-		public const int SizeInBytes = sizeof(float) * 26; // 104
+		public const int SizeInBytes = sizeof(float) * 28; // 112
 	}
 }

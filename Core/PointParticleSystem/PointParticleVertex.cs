@@ -26,6 +26,11 @@ namespace ParticleLibrary.Core
 		public Vector4 Velocity;
 
 		/// <summary>
+		/// Acceleration
+		/// </summary>
+		public Vector2 Acceleration;
+
+		/// <summary>
 		/// Depth (X), Depth Velocity (Y), and Time (Z)
 		/// </summary>
 		public Vector4 DepthTime;
@@ -40,11 +45,13 @@ namespace ParticleLibrary.Core
 
 			new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0), // Velocity
 
-			new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.Normal, 1) // Depth Time
+			new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector2, VertexElementUsage.Normal, 1), // Acceleration
+
+			new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector4, VertexElementUsage.Normal, 1) // Depth Time
 		);
 
 		readonly VertexDeclaration IVertexType.VertexDeclaration { get { return VertexDeclaration; } }
 
-		public const int SizeInBytes = sizeof(float) * 14; // 56
+		public const int SizeInBytes = sizeof(float) * 16; // 64
 	}
 }

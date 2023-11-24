@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core;
 using ParticleLibrary.Examples;
+using ParticleLibrary.Utilities;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.GameContent;
@@ -268,20 +269,52 @@ namespace ParticleLibrary.Content
 
 			Vector2 position = new(X * 16, Y * 16);
 
-			if (_counter >= 120)
+			if (_counter % 1 == 0)
 			{
-				_counter = 0;
+				//_counter = 0;
 				//for (int i = 0; i < 300; i++)
 				//{
 				//	NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f);
 				//}
 
-				for (int i = 0; i < 120; i++)
+				QuadParticle quad = new()
 				{
-					ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExampleQuadParticle, i * 3);
-					ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 3f)), ExampleParticleSystemManager.ExamplePointParticle, i * 3);
+					StartColor = Color.Black.WithAlpha(0f),
+					EndColor = Color.White.WithAlpha(0f),
+					Scale = new Vector2(1f),
+					Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
+					RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
+				};
 
-				}
+				PointParticle point = new()
+				{
+					//StartColor = Color.Black.WithAlpha(0f),
+					//EndColor = Color.White.WithAlpha(0f),
+					StartColor = Color.White.WithAlpha(0f),
+					EndColor = Color.Black.WithAlpha(0f),
+					VelocityDeviation = new Vector2(-0.1f, -0.1f),
+					VelocityAcceleration = new Vector2(0.9f, 0.9f),
+					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
+				};
+
+				//ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(Main.MouseWorld, Vector2.Zero, quad, 120);
+
+				//for (int i = 0; i < 100; i++)
+				//{
+				ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(100f, 0f), point, 120);
+				//}
+
+				//for (int i = 0; i < 10; i++)
+				//{
+				//	Vector2 velocity = new Vector2(4f, 0f).RotatedBy(MathHelper.ToRadians(i * 36f + _counter));
+				//	quad.VelocityAcceleration = new Vector2(velocity.X / (i * 36f) * -1, velocity.Y / (i * 36f) * -1);
+
+				//	//ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, velocity, quad, i * 36);
+				//	ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, velocity, point, i * 36);
+				//}
 
 				//PointParticle settings = new()
 				//{

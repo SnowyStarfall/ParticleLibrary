@@ -17,7 +17,11 @@ namespace ParticleLibrary.Core
 		public Color EndColor { get; set; } = Color.White;
 
 		/// <summary>
-		/// How much velocity should accelerate over time (additive)
+		/// How much velocity changes over time.
+		/// </summary>
+		public Vector2 VelocityDeviation { get; set; } = Vector2.Zero;
+		/// <summary>
+		/// How much velocity should accelerate over time. (multiplicative)
 		/// </summary>
 		public Vector2 VelocityAcceleration { get; set; } = Vector2.Zero;
 

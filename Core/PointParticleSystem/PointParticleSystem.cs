@@ -92,7 +92,8 @@ namespace ParticleLibrary.Core
 				StartColor = particle.StartColor,
 				EndColor = particle.EndColor,
 
-				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityAcceleration),
+				Velocity = LibUtilities.Vec4From2Vec2(velocity, particle.VelocityDeviation),
+				Acceleration = particle.VelocityAcceleration,
 
 				DepthTime = new Vector4(particle.Depth, particle.DepthVelocity, CurrentTime, lifeSpan),
 			};

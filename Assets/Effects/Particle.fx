@@ -35,11 +35,12 @@ struct GVertexShaderInput
 	float4 EndColor : COLOR1;
 	
 	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
-	float2 Size : NORMAL1;
-	float4 Scale : NORMAL2; // XY Scale | ZW Velocity
-	float4 Rotation : NORMAL3; // XY Corner | Z Rotation | W Velocity
+	float2 Acceleration : NORMAL1;
+	float2 Size : NORMAL2;
+	float4 Scale : NORMAL3; // XY Scale | ZW Velocity
+	float4 Rotation : NORMAL4; // XY Corner | Z Rotation | W Velocity
 
-	float4 DepthTime : NORMAL4; // X Depth | Y Velocity | Z Time
+	float4 DepthTime : NORMAL5; // X Depth | Y Velocity | Z Time
 };
 
 struct GVertexShaderOutput
@@ -58,8 +59,9 @@ struct PVertexShaderInput
 	float4 EndColor : COLOR1;
 	
 	float4 Velocity : NORMAL0; // XY Velocity | ZW Acceleration
+	float2 Acceleration : NORMAL1;
 
-	float4 DepthTime : NORMAL1; // X Depth | Y Velocity | Z Time
+	float4 DepthTime : NORMAL2; // X Depth | Y Velocity | Z Time
 };
 
 struct PVertexShaderOutput
@@ -69,16 +71,18 @@ struct PVertexShaderOutput
 };
 
 // Vertex functions
-float4 ComputePosition(float4 position, float2 velocity, float2 acceleration, float time)
+float4 ComputePosition(float4 position, float2 velocity, float2 deviation, float2 acceleration, float time)
 {
 	// Displacement
 	float2 d = (velocity * time);
+	// Deviation
+	float2 e = deviation * time;
+	//// Gravity
+	//float g = Gravity * time;
 	// Acceleration
-	float2 a = (0.5 * acceleration * pow(time, 2));
-	// Gravity
-	float g = (0.5 * Gravity * pow(time, 2));
-
-	return position + float4(d + a + float2(0, g), 0, 0);
+	float a = (1.0 - pow(abs(acceleration), time)) / (1.0 - abs(acceleration));
+	
+	return position + float4((velocity + e) * a, 0, 0);
 }
 
 float2 ComputeSize(float2 size, float2 scale, float2 velocity, float time)
@@ -165,12 +169,12 @@ GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
 	// The size at this point in the particle's life, multiplied by the corner to be an offset for the rotation
 	float2 size = ComputeSize(input.Size, input.Scale.xy, input.Scale.zw, time) * input.Rotation.xy;
 	// The rotation matrix. We only calculate when rotation is relevant
-	float2x2 rotation = /*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? float2x2(1, 0, 0, 1) :*/ ComputeRotation(input.Rotation.zw, time);
+	float2x2 rotation = /*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? float2x2(1, 0, 0, 1) :*/ComputeRotation(input.Rotation.zw, time);
 	
 	// Calculate the position over time
-	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
+	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, input.Acceleration, time);
 	// Apply rotation over time. We only mul when rotation is relevant
-	output.Position.xy += -size + (/*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? 0 : */ mul(size, rotation));
+	output.Position.xy += -size + ( /*TODO: input.Rotation.z == 0 && input.Rotation.w == 0 ? 0 : */mul(size, rotation));
 	// Apply offset for when drawing on the same layer as water
 	output.Position.xy += Offset;
 	// Apply matrix and offset for screen view
@@ -218,7 +222,7 @@ PVertexShaderOutput PVertexShaderFunction(PVertexShaderInput input)
 	float age = clamp(time / input.DepthTime.w, 0.0, 1.0);
 	
 	// Calculate the position over time
-	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, time);
+	output.Position = ComputePosition(input.Position, input.Velocity.xy, input.Velocity.zw, input.Acceleration, time);
 	// Apply offset for when drawing on the same layer as water
 	output.Position.xy += Offset;
 	// Apply matrix and offset for screen view
