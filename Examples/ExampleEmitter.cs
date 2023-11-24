@@ -109,7 +109,7 @@ namespace ParticleLibrary.Examples
 			ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, spatial.Velocity, new PointParticle().FromEmitter(spatial, visual));
 
 			ExampleParticleSystemManager.ExamplePointSystem.NewParticle(position, Main.rand.NextVector2Unit() * Main.rand.NextFloat(-8f, 8f + float.Epsilon), ExampleParticleSystemManager.ExamplePointParticle);
-	
+
 			// If you're curious about how the particle's center stays so bright as it fades, that's because there is a Point particle overlapping the Quad particle.
 		}
 

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace ParticleLibrary.Examples
 {

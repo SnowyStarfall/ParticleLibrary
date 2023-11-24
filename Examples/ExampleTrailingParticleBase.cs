@@ -30,7 +30,7 @@ namespace ParticleLibrary.Examples
 
 		public override void Update()
 		{
-			for(int i = OldPositions.Length - 1; i >= 0; i--)
+			for (int i = OldPositions.Length - 1; i >= 0; i--)
 			{
 				if (i != 0)
 				{

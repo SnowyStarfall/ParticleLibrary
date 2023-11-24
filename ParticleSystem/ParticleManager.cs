@@ -1,17 +1,11 @@
-﻿
-using log4net;
-using log4net.Util;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.ParticleSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static ParticleLibrary.Particle;
-using static System.Formats.Asn1.AsnWriter;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace ParticleLibrary
 {
@@ -107,16 +101,16 @@ namespace ParticleLibrary
 			for (int i = 0; i < particles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-					particles[i].PreAI();
+				particles[i].PreAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					//particles[i].velocity = Vector2.Zero;
+				//particles[i].velocity = Vector2.Zero;
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-					importantParticles[i].PreAI();
+				importantParticles[i].PreAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					//importantParticles[i].velocity = Vector2.Zero;
+				//importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 
@@ -144,7 +138,7 @@ namespace ParticleLibrary
 						particle.TileCollision(oldVelocity);
 					}
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						//particles[i].velocity = Vector2.Zero;
+					//particles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -156,7 +150,7 @@ namespace ParticleLibrary
 					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
 						particle.TileCollision(oldVelocity);
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						//particles[i].velocity = Vector2.Zero;
+					//particles[i].velocity = Vector2.Zero;
 
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
@@ -168,14 +162,14 @@ namespace ParticleLibrary
 
 				//if ((!UISystem.Instance.DebugUIElement.Instance.FreezeAI && ParticleLibraryConfig.Instance.DebugUI) || !ParticleLibraryConfig.Instance.DebugUI)
 				//{
-					particle.AI();
+				particle.AI();
 
-					if (particle.timeLeft-- == 0 || !particles[i].active)
-					{
-						particle.DeathAction?.Invoke();
-						particles.RemoveAt(i);
-						i--;
-					}
+				if (particle.timeLeft-- == 0 || !particles[i].active)
+				{
+					particle.DeathAction?.Invoke();
+					particles.RemoveAt(i);
+					i--;
+				}
 				//}
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
@@ -200,7 +194,7 @@ namespace ParticleLibrary
 						particle.TileCollision(oldVelocity);
 					}
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						//importantParticles[i].velocity = Vector2.Zero;
+					//importantParticles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -212,7 +206,7 @@ namespace ParticleLibrary
 					if (Collision.SolidCollision(particle.position, particle.width, particle.height))
 						particle.TileCollision(oldVelocity);
 					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-						//importantParticles[i].velocity = Vector2.Zero;
+					//importantParticles[i].velocity = Vector2.Zero;
 					particle.position += particle.velocity;
 					UpdateArrays(particle);
 				}
@@ -223,14 +217,14 @@ namespace ParticleLibrary
 
 				//if ((!UISystem.Instance.DebugUIElement.Instance.FreezeAI && ParticleLibraryConfig.Instance.DebugUI) || !ParticleLibraryConfig.Instance.DebugUI)
 				//{
-					particle.AI();
+				particle.AI();
 
-					if (particle.timeLeft-- == 0 || !importantParticles[i].active)
-					{
-						particle.DeathAction?.Invoke();
-						importantParticles.RemoveAt(i);
-						i--;
-					}
+				if (particle.timeLeft-- == 0 || !importantParticles[i].active)
+				{
+					particle.DeathAction?.Invoke();
+					importantParticles.RemoveAt(i);
+					i--;
+				}
 				//}
 			}
 		}
@@ -240,16 +234,16 @@ namespace ParticleLibrary
 			for (int i = 0; i < particles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-					particles[i].PostAI();
+				particles[i].PostAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					//particles[i].velocity = Vector2.Zero;
+				//particles[i].velocity = Vector2.Zero;
 			}
 			for (int i = 0; i < importantParticles?.Count; i++)
 			{
 				//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI && !ParticleLibraryConfig.Instance.DebugUI)
-					importantParticles[i].PostAI();
+				importantParticles[i].PostAI();
 				//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity && ParticleLibraryConfig.Instance.DebugUI)
-					//importantParticles[i].velocity = Vector2.Zero;
+				//importantParticles[i].velocity = Vector2.Zero;
 			}
 		}
 		#endregion

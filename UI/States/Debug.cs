@@ -115,7 +115,7 @@ namespace ParticleLibrary.UI.States
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle))))
 				{
-                    CParticles.Add(mod, Activator.CreateInstance(p) as Core.Particle);
+					CParticles.Add(mod, Activator.CreateInstance(p) as Core.Particle);
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle))))

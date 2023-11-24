@@ -97,7 +97,7 @@ namespace ParticleLibrary.Core
 		/// The color of this particle.
 		/// </summary>
 		public Color Color;
-	/// <summary>
+		/// <summary>
 		/// The opacity of this particle.
 		/// </summary>
 		public float Opacity = 1f;

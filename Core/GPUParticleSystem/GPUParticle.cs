@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace ParticleLibrary.Core
+﻿namespace ParticleLibrary.Core
 {
 	public abstract class GPUParticle
 	{

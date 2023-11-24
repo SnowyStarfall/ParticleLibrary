@@ -1,15 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ParticleLibrary.UI.Primitives;
 using ParticleLibrary.Utilities;
-using ReLogic.Content;
 using System;
-using System.IO;
 using Terraria;
-using Terraria.ModLoader;
-using static ParticleLibrary.Resources;
-using static ParticleLibrary.Resources.Assets;
 
 namespace ParticleLibrary.Core
 {

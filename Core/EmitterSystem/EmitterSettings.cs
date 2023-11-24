@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Core.Shapes;
-using System;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
