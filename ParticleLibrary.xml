@@ -760,12 +760,17 @@
         </member>
         <member name="F:ParticleLibrary.Core.Particle.Velocity">
             <summary>
-            How fast <see cref="F:ParticleLibrary.Core.Particle.Position"/> in world coordinates per frame.
+            How fast <see cref="F:ParticleLibrary.Core.Particle.Position"/> moves in world coordinates per frame.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.Particle.VelocityDeviation">
+            <summary>
+            How fast <see cref="F:ParticleLibrary.Core.Particle.Velocity"/> changes each frame.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Particle.VelocityAcceleration">
             <summary>
-            How much <see cref="F:ParticleLibrary.Core.Particle.Velocity"/> changes each frame.
+            How much <see cref="F:ParticleLibrary.Core.Particle.Velocity"/> is multiplied each frame.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Particle.AnchorPosition">
