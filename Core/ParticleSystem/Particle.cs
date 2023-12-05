@@ -55,9 +55,9 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public Vector2 VelocityDeviation;
 		/// <summary>
-		/// How much <see cref="Velocity"/> is multiplied each frame.
+		/// How much <see cref="Velocity"/> is multiplied each frame. Defaults to (1, 1).
 		/// </summary>
-		public Vector2 VelocityAcceleration;
+		public Vector2 VelocityAcceleration = new(1f);
 		/// <summary>
 		/// The reference position used for this particle when calculating its position. Defaults to (0, 0).
 		/// </summary>
