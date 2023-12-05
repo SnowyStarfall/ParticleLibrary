@@ -143,32 +143,37 @@ namespace ParticleLibrary.Core
 					}
 
 					p.Rotation += p.RotationVelocity;
-					p.RotationVelocity += p.RotationAcceleration;
+					p.RotationVelocity *= p.RotationAcceleration;
 
 					p.Scale2D.X += p.ScaleVelocity.X;
 					p.Scale2D.Y += p.ScaleVelocity.Y;
-					p.ScaleVelocity.X += p.ScaleAcceleration.X;
-					p.ScaleVelocity.Y += p.ScaleAcceleration.Y;
+					p.ScaleVelocity.X *= p.ScaleAcceleration.X;
+					p.ScaleVelocity.Y *= p.ScaleAcceleration.Y;
 
 					// TODO: Uncomment this
 					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeVelocity)
 					//{
 					p.Position.X += p.Velocity.X;
 					p.Position.Y += p.Velocity.Y;
+					p.Velocity.X += p.VelocityDeviation.X;
+					p.Velocity.Y += p.VelocityDeviation.Y;
+					p.Velocity.X *= p.VelocityAcceleration.X;
+					p.Velocity.Y *= p.VelocityAcceleration.Y;
 					//}
 
 					if (p.TileCollide)
 					{
-						p.Velocity.X += p.VelocityAcceleration.X;
-						p.Velocity.Y += p.VelocityAcceleration.Y;
-
 						Vector2 oldVelocity = p.Velocity;
 						p.Velocity = Collision.TileCollision(p.Position, p.Velocity, 1, 1);
 						if (p.Velocity != oldVelocity)
 							p.TileCollision(oldVelocity);
-
-						p.Velocity = Vector2.Zero;
 					}
+					
+					// TODO: Uncomment this
+					//if (UISystem.Instance.DebugUIElement.Instance.FreezeVelocity)
+					//{
+					//	p.Velocity = Vector2.Zero;
+					//}
 
 					// TODO: Uncomment this
 					//if (!UISystem.Instance.DebugUIElement.Instance.FreezeAI)

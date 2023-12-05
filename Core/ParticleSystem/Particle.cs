@@ -47,11 +47,15 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public Vector2 Position;
 		/// <summary>
-		/// How fast <see cref="Position"/> in world coordinates per frame.
+		/// How fast <see cref="Position"/> moves in world coordinates per frame.
 		/// </summary>
 		public Vector2 Velocity;
 		/// <summary>
-		/// How much <see cref="Velocity"/> changes each frame.
+		/// How fast <see cref="Velocity"/> changes each frame.
+		/// </summary>
+		public Vector2 VelocityDeviation;
+		/// <summary>
+		/// How much <see cref="Velocity"/> is multiplied each frame.
 		/// </summary>
 		public Vector2 VelocityAcceleration;
 		/// <summary>
@@ -118,8 +122,14 @@ namespace ParticleLibrary.Core
 		{
 			if (Main.netMode is not NetmodeID.Server && Sprite is null)
 			{
-				try { Sprite = ModContent.Request<Texture2D>(Texture).Value; }
-				catch { Sprite = ParticleLibrary.EmptyPixel; }
+				try
+				{
+					Sprite = ModContent.Request<Texture2D>(Texture).Value;
+				}
+				catch
+				{
+					Sprite = ParticleLibrary.EmptyPixel;
+				}
 			}
 		}
 
