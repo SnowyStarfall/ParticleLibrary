@@ -41,10 +41,11 @@ namespace ParticleLibrary.Core
 		{
 			Emitters ??= new();
 
-			Emitters.Buffer = tag.Get<List<EmitterSerializer>>("Emitters").ToList()
+			var emitters = tag.Get<List<EmitterSerializer>>("Emitters").ToList()
 				.ConvertAll((o) => o.Emitter)
-				.Where((x) => x is not null)
-				.ToArray();
+				.Where((x) => x is not null);
+
+			Emitters.AddRange(emitters);
 		}
 
 		public override void SaveWorldData(TagCompound tag)
@@ -56,6 +57,8 @@ namespace ParticleLibrary.Core
 				.ConvertAll<EmitterSerializer>((o) => new(o));
 
 			tag.Add("Emitters", c);
+
+			Emitters.Clear();
 		}
 
 		public override void PreUpdateWorld()

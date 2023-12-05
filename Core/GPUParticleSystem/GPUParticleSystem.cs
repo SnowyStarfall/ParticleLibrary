@@ -63,6 +63,8 @@ namespace ParticleLibrary.Core
 		protected EffectParameter LifespanParameter { get; private set; }
 		protected EffectParameter TextureParameter { get; private set; }
 		protected EffectParameter OffsetParameter { get; private set; }
+		protected EffectParameter CurveParameter { get; private set; }
+		protected EffectParameter UseCurveParameter { get; private set; }
 
 		// Buffers
 		protected abstract DynamicVertexBuffer VertexBuffer { get; set; }
@@ -113,6 +115,11 @@ namespace ParticleLibrary.Core
 				LoadEffect();
 				return;
 			}
+
+			//if(Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt))
+			//{
+			//	ReloadEffect();
+			//}
 
 			// Batched data transfer
 			if (SendBatch)
@@ -221,7 +228,7 @@ namespace ParticleLibrary.Core
 		{
 			// Create shader
 			string additionalPath = @"";
-			string fileName = "GParticleShader";
+			string fileName = "Particle";
 			string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 			FileStream stream = new(documents + $@"\My Games\Terraria\tModLoader\ModSources\ParticleLibrary\Assets\Effects\{additionalPath}{fileName}.xnb", FileMode.Open, FileAccess.Read);
@@ -241,10 +248,15 @@ namespace ParticleLibrary.Core
 			FadeParameter = Effect.Parameters["Fade"];
 			TextureParameter = Effect.Parameters["Texture"];
 			OffsetParameter = Effect.Parameters["Offset"];
+			CurveParameter = Effect.Parameters["Curve"];
+			UseCurveParameter = Effect.Parameters["UseCurve"];
 
 			TransformMatrixParameter.SetValue(Primitive.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
 			FadeParameter.SetValue(Fade);
+			CurveParameter.SetValue(ModContent.Request<Texture2D>(Assets.Textures.ExponentCurve, AssetRequestMode.ImmediateLoad).Value);
+			// TODO: Implement curve support
+			//UseCurveParameter.SetValue(true);
 		}
 
 		protected abstract void CreateBuffers();

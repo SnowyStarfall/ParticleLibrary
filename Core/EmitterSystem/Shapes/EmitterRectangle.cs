@@ -6,12 +6,12 @@ namespace ParticleLibrary.Core.Shapes
 {
 	public class EmitterRectangle : EmitterShape
 	{
-		public override Vector2 Solve(Vector2 center, EmitterOrigin origin, Emitter emitter)
+		public override Vector2 Solve(Vector2 center, EmitterOrigin origin, float width, float height)
 		{
 			if (origin is EmitterOrigin.Spread)
 			{
-				return center += new Vector2(emitter.EmitterSettings.Width * Main.rand.NextFloat(0f, 1f + float.Epsilon),
-							 				 emitter.EmitterSettings.Height * Main.rand.NextFloat(0f, 1f + float.Epsilon));
+				return center += new Vector2(width * Main.rand.NextFloat(0f, 1f + float.Epsilon),
+							 				 height * Main.rand.NextFloat(0f, 1f + float.Epsilon));
 			}
 			else // if (origin is EmitterOrigin.Rim)
 			{
@@ -20,21 +20,21 @@ namespace ParticleLibrary.Core.Shapes
 				switch (edge)
 				{
 					case 0: // Top edge
-						center.X += Main.rand.NextFloat(0f, emitter.EmitterSettings.Width + float.Epsilon);
+						center.X += Main.rand.NextFloat(0f, width + float.Epsilon);
 						break;
 
 					case 1: // Right edge
-						center.X += emitter.EmitterSettings.Width;
-						center.Y += Main.rand.NextFloat(0f, emitter.EmitterSettings.Height + float.Epsilon);
+						center.X += width;
+						center.Y += Main.rand.NextFloat(0f, height + float.Epsilon);
 						break;
 
 					case 2: // Bottom edge
-						center.X += Main.rand.NextFloat(0f, emitter.EmitterSettings.Width + float.Epsilon);
-						center.Y += emitter.EmitterSettings.Height;
+						center.X += Main.rand.NextFloat(0f, width + float.Epsilon);
+						center.Y += height;
 						break;
 
 					case 3: // Left edge
-						center.Y += Main.rand.NextFloat(0f, emitter.EmitterSettings.Height + float.Epsilon);
+						center.Y += Main.rand.NextFloat(0f, height + float.Epsilon);
 						break;
 
 					default:

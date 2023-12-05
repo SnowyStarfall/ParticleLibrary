@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core.Data;
+using ParticleLibrary.Properties;
 using Terraria;
 using Terraria.ModLoader.IO;
 
@@ -69,7 +70,7 @@ namespace ParticleLibrary.Core
 				for (int i = 0; i < SpawnCount; i++)
 				{
 					// Calculate parameters
-					position = EmitterSettings.Shape.Solve(position, EmitterSettings.Origin, this);
+					position = EmitterSettings.Shape.Solve(position, EmitterSettings.Origin, EmitterSettings.Width, EmitterSettings.Height);
 					SpatialParameters spatial = SpatialParameters.Calculate(ParticleSettings);
 					VisualParameters visual = VisualParameters.Calculate(ColorSettings);
 
