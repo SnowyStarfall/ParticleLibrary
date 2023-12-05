@@ -47,16 +47,18 @@ namespace ParticleLibrary.Examples
 		/// </summary>
 		/// <param name="timeLeft"></param>
 		/// <param name="velocityMult"></param>
-		public ExampleParticle(int timeLeft, float velocityMult = 0.96f)
+		public ExampleParticle(int timeLeft, float velocityMult = 0.99f)
 		{
 			TimeLeft = timeLeft;
 			VelocityMult = velocityMult;
+			VelocityAcceleration.X = VelocityMult;
+			VelocityAcceleration.Y = VelocityMult;
 		}
 		/// <summary>
 		/// This parameterless constructor allows us to use our particle in the NewParticle(T) methods without errors
 		/// It's a good idea to provide default values for your parameter constructor unless it's not necessary
 		/// </summary>
-		public ExampleParticle() : this(120, 0.96f) { }
+		public ExampleParticle() : this(120, 0.99f) { }
 
 		/// <summary>
 		/// Runs when the particle is created
@@ -72,8 +74,7 @@ namespace ParticleLibrary.Examples
 		/// </summary>
 		public override void Update()
 		{
-			Scale = (120 - TimeLeft) / 120;
-			Velocity *= VelocityMult;
+			Scale = TimeLeft / 120f;
 		}
 
 		/// <summary>
@@ -83,7 +84,7 @@ namespace ParticleLibrary.Examples
 		/// <param name="location">The visual location, already taking into account <see cref="Main.screenPosition"/></param>
 		public override void Draw(SpriteBatch spriteBatch, Vector2 location)
 		{
-			spriteBatch.Draw(Sprite, location, Sprite.Bounds, new Color(0.05f, 0f, 0.1f, 0f), 0f, Sprite.Size() * 0.5f, 0.1f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(Sprite, location, Sprite.Bounds, Color, 0f, Sprite.Size() * 0.5f, Scale, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>

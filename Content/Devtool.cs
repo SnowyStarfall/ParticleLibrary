@@ -307,12 +307,14 @@ namespace ParticleLibrary.Content
 					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
 				};
 
-				if (Main.tile[mouseTile].HasTile)
-				{
-					Vector2 pos = EmitterSettings.Rectangle.Solve(new Vector2(mouseTile.X * 16 + 8f, mouseTile.Y * 16 + 8f), EmitterOrigin.Rim, 16f, 16f);
-					ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(pos, new Vector2(0f, 0f).RotatedBy(randDegrees), quad, 120);
+				//if (Main.tile[mouseTile].HasTile)
+				//{
+				//	Vector2 pos = EmitterSettings.Rectangle.Solve(new Vector2(mouseTile.X * 16 + 8f, mouseTile.Y * 16 + 8f), EmitterOrigin.Rim, 16f, 16f);
+				//	ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(pos, new Vector2(0f, 0f).RotatedBy(randDegrees), quad, 120);
 
-				}
+				//}
+
+				NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
 
 				//for (int i = 0; i < 100; i++)
 				//{
