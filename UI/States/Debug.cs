@@ -113,27 +113,27 @@ namespace ParticleLibrary.UI.States
 				Mod mod = ModLoader.Mods[i];
 				Assembly assembly = mod.Code;
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle)) && !t.IsAbstract))
 				{
 					CParticles.Add(mod, Activator.CreateInstance(p) as Core.Particle);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle)) && !t.IsAbstract))
 				{
 					GParticles.Add(mod, Activator.CreateInstance(p) as QuadParticle);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Emitter))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Emitter)) && !t.IsAbstract))
 				{
 					Emitters.Add(mod, Activator.CreateInstance(p) as Emitter);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticleSystem))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticleSystem)) && !t.IsAbstract))
 				{
 					GParticleSystems.Add(mod, Activator.CreateInstance(p) as QuadParticleSystem);
 				}
 
-				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(PointParticleSystem))))
+				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(PointParticleSystem)) && !t.IsAbstract))
 				{
 					PointParticleSystems.Add(mod, Activator.CreateInstance(p) as PointParticleSystem);
 				}
