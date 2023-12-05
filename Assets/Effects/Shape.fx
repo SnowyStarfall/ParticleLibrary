@@ -75,6 +75,6 @@ technique DefaultTechnique
 {
 	pass CirclePass
 	{
-		PixelShader = compile ps_2_0 PixelShaderFunction();
+		PixelShader = compile ps_3_0 PixelShaderFunction();
 	}
 };

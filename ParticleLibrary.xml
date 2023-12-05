@@ -368,13 +368,14 @@
             Originating type.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Core.Shapes.EmitterShape.Solve(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.EmitterOrigin,ParticleLibrary.Core.Emitter)">
+        <member name="M:ParticleLibrary.Core.Shapes.EmitterShape.Solve(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.EmitterOrigin,System.Single,System.Single)">
             <summary>
             Solve the position with the provided parameters
             </summary>
             <param name="center">The emitter's center, accounting for width and height</param>
             <param name="origin">The emitter's origin, determining how to distrubute particles</param>
-            <param name="emitter">The emitter</param>
+            <param name="width">The width</param>
+            <param name="height">The height</param>
             <returns></returns>
         </member>
         <member name="T:ParticleLibrary.Core.SpatialHash.IntIntDictionary">
@@ -386,51 +387,6 @@
         <member name="F:ParticleLibrary.Core.SpatialHash.SpatialHash.CellDict">
             <summary>
             the Dictionary that holds all of the data
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.StartColor">
-            <summary>
-            The start color
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.EndColor">
-            <summary>
-            The end color
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.VelocityAcceleration">
-            <summary>
-            How much velocity accelerates over time (additive)
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.Scale">
-            <summary>
-            The scale of the particle.
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.ScaleVelocity">
-            <summary>
-            How much scale changes over time
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.Rotation">
-            <summary>
-            The rotation of the particle
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.RotationVelocity">
-            <summary>
-            How much rotation changes over time
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.Depth">
-            <summary>
-            The depth of the particle. Default is 1f. Changes the strength of the parallax effect, making the particle seem closest at higher values (2f) or farthest at lower values (0f)
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticle.DepthVelocity">
-            <summary>
-            How much the depth changes over time. Can result in the particle completely disappearing (clipping beyond the visual field of the "camera")
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.GPUParticleManager.Config">
@@ -503,16 +459,6 @@
             Whether the particles should fade over their lifespan
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUParticleSystem`3.Gravity">
-            <summary>
-            How much gravity should be applied to the particles
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUParticleSystem`3.TerminalGravity">
-            <summary>
-            The maximum velocity from gravity a particle should recieve. Currently unimplemented
-            </summary>
-        </member>
         <member name="M:ParticleLibrary.Core.GPUParticleSystem`3.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
             <summary>
             Sets the texture to use for the particles.
@@ -543,18 +489,6 @@
         <member name="M:ParticleLibrary.Core.GPUParticleSystem`3.SetFade(System.Boolean)">
             <summary>
             Sets whether the particles should fade over their lifespan
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:ParticleLibrary.Core.GPUParticleSystem`3.SetGravity(System.Single)">
-            <summary>
-            Sets the gravity to apply to the particles
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:ParticleLibrary.Core.GPUParticleSystem`3.SetTerminalGravity(System.Single)">
-            <summary>
-            Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
             </summary>
             <param name="value"></param>
         </member>
@@ -593,16 +527,6 @@
             Whether the particles should fade over their lifespan
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.Gravity">
-            <summary>
-            How much gravity to apply to the particles
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.TerminalGravity">
-            <summary>
-            The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
-            </summary>
-        </member>
         <member name="M:ParticleLibrary.Core.IGPUParticleSystem`1.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
             <summary>
             Sets the texture to use for the particles.
@@ -633,18 +557,6 @@
         <member name="M:ParticleLibrary.Core.IGPUParticleSystem`1.SetFade(System.Boolean)">
             <summary>
             Sets whether the particles should fade over their lifespan
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:ParticleLibrary.Core.IGPUParticleSystem`1.SetGravity(System.Single)">
-            <summary>
-            Sets the gravity to apply to the particles
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:ParticleLibrary.Core.IGPUParticleSystem`1.SetTerminalGravity(System.Single)">
-            <summary>
-            Sets the maximum amount of velocity a particle should recieve from gravity. Currently unused for now
             </summary>
             <param name="value"></param>
         </member>
@@ -814,6 +726,16 @@
             Base class for all particles. Inherit this class to create your own particle.
             </summary>
         </member>
+        <member name="M:ParticleLibrary.Core.Particle.#ctor">
+            <summary>
+            Runs before <see cref="M:ParticleLibrary.Core.Particle.Spawn"/>.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.Particle.Sprite">
+            <summary>
+            Texture property for a particle. Override this to directly specify a texture.
+            </summary>
+        </member>
         <member name="P:ParticleLibrary.Core.Particle.Texture">
             <summary>
             Texture path for a particle. Override this to specify a custom path.
@@ -849,6 +771,11 @@
         <member name="F:ParticleLibrary.Core.Particle.AnchorPosition">
             <summary>
             The reference position used for this particle when calculating its position. Defaults to (0, 0).
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.Particle.Scale">
+            <summary>
+            Float representation of scale.
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Particle.Scale2D">
@@ -891,6 +818,11 @@
             The color of this particle.
             </summary>
         </member>
+        <member name="F:ParticleLibrary.Core.Particle.Opacity">
+            <summary>
+            The opacity of this particle.
+            </summary>
+        </member>
         <member name="F:ParticleLibrary.Core.Particle.Frame">
             <summary>
             The frame of this particle.
@@ -908,7 +840,7 @@
         </member>
         <member name="M:ParticleLibrary.Core.Particle.Spawn">
             <summary>
-            Runs when the particle spawns.
+            Runs when the particle spawns, AFTER constructors and AFTER <see cref="F:ParticleLibrary.Core.Particle.Position"/>, <see cref="F:ParticleLibrary.Core.Particle.Velocity"/>, <see cref="F:ParticleLibrary.Core.Particle.Color"/>, <see cref="P:ParticleLibrary.Core.Particle.Scale"/>, and <see cref="F:ParticleLibrary.Core.Particle.Layer"/> are set.
             </summary>
         </member>
         <member name="M:ParticleLibrary.Core.Particle.Update">
@@ -955,9 +887,14 @@
             The end color
             </summary>
         </member>
+        <member name="P:ParticleLibrary.Core.PointParticle.VelocityDeviation">
+            <summary>
+            How much velocity changes over time.
+            </summary>
+        </member>
         <member name="P:ParticleLibrary.Core.PointParticle.VelocityAcceleration">
             <summary>
-            How much velocity should accelerate over time (additive)
+            How much velocity should accelerate over time. (multiplicative)
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.PointParticle.Depth">
@@ -1010,17 +947,7 @@
             Whether the particles should fade over their lifespan
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.PointParticleSystemSettings.Gravity">
-            <summary>
-            How much gravity to apply to the particles
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.PointParticleSystemSettings.TerminalGravity">
-            <summary>
-            The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.Core.PointParticleSystemSettings.#ctor(System.Int32,System.Int32,ParticleLibrary.Core.Layer,Microsoft.Xna.Framework.Graphics.BlendState,System.Boolean,System.Single,System.Single)">
+        <member name="M:ParticleLibrary.Core.PointParticleSystemSettings.#ctor(System.Int32,System.Int32,ParticleLibrary.Core.Layer,Microsoft.Xna.Framework.Graphics.BlendState,System.Boolean)">
             <summary>
             Creates a new settings present for a <see cref="T:ParticleLibrary.Core.PointParticleSystem"/>
             </summary>
@@ -1029,8 +956,6 @@
             <param name="layer">The layer the particles are drawn on</param>
             <param name="blendState">The BlendState the particles are drawn with</param>
             <param name="fade">Whether the particles should fade over their lifespan</param>
-            <param name="gravity">How much gravity to apply to the particles</param>
-            <param name="terminalGravity">The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now</param>
             <exception cref="T:System.ArgumentNullException">Ensure that texture is not null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Ensure that max particles is greater than 0</exception>
         </member>
@@ -1054,6 +979,11 @@
             Packed Velocity (XY), and Velocity Acceleration (ZW)
             </summary>
         </member>
+        <member name="F:ParticleLibrary.Core.PointParticleVertex.Acceleration">
+            <summary>
+            Acceleration
+            </summary>
+        </member>
         <member name="F:ParticleLibrary.Core.PointParticleVertex.DepthTime">
             <summary>
             Depth (X), Depth Velocity (Y), and Time (Z)
@@ -1062,6 +992,16 @@
         <member name="T:ParticleLibrary.Core.QuadParticle">
             <summary>
             The base for a GParticle.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.QuadParticle.StartQuad">
+            <summary>
+            Sets the starting color for each corner of the particle.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.QuadParticle.EndQuad">
+            <summary>
+            Sets the ending color for each corner of the particle.
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.QuadParticle.StartColor">
@@ -1074,9 +1014,14 @@
             The end color
             </summary>
         </member>
+        <member name="P:ParticleLibrary.Core.QuadParticle.VelocityDeviation">
+            <summary>
+            How much velocity changes over time.
+            </summary>
+        </member>
         <member name="P:ParticleLibrary.Core.QuadParticle.VelocityAcceleration">
             <summary>
-            How much velocity accelerates over time (additive)
+            How much velocity should accelerate over time. (multiplicative)
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.QuadParticle.Scale">
@@ -1114,7 +1059,7 @@
             Represents a Quad particle system. Do not forget to call <see cref="M:ParticleLibrary.Core.QuadParticleSystem.Dispose(System.Boolean)"/> when no longer using it
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Core.QuadParticleSystem.AddParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.QuadParticle)">
+        <member name="M:ParticleLibrary.Core.QuadParticleSystem.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.QuadParticle,System.Nullable{System.Int32})">
             <summary>
             Creates a particle at the given position with the given velocity and base settings
             </summary>
@@ -1162,17 +1107,7 @@
             Whether the particles should fade over their lifespan
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.QuadParticleSystemSettings.Gravity">
-            <summary>
-            How much gravity to apply to the particles
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.QuadParticleSystemSettings.TerminalGravity">
-            <summary>
-            The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.Core.QuadParticleSystemSettings.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,System.Int32,ParticleLibrary.Core.Layer,Microsoft.Xna.Framework.Graphics.BlendState,System.Boolean,System.Single,System.Single)">
+        <member name="M:ParticleLibrary.Core.QuadParticleSystemSettings.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,System.Int32,ParticleLibrary.Core.Layer,Microsoft.Xna.Framework.Graphics.BlendState,System.Boolean)">
             <summary>
             Creates a new settings present for a <see cref="T:ParticleLibrary.Core.QuadParticleSystem"/>
             </summary>
@@ -1182,8 +1117,6 @@
             <param name="layer">The layer the particles are drawn on</param>
             <param name="blendState">The BlendState the particles are drawn with</param>
             <param name="fade">Whether the particles should fade over their lifespan</param>
-            <param name="gravity">How much gravity to apply to the particles</param>
-            <param name="terminalGravity">The maximum amount of velocity a particle should recieve from gravity/ Currently unimplemented for now</param>
             <exception cref="T:System.ArgumentNullException">Ensure that texture is not null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Ensure that max particles is greater than 0</exception>
         </member>
@@ -1209,7 +1142,12 @@
         </member>
         <member name="F:ParticleLibrary.Core.QuadParticleVertex.Velocity">
             <summary>
-            Packed Velocity (XY), and Velocity Acceleration (ZW)
+            Packed Velocity (XY), and Velocity Deviation (ZW)
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.QuadParticleVertex.Acceleration">
+            <summary>
+            Acceleration
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.QuadParticleVertex.Size">
@@ -1417,6 +1355,32 @@
             See: <see href="https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"/>
             </summary>
         </member>
+        <member name="P:ParticleLibrary.Examples.ExampleParticle.Bounds">
+            <summary>
+            You can override the bounds to skip draw calls for this particle if it wouldn't be visible.
+            Currently, the library already calculates whether these bounds would intersect the player's vision,
+            This means you only need to specify where the particle is and how much space it's using.
+            Alternatively, you can leave this as null to prevent culling altogether.
+            You can also set it to something like Rectangle.Empty to prevent the particle from being drawn.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.ExampleParticle.#ctor(System.Int32,System.Single)">
+            <summary>
+            With the removal of the AI array, you can no longer pass data into a particle via <see cref="M:ParticleLibrary.Core.NewParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)"/>
+            Instead, with recent fixes, you can instantiate the particle's constructor and pass it in that way. This way, code is much more readable.
+            <para>
+            NOTE: If you plan on allowing your particle to be automatically instantiated with the NewParticle(T) methods, you MUST have a parameterless constructor
+            </para>
+            </summary>
+            <param name="timeLeft"></param>
+            <param name="velocityMult"></param>
+        </member>
+        <member name="M:ParticleLibrary.Examples.ExampleParticle.#ctor">
+            <summary>
+            This parameterless constructor allows us to use our particle in the NewParticle(T) methods without errors
+            It's a good idea to provide default values for your parameter constructor unless it's not necessary
+            </summary>
+        </member>
         <member name="M:ParticleLibrary.Examples.ExampleParticle.Spawn">
             <summary>
             Runs when the particle is created
@@ -1454,11 +1418,25 @@
         </member>
         <member name="M:ParticleLibrary.Examples.ExampleParticleSystemWrapper`1.AddParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,`0)">
             <summary>
-            A shorthand for accessing the <see cref="M:ParticleLibrary.Core.IGPUParticleSystem`1.AddParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,`0)"/> method.
+            A shorthand for accessing the <see cref="!:IGPUParticleSystem&lt;T&gt;.AddParticle(Vector2, Vector2, T)"/> method.
             </summary>
             <param name="position">The location of the particle.</param>
             <param name="velocity">The velocity of the particle.</param>
             <param name="particle">The particle settings.</param>
+        </member>
+        <member name="T:ParticleLibrary.Examples.ExampleTrailingParticleBase">
+            <summary>
+            This class demonstrates how you can centralize certain functionalities instead of copy-pasting the same code everywhere.
+            In the previous major version of this library, there were arrays to handle things like old positions, but they have since been removed.
+            This shows how you can reimplement that feature in a way that is maintainable.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.ExampleTrailingParticleBase.#ctor(System.Int32)">
+            <summary>
+            See <see cref="T:ParticleLibrary.Examples.ExampleParticle"/> for the reason why two constructors is necessary.
+            </summary>
+            <param name="length"></param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
         </member>
         <member name="P:ParticleLibrary.ParticleLibrary.EmptyPixel">
             <summary>

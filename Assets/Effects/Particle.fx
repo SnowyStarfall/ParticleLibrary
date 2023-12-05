@@ -9,15 +9,24 @@ float2 ScreenPosition;
 float2 Offset;
 
 bool Fade;
-
-//float Gravity;
-//float TerminalGravity;
+bool UseCurve;
 
 // Current time in frames.
 texture Texture;
 sampler TextureSampler = sampler_state
 {
 	Texture = (Texture);
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+texture Curve;
+sampler CurveSampler = sampler_state
+{
+	Texture = (Curve);
 	magfilter = LINEAR;
 	minfilter = LINEAR;
 	mipfilter = LINEAR;
@@ -77,8 +86,6 @@ float4 ComputePosition(float4 position, float2 velocity, float2 deviation, float
 	float2 d = (velocity * time);
 	// Deviation
 	float2 e = deviation * time;
-	//// Gravity
-	//float g = Gravity * time;
 	// Acceleration
 	float a = (1.0 - pow(abs(acceleration), time)) / (1.0 - abs(acceleration));
 	
@@ -124,9 +131,12 @@ float ComputeDepth(float depth, float velocity, float time)
 float4 PointParticle(GVertexShaderOutput input)
 {
 	float m = (0.5 - distance(input.TexCoords, float2(0.5, 0.5))) * 2;
-	float n = pow(m, 15);
+	//float n = pow(m, 15);
 	
-	return float4(n, n, n, 0) * input.Color;
+	//return float4(n, n, n, 0) * input.Color;
+	
+	float lum = tex2D(CurveSampler, float2(m, 0.5));
+	return input.Color * lum;
 }
 
 float4 QuadDebug(GVertexShaderOutput input)
@@ -191,11 +201,15 @@ GVertexShaderOutput GVertexShaderFunction(GVertexShaderInput input)
 
 float4 GPixelShaderFunction(GVertexShaderOutput input) : COLOR0
 {
+	if (UseCurve)
+	{
+		return PointParticle(input);
+	}
+	
 	float4 v = tex2D(TextureSampler, input.TexCoords);
 
 	return v * input.Color;
 	
-	//return PointParticle(input);
 	//return QuadDebug(input);
 }
 
@@ -246,12 +260,12 @@ technique DefaultTechnique
 {
 	pass Quad
 	{
-		VertexShader = compile vs_2_0 GVertexShaderFunction();
-		PixelShader = compile ps_2_0 GPixelShaderFunction();
+		VertexShader = compile vs_3_0 GVertexShaderFunction();
+		PixelShader = compile ps_3_0 GPixelShaderFunction();
 	}
 	pass Point
 	{
-		VertexShader = compile vs_2_0 PVertexShaderFunction();
-		PixelShader = compile ps_2_0 PPixelShaderFunction();
+		VertexShader = compile vs_3_0 PVertexShaderFunction();
+		PixelShader = compile ps_3_0 PPixelShaderFunction();
 	}
 }

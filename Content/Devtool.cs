@@ -277,16 +277,23 @@ namespace ParticleLibrary.Content
 				//	NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 10f), Color.Green, 1f);
 				//}
 
+				Point mouseTile = new((int)(Main.MouseWorld.X / 16f), (int)(Main.MouseWorld.Y / 16f));
+				float randDegrees = Main.rand.NextFloat(0f, 1f + float.Epsilon) * MathHelper.TwoPi;
+
 				QuadParticle quad = new()
 				{
-					StartColor = Color.Black.WithAlpha(0f),
+					StartColor = Color.White.WithAlpha(0f),
 					EndColor = Color.White.WithAlpha(0f),
-					Scale = new Vector2(1f),
-					Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
-					RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					//VelocityDeviation = new Vector2(-0.5f, 0f).RotatedBy(randDegrees),
+					//VelocityAcceleration = new Vector2(0.3f, 0.3f),
+					Scale = new Vector2(Main.rand.NextFloat(0.01f, 0.1f + float.Epsilon)),
+					//ScaleVelocity = new Vector2(0.1f),
+					//Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
+					//RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
 					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
 					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
 				};
+
 
 				PointParticle point = new()
 				{
@@ -300,12 +307,19 @@ namespace ParticleLibrary.Content
 					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
 				};
 
-				//ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(Main.MouseWorld, Vector2.Zero, quad, 120);
+				if (Main.tile[mouseTile].HasTile)
+				{
+					Vector2 pos = EmitterSettings.Rectangle.Solve(new Vector2(mouseTile.X * 16 + 8f, mouseTile.Y * 16 + 8f), EmitterOrigin.Rim, 16f, 16f);
+					ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(pos, new Vector2(0f, 0f).RotatedBy(randDegrees), quad, 120);
+
+				}
 
 				//for (int i = 0; i < 100; i++)
 				//{
-				ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(100f, 0f), point, 120);
+				//ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(100f, 0f), point, 120);
 				//}
+
+
 
 				//for (int i = 0; i < 10; i++)
 				//{
