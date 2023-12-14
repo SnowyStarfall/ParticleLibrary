@@ -22,6 +22,9 @@ namespace ParticleLibrary.UI
 		private bool _backspaceHeld;
 		private int _backspaceCounter;
 
+		private bool _pasteHeld;
+		private int _pasteCounter;
+
 		private KeyboardState _oldKeyState;
 
 		public void Update()
@@ -36,6 +39,9 @@ namespace ParticleLibrary.UI
 
 			if (_backspaceCounter > 0)
 				_backspaceCounter--;
+
+			if(_pasteCounter > 0)
+				_pasteCounter--;
 		}
 
 		public string Write()
@@ -100,11 +106,23 @@ namespace ParticleLibrary.UI
 					return Text;
 				}
 				// Paste
-				else if (Main.keyState.IsKeyDown(Keys.V) && !_oldKeyState.IsKeyDown(Keys.V))
+				else if (Main.keyState.IsKeyDown(Keys.V) && _pasteCounter <= 0)
 				{
+					if (!_pasteHeld)
+					{
+						_pasteCounter = 30;
+						_pasteHeld = true;
+					}
+					else
+					{
+						_pasteCounter = 2;
+					}
+
 					string copied = Platform.Get<IClipboard>().Value;
 					if (!AllowNewline)
+					{
 						copied = copied.Replace("\n", string.Empty);
+					}
 
 					if (SelectionIndex != -1)
 					{
@@ -286,7 +304,7 @@ namespace ParticleLibrary.UI
 				}
 
 				// Backspace
-				if (key == Keys.Back && _backspaceCounter <= 0) // Backspace
+				if (key == Keys.Back && _backspaceCounter <= 0 && CaretIndex > 0) // Backspace
 				{
 					if (!_backspaceHeld)
 					{
@@ -312,7 +330,6 @@ namespace ParticleLibrary.UI
 								CaretIndex--;
 						}
 					}
-
 				}
 				else
 				{

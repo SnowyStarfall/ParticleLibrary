@@ -80,6 +80,7 @@ namespace ParticleLibrary.Core
 		/// <param name="position"></param>
 		/// <param name="velocity"></param>
 		/// <param name="particle"></param>
+		/// <param name="lifespan"></param>
 		public override void NewParticle(Vector2 position, Vector2 velocity, QuadParticle particle, int? lifespan = null)
 		{
 			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);

@@ -102,7 +102,7 @@ namespace ParticleLibrary.Core
 				DrawHooks.Hook(Layer, Draw);
 			});
 
-			Primitive.OnResolutionChanged += ResolutionChanged;
+			PrimitiveSystem.OnResolutionChanged += ResolutionChanged;
 			DrawHooks.OnUpdateDust += Update;
 		}
 
@@ -251,7 +251,7 @@ namespace ParticleLibrary.Core
 			CurveParameter = Effect.Parameters["Curve"];
 			UseCurveParameter = Effect.Parameters["UseCurve"];
 
-			TransformMatrixParameter.SetValue(Primitive.WorldViewProjection);
+			TransformMatrixParameter.SetValue(PrimitiveSystem.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
 			FadeParameter.SetValue(Fade);
 			CurveParameter.SetValue(ModContent.Request<Texture2D>(Assets.Textures.ExponentCurve, AssetRequestMode.ImmediateLoad).Value);

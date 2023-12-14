@@ -6,4 +6,7 @@
   <PropertyGroup>
     <ActiveDebugProfile>Terraria</ActiveDebugProfile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

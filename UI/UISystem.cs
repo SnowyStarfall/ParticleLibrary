@@ -36,8 +36,15 @@ namespace ParticleLibrary.UI
 
 		public override void PostUpdateEverything()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			if (DebugUIElement.Visible)
+			{
 				DebugUIElement.ExecuteRecursively(RecursiveUpdate);
+			}
 		}
 
 		public override void PostUpdateInput()

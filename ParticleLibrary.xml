@@ -770,7 +770,7 @@
         </member>
         <member name="F:ParticleLibrary.Core.Particle.VelocityAcceleration">
             <summary>
-            How much <see cref="F:ParticleLibrary.Core.Particle.Velocity"/> is multiplied each frame.
+            How much <see cref="F:ParticleLibrary.Core.Particle.Velocity"/> is multiplied each frame. Defaults to (1, 1).
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Particle.AnchorPosition">
@@ -1071,6 +1071,7 @@
             <param name="position"></param>
             <param name="velocity"></param>
             <param name="particle"></param>
+            <param name="lifespan"></param>
         </member>
         <member name="T:ParticleLibrary.Core.QuadParticleSystemSettings">
             <summary>
@@ -1114,7 +1115,7 @@
         </member>
         <member name="M:ParticleLibrary.Core.QuadParticleSystemSettings.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,System.Int32,ParticleLibrary.Core.Layer,Microsoft.Xna.Framework.Graphics.BlendState,System.Boolean)">
             <summary>
-            Creates a new settings present for a <see cref="T:ParticleLibrary.Core.QuadParticleSystem"/>
+            Creates a new settings preset for a <see cref="T:ParticleLibrary.Core.QuadParticleSystem"/>
             </summary>
             <param name="texture">The texture of the particles</param>
             <param name="maxParticles">The maximum amount of particles</param>
@@ -1122,6 +1123,7 @@
             <param name="layer">The layer the particles are drawn on</param>
             <param name="blendState">The BlendState the particles are drawn with</param>
             <param name="fade">Whether the particles should fade over their lifespan</param>
+            <exception cref="T:System.InvalidOperationException">Ensure that this <b>IS NOT called on a server</b></exception>
             <exception cref="T:System.ArgumentNullException">Ensure that texture is not null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Ensure that max particles is greater than 0</exception>
         </member>
@@ -1423,7 +1425,7 @@
         </member>
         <member name="M:ParticleLibrary.Examples.ExampleParticleSystemWrapper`1.AddParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,`0)">
             <summary>
-            A shorthand for accessing the <see cref="!:IGPUParticleSystem&lt;T&gt;.AddParticle(Vector2, Vector2, T)"/> method.
+            A shorthand for accessing the <see cref="M:ParticleLibrary.Core.IGPUParticleSystem`1.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,`0,System.Nullable{System.Int32})"/> method.
             </summary>
             <param name="position">The location of the particle.</param>
             <param name="velocity">The velocity of the particle.</param>

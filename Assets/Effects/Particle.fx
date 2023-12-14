@@ -11,7 +11,6 @@ float2 Offset;
 bool Fade;
 bool UseCurve;
 
-// Current time in frames.
 texture Texture;
 sampler TextureSampler = sampler_state
 {

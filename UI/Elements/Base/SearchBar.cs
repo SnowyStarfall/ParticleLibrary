@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.UI.Interfaces;
+using ParticleLibrary.UI.Primitives;
 using ParticleLibrary.Utilities;
 using System;
 using Terraria;
@@ -31,6 +32,7 @@ namespace ParticleLibrary.UI.Elements.Base
 
 			OverflowHidden = true;
 			_textWriter = new();
+			HideOverflow = true;
 		}
 
 		// For things that need to be consistently updated.
@@ -87,6 +89,8 @@ namespace ParticleLibrary.UI.Elements.Base
 			else
 				Primitive.SetOutlineColor(Outline);
 
+			Rectangle scissorRectangle = spriteBatch.GetClippingRectangle(this);
+
 			spriteBatch.End();
 
 			Primitive.Draw();
@@ -111,27 +115,28 @@ namespace ParticleLibrary.UI.Elements.Base
 			// Draw text
 			CalculatedStyle inner = GetInnerDimensions();
 			Vector2 position = inner.Center() - new Vector2(inner.Width / 2f - 8f, 10f);
+			Vector2 size = _textWriter.CaretIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[0.._textWriter.CaretIndex]);
 
-			spriteBatch.Begin(LibUtilities.ClarityUISettings);
+			spriteBatch.BeginScissorIf(HideOverflow, LibUtilities.ClarityUISettings, scissorRectangle, true, out Rectangle oldScissorRectangle);
 
 			if (_textWriter.SelectionIndex != -1)
 			{
 				Vector2 unselectedSize = _textWriter.CaretIndex == 0 || _textWriter.SelectionIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[0..Math.Min(_textWriter.CaretIndex, _textWriter.SelectionIndex)]);
 				Vector2 selectedSize = _textWriter.CaretIndex == 0 && _textWriter.SelectionIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[Math.Min(_textWriter.CaretIndex, _textWriter.SelectionIndex)..Math.Max(_textWriter.CaretIndex, _textWriter.SelectionIndex)]);
-				spriteBatch.Draw(ParticleLibrary.WhitePixel, position + new Vector2(unselectedSize.X, 0f), new Rectangle(0, 0, (int)selectedSize.X, (int)selectedSize.Y), ParticleLibraryConfig.CurrentTheme.HighAccent.WithAlpha(0.5f));
+				spriteBatch.Draw(ParticleLibrary.WhitePixel, position + new Vector2(unselectedSize.X, -inner.Height / 2f + 12f), new Rectangle(0, 0, (int)selectedSize.X, (int)(inner.Height - 4f)), ParticleLibraryConfig.CurrentTheme.HighAccent.WithAlpha(0.5f));
 			}
 
-			spriteBatch.DrawText(Text, position, Color.White);
+			float offset = size.X > inner.Width ? size.X - inner.Width : 0f;
+			spriteBatch.DrawText(Text, position - new Vector2(offset, 0f), Color.White);
 
 			if (_textWriter.CaretVisible)
 			{
-				Vector2 size = _textWriter.CaretIndex == 0 ? Vector2.Zero : FontAssets.MouseText.Value.MeasureString(Text[0.._textWriter.CaretIndex]);
 				spriteBatch.DrawLine(position + new Vector2(size.X, -inner.Height / 2f + 4f + 10f), position + new Vector2(size.X, inner.Height / 2f - 4f + 10f), ParticleLibraryConfig.CurrentTheme.HighAccent, 2f);
 			}
 
-			spriteBatch.End();
+			spriteBatch.EndScissorIf(HideOverflow, oldScissorRectangle);
 
-			spriteBatch.Begin(LibUtilities.DefaultUISettings);
+			spriteBatch.BeginScissorIf(HideOverflow, LibUtilities.DefaultUISettings, oldScissorRectangle, true, out _);
 		}
 
 		public override void LeftClick(UIMouseEvent evt)

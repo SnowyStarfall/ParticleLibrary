@@ -22,7 +22,7 @@ namespace ParticleLibrary.Examples
 		}
 
 		/// <summary>
-		/// A shorthand for accessing the <see cref="IGPUParticleSystem{T}.AddParticle(Vector2, Vector2, T)"/> method.
+		/// A shorthand for accessing the <see cref="IGPUParticleSystem{T}.NewParticle(Vector2, Vector2, T, int?)"/> method.
 		/// </summary>
 		/// <param name="position">The location of the particle.</param>
 		/// <param name="velocity">The velocity of the particle.</param>

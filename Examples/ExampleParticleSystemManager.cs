@@ -4,6 +4,7 @@ using ParticleLibrary.Core;
 using ParticleLibrary.Utilities;
 using ReLogic.Content;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Examples
@@ -26,6 +27,11 @@ namespace ParticleLibrary.Examples
 
 		public override void OnModLoad()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			// Demonstrates creating a Quad particle system.
 			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
 			ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);

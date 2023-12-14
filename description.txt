@@ -55,4 +55,4 @@ If your mod uses Particle Library, feel free to contact me via my Discord server
 Mods that use Particle Library:
 - Mod of Redemption
 - Shadows of Abaddon
-- Stellamod
+- Lunar Veil

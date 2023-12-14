@@ -112,6 +112,11 @@ namespace ParticleLibrary.UI.Elements.Base
 				return;
 			}
 
+			if (!_hovered)
+			{
+				return;
+			}
+
 			Primitive.SetFill(Fill);
 		}
 
@@ -124,6 +129,11 @@ namespace ParticleLibrary.UI.Elements.Base
 				return;
 			}
 
+			if (!_hovered)
+			{
+				return;
+			}
+
 			Primitive.SetFill(HoverFill);
 		}
 
@@ -132,6 +142,11 @@ namespace ParticleLibrary.UI.Elements.Base
 			base.LeftClick(evt);
 
 			if (evt.Target != this)
+			{
+				return;
+			}
+
+			if (!_hovered)
 			{
 				return;
 			}

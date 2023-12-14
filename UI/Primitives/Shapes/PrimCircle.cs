@@ -72,11 +72,11 @@ namespace ParticleLibrary.UI.Primitives.Shapes
 				return;
 
 			if (_matrix is MatrixType.World)
-				Primitive.WorldEffect.CurrentTechnique.Passes[0].Apply();
+				PrimitiveSystem.WorldEffect.CurrentTechnique.Passes[0].Apply();
 			else
-				Primitive.InterfaceEffect.CurrentTechnique.Passes[0].Apply();
+				PrimitiveSystem.InterfaceEffect.CurrentTechnique.Passes[0].Apply();
 
-			Primitive.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices, 0, _vertices.Length - 1);
+			PrimitiveSystem.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices, 0, _vertices.Length - 1);
 		}
 
 		private void CalculateVertices()

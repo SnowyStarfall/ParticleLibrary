@@ -17,11 +17,11 @@ namespace ParticleLibrary.UI.States
 		public bool Visible => ParticleLibraryConfig.Instance.DebugUI;
 		public Theme Theme => ParticleLibraryConfig.CurrentTheme;
 
-		public Dictionary<Mod, Core.Particle> CParticles { get; private set; }
-		public Dictionary<Mod, QuadParticle> GParticles { get; private set; }
-		public Dictionary<Mod, Emitter> Emitters { get; private set; }
-		public Dictionary<Mod, QuadParticleSystem> GParticleSystems { get; private set; }
-		public Dictionary<Mod, PointParticleSystem> PointParticleSystems { get; private set; }
+		public Dictionary<string, Core.Particle> CParticles { get; private set; }
+		public Dictionary<string, QuadParticle> QuadParticles { get; private set; }
+		public Dictionary<string, Emitter> Emitters { get; private set; }
+		public Dictionary<string, QuadParticleSystem> QuadParticleSystems { get; private set; }
+		public Dictionary<string, PointParticleSystem> PointParticleSystems { get; private set; }
 
 		public UIElement Base { get; set; }
 		public Panel SearchPanel { get; set; }
@@ -38,9 +38,9 @@ namespace ParticleLibrary.UI.States
 				return;
 
 			CParticles = new();
-			GParticles = new();
+			QuadParticles = new();
 			Emitters = new();
-			GParticleSystems = new();
+			QuadParticleSystems = new();
 			PointParticleSystems = new();
 
 			Base = new();
@@ -74,8 +74,9 @@ namespace ParticleLibrary.UI.States
 			SearchList.Height.Set(0f, 0.8f);
 			SearchList.ItemHeight = new(28f, 0f);
 
-			GetTypes();
-			AddTypes();
+			// TODO: Fix
+			//GetTypes();
+			//AddTypes();
 
 			//// Append all panels to base
 			//Base.Append(SearchPanel);
@@ -84,6 +85,10 @@ namespace ParticleLibrary.UI.States
 			SearchPanel.Append(SearchBar);
 			SearchPanel.Append(SearchList);
 			Append(SearchPanel);
+		}
+
+		public override void OnActivate()
+		{
 		}
 
 		public void Unload()
@@ -115,27 +120,47 @@ namespace ParticleLibrary.UI.States
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					CParticles.Add(mod, Activator.CreateInstance(p) as Core.Particle);
+					string key = p.FullName;
+					if (!CParticles.ContainsKey(key))
+					{
+						CParticles.Add(key, Activator.CreateInstance(p) as Core.Particle);
+					}
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					GParticles.Add(mod, Activator.CreateInstance(p) as QuadParticle);
+					string key = p.FullName;
+					if (!QuadParticles.ContainsKey(key))
+					{
+						QuadParticles.Add(key, Activator.CreateInstance(p) as QuadParticle);
+					}
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Emitter)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					Emitters.Add(mod, Activator.CreateInstance(p) as Emitter);
+					string key = p.FullName;
+					if (!Emitters.ContainsKey(key))
+					{
+						Emitters.Add(key, Activator.CreateInstance(p) as Emitter);
+					}
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticleSystem)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					GParticleSystems.Add(mod, Activator.CreateInstance(p) as QuadParticleSystem);
+					string key = p.FullName;
+					if (!QuadParticleSystems.ContainsKey(key))
+					{
+						QuadParticleSystems.Add(key, Activator.CreateInstance(p) as QuadParticleSystem);
+					}
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(PointParticleSystem)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					PointParticleSystems.Add(mod, Activator.CreateInstance(p) as PointParticleSystem);
+					string key = p.FullName;
+					if (!PointParticleSystems.ContainsKey(key))
+					{
+						PointParticleSystems.Add(key, Activator.CreateInstance(p) as PointParticleSystem);
+					}
 				}
 			}
 		}
@@ -156,7 +181,7 @@ namespace ParticleLibrary.UI.States
 				m++;
 			}
 
-			foreach (var item in GParticles)
+			foreach (var item in QuadParticles)
 			{
 				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{
@@ -178,7 +203,7 @@ namespace ParticleLibrary.UI.States
 				m++;
 			}
 
-			foreach (var item in GParticleSystems)
+			foreach (var item in QuadParticleSystems)
 			{
 				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{

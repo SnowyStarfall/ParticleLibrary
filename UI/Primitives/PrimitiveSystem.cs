@@ -2,11 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.UI.Primitives
 {
-	public class Primitive : ModSystem
+	public class PrimitiveSystem : ModSystem
 	{
 		public static GraphicsDevice GraphicsDevice => Main.graphics.GraphicsDevice;
 
@@ -19,6 +20,11 @@ namespace ParticleLibrary.UI.Primitives
 
 		public override void Load()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			Main.OnResolutionChanged += ResolutionChanged;
 
 			Main.QueueMainThreadAction(() =>

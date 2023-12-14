@@ -57,7 +57,12 @@ namespace ParticleLibrary.Content
 					return true;
 				}
 
-				//EmitterManager.NewEmitter<ExampleEmitter>(Main.MouseWorld);
+
+				Core.EmitterSystem.NewEmitter(new ExampleEmitter(new EmitterSettings()
+				{
+					Position = Main.MouseWorld
+				}));
+
 				return true;
 			}
 
@@ -67,7 +72,6 @@ namespace ParticleLibrary.Content
 				{
 					for (int i = 0; i < 10000; i++)
 					{
-
 						Vector2 shift = new Vector2(256f, 0f).RotatedBy(MathHelper.ToRadians(i * 36f));
 
 						for (int k = 0; k < 10; k++)
