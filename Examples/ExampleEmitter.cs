@@ -73,7 +73,7 @@ namespace ParticleLibrary.Examples
 		/// <param name="position">The position to spawn at.</param>
 		/// <param name="spatial">The spatial parameters.</param>
 		/// <param name="visual">The visual parameters.</param>
-		public override void SpawnParticle(Vector2 position, SpatialParameters spatial, VisualParameters visual)
+		public override void SpawnParticle(Vector2 position, in SpatialParameters spatial, in VisualParameters visual)
 		{
 			// You can spawn your particles like this, but if this is too much code to look at, then use the method below.
 			ExampleParticleSystemManager.ExampleQuadSystem.NewParticle(position, spatial.Velocity, new QuadParticle()
