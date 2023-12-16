@@ -78,7 +78,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// How much <see cref="ScaleVelocity"/> increases each frame.
 		/// </summary>
-		public Vector2 ScaleAcceleration;
+		public Vector2 ScaleAcceleration = Vector2.One;
 
 		/// <summary>
 		/// The rotation of this particle.
@@ -91,7 +91,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// How much <see cref="RotationVelocity"/> changes each frame.
 		/// </summary>
-		public float RotationAcceleration;
+		public float RotationAcceleration = 1f;
 
 		/// <summary>
 		/// Where the particle should be drawn.
