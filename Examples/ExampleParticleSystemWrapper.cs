@@ -13,9 +13,9 @@ namespace ParticleLibrary.Examples
 		where T : GPUParticle
 	{
 		public IGPUParticleSystem<T> System { get; }
-		public GPUSystemSettings Settings { get; }
+		public GPUParticleSystemSettings Settings { get; }
 
-		public ExampleParticleSystemWrapper(IGPUParticleSystem<T> system, GPUSystemSettings settings)
+		public ExampleParticleSystemWrapper(IGPUParticleSystem<T> system, GPUParticleSystemSettings settings)
 		{
 			System = system;
 			Settings = settings;

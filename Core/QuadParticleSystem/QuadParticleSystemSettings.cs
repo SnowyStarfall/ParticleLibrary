@@ -8,7 +8,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents the settings for a <see cref="QuadParticleSystem"/>
 	/// </summary>
-	public class QuadParticleSystemSettings : GPUSystemSettings
+	public class QuadParticleSystemSettings : GPUParticleSystemSettings
 	{
 		/// <summary>
 		/// The texture of the particles

@@ -2,7 +2,7 @@
 
 namespace ParticleLibrary.Core
 {
-	public abstract class GPUSystemSettings
+	public abstract class GPUParticleSystemSettings
 	{
 		/// <summary>
 		/// The texture of the particles

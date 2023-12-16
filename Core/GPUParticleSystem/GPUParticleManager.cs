@@ -76,7 +76,7 @@ namespace ParticleLibrary.Core
 		}
 
 		internal static GPUParticleSystem<TSettings, TParticle, TVertex> AddSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : GPUSystemSettings
+			where TSettings : GPUParticleSystemSettings
 			where TParticle : GPUParticle
 			where TVertex : IVertexType
 		{
@@ -101,7 +101,7 @@ namespace ParticleLibrary.Core
 		}
 
 		internal static void RemoveSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : GPUSystemSettings
+			where TSettings : GPUParticleSystemSettings
 			where TParticle : GPUParticle
 			where TVertex : IVertexType
 		{

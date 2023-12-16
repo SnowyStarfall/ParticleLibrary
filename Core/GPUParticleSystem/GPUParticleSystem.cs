@@ -11,7 +11,7 @@ using static ParticleLibrary.Resources;
 namespace ParticleLibrary.Core
 {
 	public abstract class GPUParticleSystem<TSettings, TParticle, TVertex> : IGPUParticleSystem<TParticle>, IDisposable
-		where TSettings : GPUSystemSettings
+		where TSettings : GPUParticleSystemSettings
 		where TParticle : GPUParticle
 		where TVertex : IVertexType
 	{
