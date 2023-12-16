@@ -37,10 +37,16 @@ namespace ParticleLibrary
 		public override void OnLoaded()
 		{
 			Instance = this;
+			CurrentTheme = new DarkTheme();
 		}
 
 		public override void OnChanged()
 		{
+		}
+
+		public static void Unload()
+		{
+			CurrentTheme = null;
 		}
 	}
 

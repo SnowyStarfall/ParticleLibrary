@@ -84,6 +84,30 @@ namespace ParticleLibrary.Core
 			});
 		}
 
+		public override void Unload()
+		{
+			OnUpdateDust = null;
+			OnUpdateMenu = null;
+			OnDraw_BeforeBackground = null;
+			OnDraw_BeforeWalls = null;
+			OnDraw_BeforeNonSolidTiles = null;
+			OnDraw_BeforeSolidTiles = null;
+			OnDraw_BeforePlayersBehindNPCs = null;
+			OnDraw_BeforeNPCsBehindTiles = null;
+			OnDraw_BeforeNPCs = null;
+			OnDraw_BeforeProjectiles = null;
+			OnDraw_BeforePlayers = null;
+			OnDraw_BeforeItems = null;
+			OnDraw_BeforeRain = null;
+			OnDraw_BeforeGore = null;
+			OnDraw_BeforeDust = null;
+			OnDraw_BeforeWater = null;
+			OnDraw_BeforeInterface = null;
+			OnDraw_AfterInterface = null;
+			OnDraw_BeforeMainMenu = null;
+			OnDraw_AfterMainMenu = null;
+		}
+
 		public static void Hook(Layer layer, Draw method)
 		{
 			if (method is null)

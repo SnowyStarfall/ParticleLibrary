@@ -65,8 +65,17 @@ namespace ParticleLibrary.Examples
 		public override void Unload()
 		{
 			// Always make sure to dispose GPU particle systems when you're done with them!
-			ExampleQuadSystem.Dispose();
-			ExamplePointSystem.Dispose();
+			ExampleQuadSystem?.Dispose();
+			ExampleQuadSystem = null;
+			ExampleQuadSettings = null;
+			ExampleQuadParticle = null;
+
+			ExamplePointSystem?.Dispose();
+			ExamplePointSystem = null;
+			ExamplePointSettings = null;
+			ExamplePointParticle = null;
+
+			ExampleWrappedQuadParticleSystem = null;
 		}
 	}
 }

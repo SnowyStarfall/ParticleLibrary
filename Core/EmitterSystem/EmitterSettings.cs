@@ -7,9 +7,23 @@ namespace ParticleLibrary.Core
 {
 	public class EmitterSettings
 	{
-		public static EmitterPoint Point { get; } = new();
-		public static EmitterCircle Circle { get; } = new();
-		public static EmitterRectangle Rectangle { get; } = new();
+		public static EmitterPoint Point { get; internal set; }
+		public static EmitterCircle Circle { get; internal set; }
+		public static EmitterRectangle Rectangle { get; internal set; }
+		
+		internal static void Load()
+		{
+			Point = new();
+			Circle = new();
+			Rectangle = new();
+		}
+
+		internal static void Unload() 
+		{
+			Point = null;
+			Circle = null;
+			Rectangle = null;
+		}
 
 		/// <summary>
 		/// The shape of the emitter.

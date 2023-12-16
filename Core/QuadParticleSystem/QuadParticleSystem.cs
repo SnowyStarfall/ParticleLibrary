@@ -31,7 +31,7 @@ namespace ParticleLibrary.Core
 
 		public QuadParticleSystem(QuadParticleSystemSettings settings) : base(settings)
 		{
-			GPUParticleManager.AddSystem(this);
+			GPUParticleManager.AddQuadSystem(this);
 		}
 
 		// Function
@@ -255,7 +255,7 @@ namespace ParticleLibrary.Core
 			{
 				if (disposing)
 				{
-					GPUParticleManager.RemoveSystem(this);
+					GPUParticleManager.RemoveQuadSystem(this);
 				}
 
 				_disposedValue = true;

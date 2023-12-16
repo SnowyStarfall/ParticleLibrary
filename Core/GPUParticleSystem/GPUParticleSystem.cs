@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using static ParticleLibrary.Resources;
 
 namespace ParticleLibrary.Core
 {
@@ -221,7 +220,7 @@ namespace ParticleLibrary.Core
 		// Effect
 		protected void LoadEffect()
 		{
-			Effect = ModContent.Request<Effect>(Assets.Effects.Particle, AssetRequestMode.ImmediateLoad).Value.Clone();
+			Effect = ModContent.Request<Effect>(Resources.Assets.Effects.Particle, AssetRequestMode.ImmediateLoad).Value.Clone();
 		}
 
 		protected void ReloadEffect()
@@ -254,7 +253,7 @@ namespace ParticleLibrary.Core
 			TransformMatrixParameter.SetValue(PrimitiveSystem.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
 			FadeParameter.SetValue(Fade);
-			CurveParameter.SetValue(ModContent.Request<Texture2D>(Assets.Textures.ExponentCurve, AssetRequestMode.ImmediateLoad).Value);
+			CurveParameter.SetValue(ModContent.Request<Texture2D>(Resources.Assets.Textures.ExponentCurve, AssetRequestMode.ImmediateLoad).Value);
 			// TODO: Implement curve support
 			//UseCurveParameter.SetValue(true);
 		}
@@ -280,13 +279,16 @@ namespace ParticleLibrary.Core
 				if (disposing)
 				{
 					Texture = null;
+
 					Main.QueueMainThreadAction(() =>
 					{
 						Effect?.Dispose();
 						VertexBuffer?.Dispose();
 						IndexBuffer?.Dispose();
 					});
-					GPUParticleManager.RemoveSystem(this);
+
+					PrimitiveSystem.OnResolutionChanged -= ResolutionChanged;
+					DrawHooks.OnUpdateDust -= Update;
 				}
 
 				_disposedValue = true;

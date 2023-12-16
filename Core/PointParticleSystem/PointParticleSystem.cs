@@ -31,7 +31,7 @@ namespace ParticleLibrary.Core
 
 		public PointParticleSystem(PointParticleSystemSettings settings) : base(settings)
 		{
-			GPUParticleManager.AddSystem(this);
+			GPUParticleManager.AddPointSystem(this);
 		}
 
 		// Function
@@ -156,7 +156,7 @@ namespace ParticleLibrary.Core
 			{
 				if (disposing)
 				{
-					GPUParticleManager.RemoveSystem(this);
+					GPUParticleManager.RemovePointSystem(this);
 				}
 
 				_disposedValue = true;

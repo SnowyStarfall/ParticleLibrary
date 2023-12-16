@@ -22,8 +22,10 @@ namespace ParticleLibrary.UI
 
 		public override void Load()
 		{
-			if (Main.netMode == NetmodeID.Server)
+			if (Main.netMode is NetmodeID.Server)
+			{
 				return;
+			}
 
 			DebugUILayer = new UserInterface();
 			DebugUIElement = new Debug();
@@ -32,6 +34,26 @@ namespace ParticleLibrary.UI
 			Box = new(Vector2.Zero, Vector2.Zero, Color.Transparent, outlineThickness: 1);
 			//Rectangle = new(Vector2.Zero, Vector2.Zero, MatrixType.Interface);
 			//Circle = new(Vector2.Zero, Vector2.Zero, MatrixType.Interface);
+		}
+
+		public override void Unload()
+		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
+			DebugUILayer = null;
+			DebugUIElement.Unload();
+			DebugUIElement = null;
+
+			Main.QueueMainThreadAction(Unload_MainThread);
+		}
+
+		private void Unload_MainThread()
+		{
+			Box.Dispose();
+			Box = null;
 		}
 
 		public override void PostUpdateEverything()

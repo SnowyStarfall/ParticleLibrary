@@ -12,7 +12,7 @@ namespace ParticleLibrary
 	/// <summary>
 	/// This class manages the particle system. New instances of this class can be created.
 	/// </summary>
-	[Obsolete("This type is obsolete, use ParticleLibrary.Core.CParticleManager instead")]
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.NewParticleManager instead")]
 	public class ParticleManager : ModSystem
 	{
 		public delegate Particle NewParticleCreated(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false);
@@ -34,24 +34,26 @@ namespace ParticleLibrary
 			particles = new(ParticleLibraryConfig.Instance.MaxParticles);
 			importantParticles = new();
 			On_Dust.UpdateDust += UpdateParticles;
-			Main.QueueMainThreadAction(() =>
-			{
-				//On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
-				On_Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
-				On_Main.DoDraw_Tiles_NonSolid += DrawParticlesBeforeNonSolidTiles;
-				On_Main.DrawPlayers_BehindNPCs += DrawParticlesBeforePlayersBehindNPCs;
-				On_Main.DrawNPCs += DrawParticlesBeforeNPCs;
-				On_Main.DoDraw_Tiles_Solid += DrawParticlesBeforeSolidTiles;
-				On_Main.DrawProjectiles += DrawParticlesBeforeProjectiles;
-				On_Main.DrawPlayers_AfterProjectiles += DrawParticlesBeforePlayers;
-				On_Main.DrawItems += DrawParticlesBeforeItems;
-				On_Main.DrawRain += DrawParticlesBeforeRain;
-				On_Main.DrawGore += DrawParticlesBeforeGore;
-				On_Main.DrawDust += DrawParticlesBeforeDust;
-				On_Main.DrawWaters += DrawParticlesBeforeWater;
-				On_Main.DrawInterface += DrawParticlesBeforeInterface;
-				On_Main.DrawMenu += DrawParticlesBeforeAndAfterMainMenu;
-			});
+			Main.QueueMainThreadAction(Load_MainThread);
+		}
+
+		private void Load_MainThread()
+		{
+			//On.Terraria.Main.DrawSurfaceBG += DrawParticlesBeforeSurfaceBackground;
+			On_Main.DoDraw_WallsAndBlacks += DrawParticlesBeforeWalls;
+			On_Main.DoDraw_Tiles_NonSolid += DrawParticlesBeforeNonSolidTiles;
+			On_Main.DrawPlayers_BehindNPCs += DrawParticlesBeforePlayersBehindNPCs;
+			On_Main.DrawNPCs += DrawParticlesBeforeNPCs;
+			On_Main.DoDraw_Tiles_Solid += DrawParticlesBeforeSolidTiles;
+			On_Main.DrawProjectiles += DrawParticlesBeforeProjectiles;
+			On_Main.DrawPlayers_AfterProjectiles += DrawParticlesBeforePlayers;
+			On_Main.DrawItems += DrawParticlesBeforeItems;
+			On_Main.DrawRain += DrawParticlesBeforeRain;
+			On_Main.DrawGore += DrawParticlesBeforeGore;
+			On_Main.DrawDust += DrawParticlesBeforeDust;
+			On_Main.DrawWaters += DrawParticlesBeforeWater;
+			On_Main.DrawInterface += DrawParticlesBeforeInterface;
+			On_Main.DrawMenu += DrawParticlesBeforeAndAfterMainMenu;
 		}
 
 		public override void Unload()
@@ -259,7 +261,7 @@ namespace ParticleLibrary
 		private void DrawParticlesBeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeWalls);
+			Draw(Layer.BeforeWalls);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
@@ -267,7 +269,7 @@ namespace ParticleLibrary
 		private void DrawParticlesBeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeNonSolidTiles);
+			Draw(Layer.BeforeNonSolidTiles);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 			orig(self);
@@ -275,14 +277,14 @@ namespace ParticleLibrary
 
 		private void DrawParticlesBeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
 		{
-			Draw(x => x.layer == Layer.BeforeTiles);
+			Draw(Layer.BeforeTiles);
 
 			orig(self);
 		}
 
 		private void DrawParticlesBeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
 		{
-			Draw(x => x.layer == Layer.BeforePlayersBehindNPCs);
+			Draw(Layer.BeforePlayersBehindNPCs);
 			orig(self);
 		}
 
@@ -291,13 +293,13 @@ namespace ParticleLibrary
 			if (behindTiles)
 			{
 				Main.spriteBatch.End();
-				Draw(x => x.layer == Layer.BeforeNPCsBehindTiles);
+				Draw(Layer.BeforeNPCsBehindTiles);
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 			else
 			{
 				Main.spriteBatch.End();
-				Draw(x => x.layer == Layer.BeforeNPCs);
+				Draw(Layer.BeforeNPCs);
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 			orig(self, behindTiles);
@@ -305,20 +307,20 @@ namespace ParticleLibrary
 
 		private void DrawParticlesBeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
 		{
-			Draw(x => x.layer == Layer.BeforeProjectiles);
+			Draw(Layer.BeforeProjectiles);
 			orig(self);
 		}
 
 		private void DrawParticlesBeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
 		{
-			Draw(x => x.layer == Layer.BeforePlayers);
+			Draw(Layer.BeforePlayers);
 			orig(self);
 		}
 
 		private void DrawParticlesBeforeItems(On_Main.orig_DrawItems orig, Main self)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeItems);
+			Draw(Layer.BeforeItems);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
@@ -326,7 +328,7 @@ namespace ParticleLibrary
 		private void DrawParticlesBeforeRain(On_Main.orig_DrawRain orig, Main self)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeRain);
+			Draw(Layer.BeforeRain);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
@@ -334,30 +336,30 @@ namespace ParticleLibrary
 		private void DrawParticlesBeforeGore(On_Main.orig_DrawGore orig, Main self)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeGore);
+			Draw(Layer.BeforeGore);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			orig(self);
 		}
 
 		private void DrawParticlesBeforeDust(On_Main.orig_DrawDust orig, Main self)
 		{
-			Draw(x => x.layer == Layer.BeforeDust);
+			Draw(Layer.BeforeDust);
 			orig(self);
 		}
 
 		private void DrawParticlesBeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
 		{
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeWater);
+			Draw(Layer.BeforeWater);
 			Main.spriteBatch.Begin();
 			orig(self, isBackground);
 		}
 
 		private void DrawParticlesBeforeInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
 		{
-			Draw(x => x.layer == Layer.BeforeUI);
+			Draw(Layer.BeforeUI);
 			orig(self, gameTime);
-			Draw(x => x.layer == Layer.AfterUI);
+			Draw(Layer.AfterUI);
 		}
 
 		private void DrawParticlesBeforeAndAfterMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
@@ -366,21 +368,21 @@ namespace ParticleLibrary
 				UpdateParticles();
 
 			Main.spriteBatch.End();
-			Draw(x => x.layer == Layer.BeforeMainMenu);
+			Draw(Layer.BeforeMainMenu);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
 
 			orig(self, gameTime);
-			Draw(x => x.layer == Layer.AfterMainMenu);
+			Draw(Layer.AfterMainMenu);
 		}
 
-		private void Draw(Predicate<Particle> predicate)
+		private void Draw(Layer layer)
 		{
 			if (Main.netMode != NetmodeID.Server)
 			{
 				for (int i = 0; i < particles?.Count; i++)
 				{
 					Particle particle = particles[i];
-					if (particle != null && predicate.Invoke(particle))
+					if (particle != null && particle.layer == layer)
 					{
 						Vector2 offset = particle.layer == Layer.BeforeWater ? new Vector2(Main.offScreenRange, Main.offScreenRange) : Vector2.Zero;
 						Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
@@ -393,7 +395,7 @@ namespace ParticleLibrary
 				for (int i = 0; i < importantParticles?.Count; i++)
 				{
 					Particle particle = importantParticles[i];
-					if (particle != null && predicate.Invoke(particle))
+					if (particle != null && particle.layer == layer)
 					{
 						Vector2 offset = particle.layer == Layer.BeforeWater ? new Vector2(Main.offScreenRange, Main.offScreenRange) : Vector2.Zero;
 						Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);

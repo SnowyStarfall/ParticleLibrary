@@ -17,7 +17,8 @@ namespace ParticleLibrary.UI.States
 		public bool Visible => ParticleLibraryConfig.Instance.DebugUI;
 		public Theme Theme => ParticleLibraryConfig.CurrentTheme;
 
-		public Dictionary<string, Core.Particle> CParticles { get; private set; }
+		public Dictionary<string, Core.Particle> Particles { get; private set; }
+		public Dictionary<string, PointParticle> PointParticles { get; private set; }
 		public Dictionary<string, QuadParticle> QuadParticles { get; private set; }
 		public Dictionary<string, Emitter> Emitters { get; private set; }
 		public Dictionary<string, QuadParticleSystem> QuadParticleSystems { get; private set; }
@@ -37,8 +38,9 @@ namespace ParticleLibrary.UI.States
 			if (!Visible)
 				return;
 
-			CParticles = new();
+			Particles = new();
 			QuadParticles = new();
+			PointParticles = new();
 			Emitters = new();
 			QuadParticleSystems = new();
 			PointParticleSystems = new();
@@ -91,9 +93,21 @@ namespace ParticleLibrary.UI.States
 		{
 		}
 
+		public override void OnDeactivate()
+		{
+
+		}
+
 		public void Unload()
 		{
 			// TODO: Implement unloading logic
+
+			Particles = null;
+			QuadParticles = null;
+			PointParticles = null;
+			Emitters = null;
+			QuadParticleSystems = null;
+			PointParticleSystems = null;
 
 			RemoveAllChildren();
 			Base = null;
@@ -121,9 +135,9 @@ namespace ParticleLibrary.UI.States
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
 					string key = p.FullName;
-					if (!CParticles.ContainsKey(key))
+					if (!Particles.ContainsKey(key))
 					{
-						CParticles.Add(key, Activator.CreateInstance(p) as Core.Particle);
+						Particles.Add(key, Activator.CreateInstance(p) as Core.Particle);
 					}
 				}
 
@@ -170,7 +184,7 @@ namespace ParticleLibrary.UI.States
 			int m = 0;
 			float c = 1.3f;
 
-			foreach (var item in CParticles)
+			foreach (var item in Particles)
 			{
 				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 				{

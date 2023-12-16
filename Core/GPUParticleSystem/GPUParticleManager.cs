@@ -73,53 +73,52 @@ namespace ParticleLibrary.Core
 
 		public override void Unload()
 		{
+			_quadSystems = null;
+			_pointSystems = null;
 		}
 
-		internal static GPUParticleSystem<TSettings, TParticle, TVertex> AddSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : GPUParticleSystemSettings
-			where TParticle : GPUParticle
-			where TVertex : IVertexType
+		internal static void AddQuadSystem(QuadParticleSystem system)
 		{
 			if (system is null)
 			{
 				throw new ArgumentNullException(nameof(system));
 			}
 
-			if (system is QuadParticleSystem g)
-			{
-				_quadSystems.Add(g);
-				FreeQuadParticleBudget -= g.MaxParticles;
-			}
-			else if (system is PointParticleSystem p)
-			{
-				_pointSystems.Add(p);
-				FreePointParticleBudget -= p.MaxParticles;
-			}
-
-
-			return system;
+			_quadSystems.Add(system);
+			FreeQuadParticleBudget -= system.MaxParticles;
 		}
 
-		internal static void RemoveSystem<TSettings, TParticle, TVertex>(GPUParticleSystem<TSettings, TParticle, TVertex> system)
-			where TSettings : GPUParticleSystemSettings
-			where TParticle : GPUParticle
-			where TVertex : IVertexType
+		internal static void RemoveQuadSystem(QuadParticleSystem system)
 		{
 			if (system is null)
 			{
 				throw new ArgumentNullException(nameof(system));
 			}
 
-			if (system is QuadParticleSystem g)
+			_quadSystems.Remove(system);
+			FreeQuadParticleBudget += system.MaxParticles;
+		}
+
+		internal static void AddPointSystem(PointParticleSystem system)
+		{
+			if (system is null)
 			{
-				_quadSystems.Remove(g);
-				FreeQuadParticleBudget += g.MaxParticles;
+				throw new ArgumentNullException(nameof(system));
 			}
-			else if (system is PointParticleSystem p)
+
+			_pointSystems.Add(system);
+			FreePointParticleBudget -= system.MaxParticles;
+		}
+
+		internal static void RemovePointSystem(PointParticleSystem system)
+		{
+			if (system is null)
 			{
-				_pointSystems.Remove(p);
-				FreePointParticleBudget += p.MaxParticles;
+				throw new ArgumentNullException(nameof(system));
 			}
+
+			_pointSystems.Remove(system);
+			FreePointParticleBudget += system.MaxParticles;
 		}
 	}
 }

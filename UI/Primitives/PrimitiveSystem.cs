@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static ReLogic.Content.Readers.XnbReader;
 
 namespace ParticleLibrary.UI.Primitives
 {
@@ -27,24 +28,43 @@ namespace ParticleLibrary.UI.Primitives
 
 			Main.OnResolutionChanged += ResolutionChanged;
 
-			Main.QueueMainThreadAction(() =>
+			Main.QueueMainThreadAction(Load_MainThread);
+		}
+
+		private void Load_MainThread()
+		{
+			WorldEffect = new(GraphicsDevice)
 			{
-				WorldEffect = new(GraphicsDevice)
-				{
-					VertexColorEnabled = true
-				};
+				VertexColorEnabled = true
+			};
 
-				InterfaceEffect = new(GraphicsDevice)
-				{
-					VertexColorEnabled = true
-				};
+			InterfaceEffect = new(GraphicsDevice)
+			{
+				VertexColorEnabled = true
+			};
 
-				ResolutionChanged(Main.ScreenSize.ToVector2());
-			});
+			ResolutionChanged(Main.ScreenSize.ToVector2());
 		}
 
 		public override void Unload()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
+			OnResolutionChanged = null;
+			Main.OnResolutionChanged -= ResolutionChanged;
+
+			Main.QueueMainThreadAction(Unload_MainThread);
+		}
+
+		private void Unload_MainThread()
+		{
+			WorldEffect.Dispose();
+			WorldEffect = null;
+			InterfaceEffect.Dispose();
+			InterfaceEffect = null;
 		}
 
 		private void ResolutionChanged(Vector2 size)
@@ -65,10 +85,12 @@ namespace ParticleLibrary.UI.Primitives
 			WorldEffect.Projection = WorldViewProjection;
 			InterfaceEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
 
-			Main.QueueMainThreadAction(() =>
-			{
-				OnResolutionChanged?.Invoke(WorldViewProjection);
-			});
+			Main.QueueMainThreadAction(OnResolutionChanged_MainThread);
+		}
+
+		private void OnResolutionChanged_MainThread()
+		{
+			OnResolutionChanged?.Invoke(WorldViewProjection);
 		}
 	}
 }
