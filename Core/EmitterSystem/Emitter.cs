@@ -70,8 +70,8 @@ namespace ParticleLibrary.Core
 				{
 					// Calculate parameters
 					position = EmitterSettings.Shape.Solve(position, EmitterSettings.Origin, EmitterSettings.Width, EmitterSettings.Height);
-					SpatialParameters spatial = SpatialParameters.Calculate(ParticleSettings);
-					VisualParameters visual = VisualParameters.Calculate(ColorSettings);
+					SpatialParameters spatial = new(ParticleSettings);
+					VisualParameters visual = new(ColorSettings);
 
 					// Spawn the particle
 					SpawnParticle(position, spatial, visual);
@@ -90,7 +90,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// Spawns a particle with the provided parameters.
 		/// </summary>
-		public virtual void SpawnParticle(Vector2 position, SpatialParameters spatial, VisualParameters visual)
+		public virtual void SpawnParticle(Vector2 position, in SpatialParameters spatial, in VisualParameters visual)
 		{
 		}
 
