@@ -12,7 +12,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// This class manages the CPU particle system.
 	/// </summary>
-	public class NewParticleManager : ModSystem
+	public class ParticleSystem : ModSystem
 	{
 		/// <summary>
 		/// A list that contains all active particles.

@@ -29,6 +29,7 @@ namespace ParticleLibrary
 
 		public override void Unload()
 		{
+			emitters.Clear();
 			emitters = null;
 			OnNewEmitter = null;
 		}

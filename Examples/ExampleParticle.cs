@@ -39,7 +39,7 @@ namespace ParticleLibrary.Examples
 		public float VelocityMult { get; init; }
 
 		/// <summary>
-		/// With the removal of the AI array, you can no longer pass data into a particle via <see cref="NewParticleManager.NewParticle(Vector2, Vector2, Core.Particle, Color, Vector2, Layer)"/>
+		/// With the removal of the AI array, you can no longer pass data into a particle via <see cref="Core.ParticleSystem.NewParticle(Vector2, Vector2, Core.Particle, Color, Vector2, Layer)"/>
 		/// Instead, with recent fixes, you can instantiate the particle's constructor and pass it in that way. This way, code is much more readable.
 		/// <para>
 		/// NOTE: If you plan on allowing your particle to be automatically instantiated with the NewParticle(T) methods, you MUST have a parameterless constructor

@@ -12,7 +12,7 @@ namespace ParticleLibrary
 	/// <summary>
 	/// This class manages the particle system. New instances of this class can be created.
 	/// </summary>
-	[Obsolete("This type is obsolete, use ParticleLibrary.Core.NewParticleManager instead")]
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.ParticleSystem instead")]
 	public class ParticleManager : ModSystem
 	{
 		public delegate Particle NewParticleCreated(Vector2 Position, Vector2 Velocity, Particle Particle, Color Color, Vector2 Scale, float AI0 = 0, float AI1 = 0, float AI2 = 0, float AI3 = 0, float AI4 = 0, float AI5 = 0, float AI6 = 0, float AI7 = 0, Layer Layer = Layer.BeforeDust, bool Important = false);
@@ -58,7 +58,9 @@ namespace ParticleLibrary
 
 		public override void Unload()
 		{
+			particles.Clear();
 			particles = null;
+			importantParticles.Clear();
 			importantParticles = null;
 			OnNewParticle = null;
 		}

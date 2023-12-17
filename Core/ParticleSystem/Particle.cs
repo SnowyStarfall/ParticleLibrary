@@ -179,8 +179,8 @@ namespace ParticleLibrary.Core
 		public void Kill()
 		{
 			Death();
-			NewParticleManager._particlesToRemove?.Add(this);
-			NewParticleManager.ParticleCount--;
+			ParticleSystem._particlesToRemove?.Add(this);
+			ParticleSystem.ParticleCount--;
 		}
 	}
 }

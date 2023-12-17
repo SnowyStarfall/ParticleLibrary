@@ -257,8 +257,8 @@ namespace ParticleLibrary.Content
 			orig(self);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer);
-			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
-			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.NewParticleManager.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
+			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.ParticleSystem.ParticleCount.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f), Color.White);
+			Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Core.ParticleSystem.UpdateTime_InMilliseconds.ToString(), Main.ScreenSize.ToVector2() * 0.5f + new Vector2(100f, 116f), Color.White);
 			Main.spriteBatch.End();
 		}
 
@@ -318,7 +318,7 @@ namespace ParticleLibrary.Content
 
 				//}
 
-				NewParticleManager.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
+				Core.ParticleSystem.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
 
 				//for (int i = 0; i < 100; i++)
 				//{

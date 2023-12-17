@@ -14,19 +14,35 @@
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 	<ItemGroup>
+	  <AdditionalFiles Remove=".vs\**" />
+	  <AdditionalFiles Remove="Properties\**" />
 	  <AdditionalFiles Remove="Textures\**" />
+	  <Compile Remove=".vs\**" />
+	  <Compile Remove="Properties\**" />
 	  <Compile Remove="Textures\**" />
+	  <EmbeddedResource Remove=".vs\**" />
+	  <EmbeddedResource Remove="Properties\**" />
 	  <EmbeddedResource Remove="Textures\**" />
+	  <None Remove=".vs\**" />
+	  <None Remove="Properties\**" />
 	  <None Remove="Textures\**" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="UI\OldDebug.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove=".editorconfig" />
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
 		<None Remove="Assets\Effects\Particle.fx" />
 		<None Remove="Assets\Effects\Shape.fx" />
 		<None Remove="Assets\Textures\EmptyPixel.png" />
 		<None Remove="Assets\Textures\Star.png" />
+		<None Remove="LICENSE" />
+		<None Remove="ParticleLibrary.dll" />
+		<None Remove="ParticleLibrary.xml" />
+		<None Remove="README.md" />
+		<None Remove="workshop.json" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
@@ -36,21 +52,12 @@
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>Resources.cs</LastGenOutput>
 		</None>
-		<None Update="Properties\Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.tt</DependentUpon>
-		</Compile>
-		<Compile Update="Properties\Settings.Designer.cs">
-			<DesignTimeSharedInput>True</DesignTimeSharedInput>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>

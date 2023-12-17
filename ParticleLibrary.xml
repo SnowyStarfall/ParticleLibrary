@@ -59,7 +59,7 @@
             Runs on PreUpdateWorld.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Core.Emitter.SpawnParticle(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Data.SpatialParameters,ParticleLibrary.Core.Data.VisualParameters)">
+        <member name="M:ParticleLibrary.Core.Emitter.SpawnParticle(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Data.SpatialParameters@,ParticleLibrary.Core.Data.VisualParameters@)">
             <summary>
             Spawns a particle with the provided parameters.
             </summary>
@@ -143,6 +143,16 @@
             The maximum velocity to spawn a particle with.
             </summary>
         </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumScalarVelocityDeviation">
+            <summary>
+            The minimum velocity deviation to spawn a particle with.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumScalarVelocityDeviation">
+            <summary>
+            The maximum velocity deviation to spawn a particle with.
+            </summary>
+        </member>
         <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumScalarVelocityAcceleration">
             <summary>
             The minimum velocity acceleration to spawn a particle with.
@@ -171,6 +181,16 @@
         <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumDirectionalVelocity">
             <summary>
             The maximum velocity to spawn a particle with.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumDirectionalVelocityDeviation">
+            <summary>
+            The minimum velocity acceleration to spawn a particle with.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumDirectionalVelocityDeviation">
+            <summary>
+            The maximum velocity acceleration to spawn a particle with.
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumDirectionalVelocityAcceleration">
@@ -203,6 +223,16 @@
             The maximum scale velocity to spawn a particle with.
             </summary>
         </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumScaleAcceleration">
+            <summary>
+            The minimum scale velocity to spawn a particle with.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumScaleAcceleration">
+            <summary>
+            The maximum scale velocity to spawn a particle with.
+            </summary>
+        </member>
         <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumRotation">
             <summary>
             The minimum rotation to spawn a particle with. Defaults to zero, as that is more performant.
@@ -219,6 +249,16 @@
             </summary>
         </member>
         <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumRotationVelocity">
+            <summary>
+            The maximum rotation speed to spawn a particle with. Defaults to zero, as that is more performant.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MinimumRotationAcceleration">
+            <summary>
+            The minimum rotation speed to spawn a particle with. Defaults to zero, as that is more performant.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.EmitterParticleSettings.MaximumRotationAcceleration">
             <summary>
             The maximum rotation speed to spawn a particle with. Defaults to zero, as that is more performant.
             </summary>
@@ -492,37 +532,37 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.Texture">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.Texture">
             <summary>
             The texture of the particles
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.MaxParticles">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.MaxParticles">
             <summary>
             The maximum amount of particles
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.Lifespan">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.Lifespan">
             <summary>
             The lifespan of the particles
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.BufferSize">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.BufferSize">
             <summary>
             The size of the batching buffer. Currently unimplemented for now
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.Layer">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.Layer">
             <summary>
             The layer the particles are drawn on
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.BlendState">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.BlendState">
             <summary>
             The BlendState the particles are drawn with
             </summary>
         </member>
-        <member name="P:ParticleLibrary.Core.GPUSystemSettings.Fade">
+        <member name="P:ParticleLibrary.Core.GPUParticleSystemSettings.Fade">
             <summary>
             Whether the particles should fade over their lifespan
             </summary>
@@ -654,72 +694,6 @@
             <summary>
             After Main Menu.
             </summary>
-        </member>
-        <member name="T:ParticleLibrary.Core.NewParticleManager">
-            <summary>
-            This class manages the CPU particle system.
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.NewParticleManager.Particles">
-            <summary>
-            A list that contains all active particles.
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.NewParticleManager.ParticleCount">
-            <summary>
-            The amount of particles currently maintained by the system.
-            </summary>
-        </member>
-        <member name="P:ParticleLibrary.Core.NewParticleManager.ScreenLocation">
-            <summary>
-            Shorthand for screen location rectangle.
-            </summary>
-        </member>
-        <member name="M:ParticleLibrary.Core.NewParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,ParticleLibrary.Core.Layer)">
-            <summary>
-            Spawns a new particle at the desired position.
-            </summary>
-            <param name="position">The particle's position.</param>
-            <param name="velocity">The particle's velocity.</param>
-            <param name="color">The particle's color.</param>
-            <param name="scale">The particle's size.</param>
-            <param name="layer">When the particle is drawn.</param>
-            <exception cref="T:System.NullReferenceException"></exception>
-        </member>
-        <member name="M:ParticleLibrary.Core.NewParticleManager.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)">
-            <summary>
-            Spawns a new particle at the desired position.
-            </summary>
-            <param name="position">The particle's position.</param>
-            <param name="velocity">The particle's velocity.</param>
-            <param name="color">The particle's color.</param>
-            <param name="scale">The particle's size.</param>
-            <param name="layer">When the particle is drawn.</param>
-            <exception cref="T:System.NullReferenceException"></exception>
-        </member>
-        <member name="M:ParticleLibrary.Core.NewParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,System.Single,ParticleLibrary.Core.Layer)">
-            <summary>
-            Spawns a new particle at the desired position.
-            </summary>
-            <param name="position">The particle's position.</param>
-            <param name="velocity">The particle's velocity.</param>
-            <param name="particle">The particle type.</param>
-            <param name="color">The particle's color.</param>
-            <param name="scale">The particle's size.</param>
-            <param name="layer">When the particle is drawn.</param>
-            <exception cref="T:System.NullReferenceException"></exception>
-        </member>
-        <member name="M:ParticleLibrary.Core.NewParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)">
-            <summary>
-            Spawns a new particle at the desired position.
-            </summary>
-            <param name="position">The particle's position.</param>
-            <param name="velocity">The particle's velocity.</param>
-            <param name="particle">The particle type.</param>
-            <param name="color">The particle's color.</param>
-            <param name="scale">The particle's size.</param>
-            <param name="layer">When the particle is drawn.</param>
-            <exception cref="T:System.NullReferenceException"></exception>
         </member>
         <member name="T:ParticleLibrary.Core.Particle">
             <summary>
@@ -876,6 +850,72 @@
             <summary>
             Kills a particle.
             </summary>
+        </member>
+        <member name="T:ParticleLibrary.Core.ParticleSystem">
+            <summary>
+            This class manages the CPU particle system.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.ParticleSystem.Particles">
+            <summary>
+            A list that contains all active particles.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.ParticleSystem.ParticleCount">
+            <summary>
+            The amount of particles currently maintained by the system.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.ParticleSystem.ScreenLocation">
+            <summary>
+            Shorthand for screen location rectangle.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Core.ParticleSystem.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,ParticleLibrary.Core.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="position">The particle's position.</param>
+            <param name="velocity">The particle's velocity.</param>
+            <param name="color">The particle's color.</param>
+            <param name="scale">The particle's size.</param>
+            <param name="layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:ParticleLibrary.Core.ParticleSystem.NewParticle``1(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="position">The particle's position.</param>
+            <param name="velocity">The particle's velocity.</param>
+            <param name="color">The particle's color.</param>
+            <param name="scale">The particle's size.</param>
+            <param name="layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:ParticleLibrary.Core.ParticleSystem.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,System.Single,ParticleLibrary.Core.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="position">The particle's position.</param>
+            <param name="velocity">The particle's velocity.</param>
+            <param name="particle">The particle type.</param>
+            <param name="color">The particle's color.</param>
+            <param name="scale">The particle's size.</param>
+            <param name="layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:ParticleLibrary.Core.ParticleSystem.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)">
+            <summary>
+            Spawns a new particle at the desired position.
+            </summary>
+            <param name="position">The particle's position.</param>
+            <param name="velocity">The particle's velocity.</param>
+            <param name="particle">The particle type.</param>
+            <param name="color">The particle's color.</param>
+            <param name="scale">The particle's size.</param>
+            <param name="layer">When the particle is drawn.</param>
+            <exception cref="T:System.NullReferenceException"></exception>
         </member>
         <member name="T:ParticleLibrary.Core.PointParticle">
             <summary>
@@ -1294,7 +1334,7 @@
         <member name="T:ParticleLibrary.Examples.ExampleEmitter">
             <summary>
             This class demonstrates how to create an emitter.
-            It's required that you create a custom emitter class, since <see cref="M:ParticleLibrary.Core.Emitter.SpawnParticle(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Data.SpatialParameters,ParticleLibrary.Core.Data.VisualParameters)"/> won't spawn particles for you.
+            It's required that you create a custom emitter class, since <see cref="!:Emitter.SpawnParticle(Vector2, SpatialParameters, VisualParameters)"/> won't spawn particles for you.
             Emitters provide the calculation functionality, expecting it to be used to create any kind of particle.
             </summary>
         </member>
@@ -1309,7 +1349,7 @@
             If you want to avoid calculation overhead (if you're really worried about it), just don't call base.Update();
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Examples.ExampleEmitter.SpawnParticle(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Data.SpatialParameters,ParticleLibrary.Core.Data.VisualParameters)">
+        <member name="M:ParticleLibrary.Examples.ExampleEmitter.SpawnParticle(Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Data.SpatialParameters@,ParticleLibrary.Core.Data.VisualParameters@)">
             <summary>
             You must override this method for the emitter to work.
             The method provides information on what settings to spawn the particle with.
@@ -1373,7 +1413,7 @@
         </member>
         <member name="M:ParticleLibrary.Examples.ExampleParticle.#ctor(System.Int32,System.Single)">
             <summary>
-            With the removal of the AI array, you can no longer pass data into a particle via <see cref="M:ParticleLibrary.Core.NewParticleManager.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)"/>
+            With the removal of the AI array, you can no longer pass data into a particle via <see cref="M:ParticleLibrary.Core.ParticleSystem.NewParticle(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Particle,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,ParticleLibrary.Core.Layer)"/>
             Instead, with recent fixes, you can instantiate the particle's constructor and pass it in that way. This way, code is much more readable.
             <para>
             NOTE: If you plan on allowing your particle to be automatically instantiated with the NewParticle(T) methods, you MUST have a parameterless constructor
