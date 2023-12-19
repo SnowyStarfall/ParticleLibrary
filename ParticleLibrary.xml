@@ -26,6 +26,81 @@
             This means that you MUST begin SpriteBatch before you can use it. SpriteBatch is Main.spriteBatch.
             </summary>
         </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeBackground">
+            <summary>
+            Before background.
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeWalls">
+            <summary>
+            After backgroumd
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeNonSolidTiles">
+            <summary>
+            After walls
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeNPCsBehindTiles">
+            <summary>
+            After non-solid tiles
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeSolidTiles">
+            <summary>
+            After NPCs behind tiles, like worms
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforePlayersBehindNPCs">
+            <summary>
+            After solid tiles
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeNPCs">
+            <summary>
+            After player details drawn behind NPCs
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeProjectiles">
+            <summary>
+            After NPCs
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforePlayers">
+            <summary>
+            After projectiles
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeItems">
+            <summary>
+            After players
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeRain">
+            <summary>
+            After items in the world
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeGore">
+            <summary>
+            After rain
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeDust">
+            <summary>
+            After gore
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeWater">
+            <summary>
+            After dust
+            </summary>
+        </member>
+        <member name="E:ParticleLibrary.Core.DrawHooks.OnDraw_BeforeInterface">
+            <summary>
+            After water
+            </summary>
+        </member>
         <member name="T:ParticleLibrary.Core.Emitter">
             <summary>
             Base class for all emitters. Inherit this class to create your own emitter.
@@ -612,67 +687,67 @@
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeWalls">
             <summary>
-            Walls.
+            Walls. <b>After Background.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeNonSolidTiles">
             <summary>
-            Trees, flowers, rocks, etc.
+            Trees, flowers, rocks, etc. <b>After Walls.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeNPCsBehindTiles">
             <summary>
-            Worm enemies.
+            Worm enemies. <b>After mon-solid Tiles.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeSolidTiles">
             <summary>
-            Tiles.
+            Tiles. <b>After NPCs drawn behind Tiles.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforePlayersBehindNPCs">
             <summary>
-            Player details drawn behind NPCs.
+            Player details drawn behind NPCs. <b>After Solid Tiles.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeNPCs">
             <summary>
-            NPCs.
+            NPCs. <b>After Player details drawn behind NPCs.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeProjectiles">
             <summary>
-            Projectiles.
+            Projectiles. <b>After NPCs.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforePlayers">
             <summary>
-            Players.
+            Players. <b>After Projectiles.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeItems">
             <summary>
-            Items dropped in world.
+            Items dropped in world. <b>After Players.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeRain">
             <summary>
-            Rain.
+            Rain. <b>After Items.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeGore">
             <summary>
-            Gore.
+            Gore. <b>After Rain.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeDust">
             <summary>
-            Dust.
+            Dust. <b>After Gore.</b>
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeWater">
             <summary>
-            Water. Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
+            Water <b>After Dust.</b>  Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
             </summary>
         </member>
         <member name="F:ParticleLibrary.Core.Layer.BeforeInterface">

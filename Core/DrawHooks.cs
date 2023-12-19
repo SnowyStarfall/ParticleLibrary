@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static ParticleLibrary.Particle;
 
 namespace ParticleLibrary.Core
 {
@@ -35,20 +36,65 @@ namespace ParticleLibrary.Core
 		public static event Update OnUpdateMenu;
 
 		public delegate void Draw(Layer layer);
+		/// <summary>
+		/// Before background.
+		/// </summary>
 		public static event Draw OnDraw_BeforeBackground;
+		/// <summary>
+		/// After backgroumd
+		/// </summary>
 		public static event Draw OnDraw_BeforeWalls;
+		/// <summary>
+		/// After walls
+		/// </summary>
 		public static event Draw OnDraw_BeforeNonSolidTiles;
-		public static event Draw OnDraw_BeforeSolidTiles;
-		public static event Draw OnDraw_BeforePlayersBehindNPCs;
+		/// <summary>
+		/// After non-solid tiles
+		/// </summary>
 		public static event Draw OnDraw_BeforeNPCsBehindTiles;
+		/// <summary>
+		/// After NPCs behind tiles, like worms
+		/// </summary>
+		public static event Draw OnDraw_BeforeSolidTiles;
+		/// <summary>
+		/// After solid tiles
+		/// </summary>
+		public static event Draw OnDraw_BeforePlayersBehindNPCs;
+		/// <summary>
+		/// After player details drawn behind NPCs
+		/// </summary>
 		public static event Draw OnDraw_BeforeNPCs;
+		/// <summary>
+		/// After NPCs
+		/// </summary>
 		public static event Draw OnDraw_BeforeProjectiles;
+		/// <summary>
+		/// After projectiles
+		/// </summary>
 		public static event Draw OnDraw_BeforePlayers;
+		/// <summary>
+		/// After players
+		/// </summary>
 		public static event Draw OnDraw_BeforeItems;
+		/// <summary>
+		/// After items in the world
+		/// </summary>
 		public static event Draw OnDraw_BeforeRain;
+		/// <summary>
+		/// After rain
+		/// </summary>
 		public static event Draw OnDraw_BeforeGore;
+		/// <summary>
+		/// After gore
+		/// </summary>
 		public static event Draw OnDraw_BeforeDust;
+		/// <summary>
+		/// After dust
+		/// </summary>
 		public static event Draw OnDraw_BeforeWater;
+		/// <summary>
+		/// After water
+		/// </summary>
 		public static event Draw OnDraw_BeforeInterface;
 		public static event Draw OnDraw_AfterInterface;
 		public static event Draw OnDraw_BeforeMainMenu;
@@ -240,6 +286,18 @@ namespace ParticleLibrary.Core
 			}
 		}
 
+		public static void GetClip(out Rectangle rectangle, out RasterizerState rasterizer)
+		{
+			rectangle = Main.graphics.GraphicsDevice.ScissorRectangle;
+			rasterizer = Main.graphics.GraphicsDevice.RasterizerState;
+		}
+
+		public static void SetClip(Rectangle rectangle, RasterizerState rasterizer)
+		{
+			Main.graphics.GraphicsDevice.ScissorRectangle = rectangle;
+			Main.graphics.GraphicsDevice.RasterizerState = rasterizer;
+		}
+
 		private void Update_BeforeDust(On_Dust.orig_UpdateDust orig)
 		{
 			OnUpdateDust?.Invoke();
@@ -261,7 +319,13 @@ namespace ParticleLibrary.Core
 			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
 			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);
+
 			OnDraw_BeforeBackground?.Invoke(Layer.BeforeBackground);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
 
@@ -272,7 +336,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeWalls?.Invoke(Layer.BeforeWalls);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -283,7 +353,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeNonSolidTiles?.Invoke(Layer.BeforeNonSolidTiles);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -292,14 +368,26 @@ namespace ParticleLibrary.Core
 
 		private void Draw_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeSolidTiles?.Invoke(Layer.BeforeSolidTiles);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self);
 		}
 
 		private void Draw_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforePlayersBehindNPCs?.Invoke(Layer.BeforePlayersBehindNPCs);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self);
 		}
@@ -310,7 +398,13 @@ namespace ParticleLibrary.Core
 			{
 				Main.spriteBatch.End();
 
+				GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 				OnDraw_BeforeNPCsBehindTiles?.Invoke(Layer.BeforeNPCsBehindTiles);
+
+				Main.spriteBatch.End();
+				SetClip(rectangle, rasterizer);
 
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
@@ -318,7 +412,13 @@ namespace ParticleLibrary.Core
 			{
 				Main.spriteBatch.End();
 
+				GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 				OnDraw_BeforeNPCs?.Invoke(Layer.BeforeNPCs);
+
+				Main.spriteBatch.End();
+				SetClip(rectangle, rasterizer);
 
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 			}
@@ -328,14 +428,26 @@ namespace ParticleLibrary.Core
 
 		private void Draw_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeProjectiles?.Invoke(Layer.BeforeProjectiles);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self);
 		}
 
 		private void Draw_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforePlayers?.Invoke(Layer.BeforePlayers);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self);
 		}
@@ -344,7 +456,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeItems?.Invoke(Layer.BeforeItems);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -355,7 +473,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeRain?.Invoke(Layer.BeforeRain);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -366,7 +490,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeGore?.Invoke(Layer.BeforeGore);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -375,7 +505,13 @@ namespace ParticleLibrary.Core
 
 		private void Draw_BeforeDust(On_Main.orig_DrawDust orig, Main self)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeDust?.Invoke(Layer.BeforeDust);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self);
 		}
@@ -384,7 +520,13 @@ namespace ParticleLibrary.Core
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeWater?.Invoke(Layer.BeforeWater);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin();
 
@@ -393,24 +535,48 @@ namespace ParticleLibrary.Core
 
 		private void Draw_OnInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
 		{
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeInterface?.Invoke(Layer.BeforeInterface);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			orig(self, gameTime);
 
+			GetClip(out rectangle, out rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_AfterInterface?.Invoke(Layer.AfterInterface);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 		}
 
 		private void Draw_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			Main.spriteBatch.End();
 
+			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_BeforeMainMenu?.Invoke(Layer.BeforeMainMenu);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
 
 			orig(self, gameTime);
 
+			GetClip(out rectangle, out rasterizer);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+
 			OnDraw_AfterMainMenu?.Invoke(Layer.AfterMainMenu);
+
+			Main.spriteBatch.End();
+			SetClip(rectangle, rasterizer);
 		}
 	}
 }

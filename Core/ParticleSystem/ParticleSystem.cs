@@ -206,21 +206,6 @@ namespace ParticleLibrary.Core
 			Main.graphics.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 			Main.graphics.GraphicsDevice.RasterizerState = LibUtilities.OverflowHiddenRasterizerState;
 
-			Matrix matrix;
-
-			// Compensate for matrix on background layer
-			if (layer is Layer.BeforeBackground)
-			{
-				matrix = Main.BackgroundViewMatrix.TransformationMatrix;
-				matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
-			}
-			else
-			{
-				matrix = Main.GameViewMatrix.TransformationMatrix;
-			}
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);
-
 			foreach (var p in _particles.Buffer)
 			{
 				if (p is null || p.Layer != layer)
@@ -247,8 +232,6 @@ namespace ParticleLibrary.Core
 				Vector2 position = p.Layer == Layer.BeforeWater ? p.VisualPosition + new Vector2(Main.offScreenRange) : p.VisualPosition;
 				p.Draw(Main.spriteBatch, position);
 			}
-
-			Main.spriteBatch.End();
 
 			Main.graphics.GraphicsDevice.ScissorRectangle = previousScissor;
 			Main.graphics.GraphicsDevice.RasterizerState = previousRasterizer;

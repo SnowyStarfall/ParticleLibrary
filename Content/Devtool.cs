@@ -318,7 +318,10 @@ namespace ParticleLibrary.Content
 
 				//}
 
-				Core.ParticleSystem.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
+				for (int i = 0; i < 100; i++)
+				{
+					Core.ParticleSystem.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
+				}
 
 				//for (int i = 0; i < 100; i++)
 				//{

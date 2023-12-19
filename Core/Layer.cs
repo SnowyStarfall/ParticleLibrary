@@ -11,57 +11,61 @@
 		/// </summary>
 		BeforeBackground,
 		/// <summary>
-		/// Walls.
+		/// Walls. <b>After Background.</b>
 		/// </summary>
 		BeforeWalls,
 		/// <summary>
-		/// Trees, flowers, rocks, etc.
+		/// Trees, flowers, rocks, etc. <b>After Walls.</b>
 		/// </summary>
 		BeforeNonSolidTiles,
 		/// <summary>
-		/// Worm enemies.
+		/// Worm enemies. <b>After mon-solid Tiles.</b>
 		/// </summary>
 		BeforeNPCsBehindTiles,
 		/// <summary>
-		/// Tiles.
+		/// Tiles. <b>After NPCs drawn behind Tiles.</b>
 		/// </summary>
 		BeforeSolidTiles,
 		/// <summary>
-		/// Player details drawn behind NPCs.
+		/// Player details drawn behind NPCs. <b>After Solid Tiles.</b>
 		/// </summary>
 		BeforePlayersBehindNPCs,
 		/// <summary>
-		/// NPCs.
+		/// NPCs. <b>After Player details drawn behind NPCs.</b>
 		/// </summary>
 		BeforeNPCs,
 		/// <summary>
-		/// Projectiles.
+		/// Projectiles. <b>After NPCs.</b>
 		/// </summary>
 		BeforeProjectiles,
 		/// <summary>
-		/// Players.
+		/// Players. <b>After Projectiles.</b>
 		/// </summary>
 		BeforePlayers,
 		/// <summary>
-		/// Items dropped in world.
+		/// Items dropped in world. <b>After Players.</b>
 		/// </summary>
 		BeforeItems,
 		/// <summary>
-		/// Rain.
+		/// Rain. <b>After Items.</b>
 		/// </summary>
 		BeforeRain,
 		/// <summary>
-		/// Gore.
+		/// Gore. <b>After Rain.</b>
 		/// </summary>
 		BeforeGore,
 		/// <summary>
-		/// Dust.
+		/// Dust. <b>After Gore.</b>
 		/// </summary>
 		BeforeDust,
 		/// <summary>
-		/// Water. Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
+		/// Water <b>After Dust.</b>  Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
 		/// </summary>
 		BeforeWater,
+		///// <summary>
+		///// After Water. Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
+		///// </summary>
+		//AfterWater,
 		/// <summary>
 		/// Before UI.
 		/// </summary>
