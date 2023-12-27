@@ -115,10 +115,10 @@ namespace ParticleLibrary.Core
 				return;
 			}
 
-			//if(Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt))
-			//{
-			//	ReloadEffect();
-			//}
+			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt))
+			{
+				ReloadEffect();
+			}
 
 			// Batched data transfer
 			if (SendBatch)

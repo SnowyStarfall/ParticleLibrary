@@ -82,13 +82,17 @@ struct PVertexShaderOutput
 float4 ComputePosition(float4 position, float2 velocity, float2 deviation, float2 acceleration, float time)
 {
 	// Displacement
-	float2 d = (velocity * time);
+	float2 d = velocity * time;
+	
 	// Deviation
 	float2 e = deviation * time;
-	// Acceleration
-	float a = (1.0 - pow(abs(acceleration), time)) / (1.0 - abs(acceleration));
 	
-	return position + float4((velocity + e) * a, 0, 0);
+	// Acceleration
+	float2 a = float2(abs(acceleration.x) == 1 ? 1 : (1.0 - pow(abs(acceleration.x), time)) / (1.0 - abs(acceleration.x)),
+					  abs(acceleration.y) == 1 ? 1 : (1.0 - pow(abs(acceleration.y), time)) / (1.0 - abs(acceleration.y)));
+	
+	return position + float4(float2(((abs(a.x) == 1 ? d.x : velocity.x) + e.x) * a.x, // Patchwork fix for acceleration until I can work out a proper formula
+									((abs(a.y) == 1 ? d.y : velocity.y) + e.y) * a.y), 0, 0); // For 0.5 acceleration it should work as 64 => 64 + 32 => 96 + 16 => 112 + 8 ...
 }
 
 float2 ComputeSize(float2 size, float2 scale, float2 velocity, float time)

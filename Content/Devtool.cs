@@ -305,8 +305,8 @@ namespace ParticleLibrary.Content
 					//EndColor = Color.White.WithAlpha(0f),
 					StartColor = Color.White.WithAlpha(0f),
 					EndColor = Color.Black.WithAlpha(0f),
-					VelocityDeviation = new Vector2(-0.1f, -0.1f),
-					VelocityAcceleration = new Vector2(0.9f, 0.9f),
+					VelocityDeviation = new Vector2(1f, 0f),
+					VelocityAcceleration = new Vector2(1f, 1f),
 					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
 					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
 				};
@@ -318,14 +318,14 @@ namespace ParticleLibrary.Content
 
 				//}
 
-				for (int i = 0; i < 100; i++)
-				{
-					Core.ParticleSystem.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
-				}
+				//for (int i = 0; i < 100; i++)
+				//{
+				//	Core.ParticleSystem.NewParticle<ExampleParticle>(Main.MouseWorld, Main.rand.NextVector2Unit() * 10f, Color.White.WithAlpha(0f), 1f);
+				//}
 
 				//for (int i = 0; i < 100; i++)
 				//{
-				//ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(100f, 0f), point, 120);
+					ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(64f, 0f), point, 16);
 				//}
 
 
