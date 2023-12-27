@@ -32,7 +32,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// How much velocity should accelerate over time. (multiplicative)
 		/// </summary>
-		public Vector2 VelocityAcceleration { get; set; } = Vector2.Zero;
+		public Vector2 VelocityAcceleration { get; set; } = Vector2.One;
 
 		/// <summary>
 		/// The scale of the particle.

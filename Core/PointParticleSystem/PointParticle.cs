@@ -23,7 +23,7 @@ namespace ParticleLibrary.Core
 		/// <summary>
 		/// How much velocity should accelerate over time. (multiplicative)
 		/// </summary>
-		public Vector2 VelocityAcceleration { get; set; } = Vector2.Zero;
+		public Vector2 VelocityAcceleration { get; set; } = Vector2.One;
 
 		/// <summary>
 		/// The depth of the particle. Default is 1f. Changes the strength of the parallax effect, making the particle seem closest at higher values (2f) or farthest at lower values (0f)
