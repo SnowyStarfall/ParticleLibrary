@@ -72,11 +72,11 @@ namespace ParticleLibrary.UI
 		public override void PostUpdateInput()
 		{
 #if DEBUG
-			if (Main.keyState.IsKeyDown(Keys.OemCloseBrackets))
-			{
-				DebugUIElement.Unload();
-				DebugUIElement.OnInitialize();
-			}
+			//if (Main.keyState.IsKeyDown(Keys.OemCloseBrackets))
+			//{
+			//	DebugUIElement.Unload();
+			//	DebugUIElement.OnInitialize();
+			//}
 #endif
 		}
 

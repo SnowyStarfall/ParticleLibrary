@@ -75,10 +75,10 @@ namespace ParticleLibrary.UI.Primitives.Complex
 
 		public void Draw()
 		{
-			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets))
-			{
-				ReloadEffect();
-			}
+			//if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets))
+			//{
+			//	ReloadEffect();
+			//}
 
 			// Preventative measures to keep rounding from overflowing.
 			float min = MathF.Min(Size.X, Size.Y);

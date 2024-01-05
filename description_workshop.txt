@@ -30,9 +30,7 @@ Just subscribe <3 c:
 [b] This library is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
 [olist]
     [*]Subscribe to Particle Library
-    [*]Go to the GitHub here:
-          Terraria 1.3: https://github.com/SnowyStarfall/ParticleLibrary/tree/main
-          Terraria 1.4: https://github.com/SnowyStarfall/ParticleLibrary/tree/1.4
+    [*]Go to the GitHub here: https://github.com/SnowyStarfall/ParticleLibrary/tree/main
     [*]Download the Particle Library DLL and XML files
     [*]Place them somewhere on your PC, or conventionally in a "lib" folder in your mod project
     [*]In Visual Studio, right-click your csproj and hover over Add, then click Add COM Reference
