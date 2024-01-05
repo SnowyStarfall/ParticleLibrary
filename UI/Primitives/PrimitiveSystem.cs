@@ -67,6 +67,21 @@ namespace ParticleLibrary.UI.Primitives
 			InterfaceEffect = null;
 		}
 
+		private Matrix _oldZoomMatrix;
+		public override void PreUpdateEntities()
+		{
+			if (Main.netMode == NetmodeID.Server)
+			{
+				return;
+			}
+
+			if (_oldZoomMatrix != Main.GameViewMatrix.ZoomMatrix)
+			{
+				_oldZoomMatrix = Main.GameViewMatrix.ZoomMatrix;
+				ResolutionChanged(Vector2.Zero);
+			}
+		}
+
 		private void ResolutionChanged(Vector2 size)
 		{
 			int width = Main.graphics.GraphicsDevice.Viewport.Width;
