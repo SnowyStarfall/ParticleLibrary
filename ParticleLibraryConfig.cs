@@ -26,6 +26,11 @@ namespace ParticleLibrary
 		[Increment(1000)]
 		public int MaxPointParticles;
 
+		[DefaultValue(ParticleLimit.High)]
+		[DrawTicks]
+		[ReloadRequired]
+		public ParticleLimit ParticleLimit;
+
 		[Header("Debug")]
 		[DefaultValue(false)]
 		[ReloadRequired]
@@ -50,8 +55,12 @@ namespace ParticleLibrary
 		}
 	}
 
-	public enum ThemeType
+	public enum ParticleLimit
 	{
-		Dark
+		None,
+		Low,
+		Medium,
+		High,
+		Unlimited
 	}
 }

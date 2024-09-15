@@ -17,7 +17,7 @@ namespace ParticleLibrary.Core
 	/// For <see cref="OnDraw_BeforeBackground"/>, initialize your SpriteBatch with this Matrix.
 	/// <code>
 	/// Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
-	///	matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation* new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically)? (-1f) : 1f, 1f);
+	///	matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically)? (-1f) : 1f, 1f);
 	/// </code>
 	/// Your drawing will not manually parallax. You will need to do this yourself for now.
 	/// </para>
@@ -25,9 +25,6 @@ namespace ParticleLibrary.Core
 	/// <para>
 	/// For <see cref="OnDraw_BeforeWater"/>, ADD <see cref="Main.offScreenRange"/> to your draw position.
 	/// </para>
-	/// 
-	/// SpriteBatch ends BEFORE the Draw events are invoked.
-	/// This means that you MUST begin SpriteBatch before you can use it. SpriteBatch is Main.spriteBatch.
 	/// </summary>
 	public class DrawHooks : ModSystem
 	{
@@ -156,10 +153,7 @@ namespace ParticleLibrary.Core
 
 		public static void Hook(Layer layer, Draw method)
 		{
-			if (method is null)
-			{
-				throw new ArgumentNullException(nameof(method));
-			}
+			ArgumentNullException.ThrowIfNull(method);
 
 			switch (layer)
 			{
@@ -222,10 +216,7 @@ namespace ParticleLibrary.Core
 
 		public static void UnHook(Layer layer, Draw method)
 		{
-			if (method is null)
-			{
-				throw new ArgumentNullException(nameof(method));
-			}
+			ArgumentNullException.ThrowIfNull(method);
 
 			switch (layer)
 			{

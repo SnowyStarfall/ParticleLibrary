@@ -54,6 +54,20 @@ Configs: {
 		}
 
 		DisplayName: Particle Library Config
+
+		ParticleLimit: {
+			Label: Particle Limit
+			Tooltip: ""
+		}
+	}
+
+	ParticleLimit: {
+		Tooltip: Sets the maximum amount of particles to allow.
+		None.Label: None - no particles.
+		Low.Label: Low - 1/8 the amount of particles.
+		Medium.Label: Medium - 1/4 the amount of particles.
+		High.Label: High - 1/2 the amount of particles.
+		Unlimited.Label: Unlimited - any amount of particles.
 	}
 }
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ParticleLibrary.Core;
 using ParticleLibrary.Examples;
+using ParticleLibrary.Examples.V3;
 using ParticleLibrary.Utilities;
 using ReLogic.Graphics;
 using Terraria;
@@ -325,7 +326,6 @@ namespace ParticleLibrary.Content
 
 				//for (int i = 0; i < 100; i++)
 				//{
-					ExampleParticleSystemManager.ExamplePointSystem.NewParticle(Main.MouseWorld, new Vector2(64f, 0f), point, 16);
 				//}
 
 

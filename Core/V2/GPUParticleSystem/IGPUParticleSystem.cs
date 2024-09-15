@@ -6,9 +6,9 @@ namespace ParticleLibrary.Core
 {
 	public interface IGPUParticleSystem<T> where T : class
 	{
-		public void Draw(Layer layer = Layer.None);
+		void Draw(Layer layer = Layer.None);
 
-		public void NewParticle(Vector2 position, Vector2 velocity, T particle, int? lifespan = null);
+		void NewParticle(Vector2 position, Vector2 velocity, T particle, int? lifespan = null);
 
 		// Setters
 		/// <summary>
@@ -16,32 +16,32 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		/// <param name="value"></param>
 		/// <exception cref="ArgumentNullException"></exception>
-		public void SetTexture(Texture2D value);
+		void SetTexture(Texture2D value);
 
 		/// <summary>
 		/// Sets the lifespan of the particles.
 		/// </summary>
 		/// <param name="value"></param>
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		public void SetLifespan(int value);
+		void SetLifespan(int value);
 
 		/// <summary>
 		/// Sets the position in the draw order to draw the particles on.
 		/// </summary>
 		/// <param name="value"></param>
-		public void SetLayer(Layer value);
+		void SetLayer(Layer value);
 
 		/// <summary>
 		/// Sets the BlendState to use when drawing particles.
 		/// </summary>
 		/// <param name="value"></param>
 		/// <exception cref="ArgumentNullException"></exception>
-		public void SetBlendState(BlendState value);
+		void SetBlendState(BlendState value);
 
 		/// <summary>
 		/// Sets whether the particles should fade over their lifespan
 		/// </summary>
 		/// <param name="value"></param>
-		public void SetFade(bool value);
+		void SetFade(bool value);
 	}
 }

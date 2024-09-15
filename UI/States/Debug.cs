@@ -17,12 +17,12 @@ namespace ParticleLibrary.UI.States
 		public bool Visible => ParticleLibraryConfig.Instance.DebugUI;
 		public Theme Theme => ParticleLibraryConfig.CurrentTheme;
 
-		public Dictionary<string, Core.Particle> Particles { get; private set; }
-		public Dictionary<string, PointParticle> PointParticles { get; private set; }
-		public Dictionary<string, QuadParticle> QuadParticles { get; private set; }
-		public Dictionary<string, Emitter> Emitters { get; private set; }
-		public Dictionary<string, QuadParticleSystem> QuadParticleSystems { get; private set; }
-		public Dictionary<string, PointParticleSystem> PointParticleSystems { get; private set; }
+		public List<string> Particles { get; private set; }
+		public List<string> PointParticles { get; private set; }
+		public List<string> QuadParticles { get; private set; }
+		public List<string> Emitters { get; private set; }
+		public List<string> QuadParticleSystems { get; private set; }
+		public List<string> PointParticleSystems { get; private set; }
 
 		public UIElement Base { get; set; }
 		public Panel SearchPanel { get; set; }
@@ -77,7 +77,7 @@ namespace ParticleLibrary.UI.States
 			SearchList.ItemHeight = new(28f, 0f);
 
 			// TODO: Fix
-			//GetTypes();
+			GetTypes();
 			//AddTypes();
 
 			//// Append all panels to base
@@ -127,6 +127,9 @@ namespace ParticleLibrary.UI.States
 
 		private void GetTypes()
 		{
+			int m = 0;
+			float c = 1.3f;
+
 			for (int i = 0; i < ModLoader.Mods.Length; i++)
 			{
 				Mod mod = ModLoader.Mods[i];
@@ -134,109 +137,73 @@ namespace ParticleLibrary.UI.States
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Core.Particle)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					string key = p.FullName;
-					if (!Particles.ContainsKey(key))
+					string name = p.FullName;
+					Particles.Add(name);
+
+					SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 					{
-						Particles.Add(key, Activator.CreateInstance(p) as Core.Particle);
-					}
+						Content = $"[{mod.Name}] " + p.Name,
+						HideOverflow = true
+					});
+
+					m++;
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticle)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					string key = p.FullName;
-					if (!QuadParticles.ContainsKey(key))
+					string name = p.FullName;
+					Particles.Add(name);
+
+					SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 					{
-						QuadParticles.Add(key, Activator.CreateInstance(p) as QuadParticle);
-					}
+						Content = $"[{mod.Name}] " + p.Name,
+						HideOverflow = true
+					});
+
+					m++;
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Emitter)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					string key = p.FullName;
-					if (!Emitters.ContainsKey(key))
+					string name = p.FullName;
+					Particles.Add(name);
+
+					SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 					{
-						Emitters.Add(key, Activator.CreateInstance(p) as Emitter);
-					}
+						Content = $"[{mod.Name}] " + p.Name,
+						HideOverflow = true
+					});
+
+					m++;
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(QuadParticleSystem)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					string key = p.FullName;
-					if (!QuadParticleSystems.ContainsKey(key))
+					string name = p.FullName;
+					Particles.Add(name);
+
+					SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 					{
-						QuadParticleSystems.Add(key, Activator.CreateInstance(p) as QuadParticleSystem);
-					}
+						Content = $"[{mod.Name}] " + p.Name,
+						HideOverflow = true
+					});
+
+					m++;
 				}
 
 				foreach (var p in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(PointParticleSystem)) && !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) is not null))
 				{
-					string key = p.FullName;
-					if (!PointParticleSystems.ContainsKey(key))
+					string name = p.FullName;
+					Particles.Add(name);
+
+					SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
 					{
-						PointParticleSystems.Add(key, Activator.CreateInstance(p) as PointParticleSystem);
-					}
+						Content = $"[{mod.Name}] " + p.Name,
+						HideOverflow = true
+					});
+
+					m++;
 				}
-			}
-		}
-
-		private void AddTypes()
-		{
-			int m = 0;
-			float c = 1.3f;
-
-			foreach (var item in Particles)
-			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
-				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
-					HideOverflow = true
-				});
-
-				m++;
-			}
-
-			foreach (var item in QuadParticles)
-			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
-				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
-					HideOverflow = true
-				});
-
-				m++;
-			}
-
-			foreach (var item in Emitters)
-			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
-				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
-					HideOverflow = true
-				});
-
-				m++;
-			}
-
-			foreach (var item in QuadParticleSystems)
-			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
-				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
-					HideOverflow = true
-				});
-
-				m++;
-			}
-
-			foreach (var item in PointParticleSystems)
-			{
-				SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
-				{
-					Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
-					HideOverflow = true
-				});
-
-				m++;
 			}
 
 			// TODO: Remove
@@ -270,5 +237,97 @@ namespace ParticleLibrary.UI.States
 				HideOverflow = true
 			});
 		}
+
+		//private void AddTypes()
+		//{
+		//	int m = 0;
+		//	float c = 1.3f;
+
+		//	foreach (var item in Particles)
+		//	{
+		//		SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//		{
+		//			Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+		//			HideOverflow = true
+		//		});
+
+		//		m++;
+		//	}
+
+		//	foreach (var item in QuadParticles)
+		//	{
+		//		SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//		{
+		//			Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+		//			HideOverflow = true
+		//		});
+
+		//		m++;
+		//	}
+
+		//	foreach (var item in Emitters)
+		//	{
+		//		SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//		{
+		//			Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+		//			HideOverflow = true
+		//		});
+
+		//		m++;
+		//	}
+
+		//	foreach (var item in QuadParticleSystems)
+		//	{
+		//		SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//		{
+		//			Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+		//			HideOverflow = true
+		//		});
+
+		//		m++;
+		//	}
+
+		//	foreach (var item in PointParticleSystems)
+		//	{
+		//		SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//		{
+		//			Content = $"{item.Key.GetType().Name} {item.Value.GetType().Name}",
+		//			HideOverflow = true
+		//		});
+
+		//		m++;
+		//	}
+
+		//	// TODO: Remove
+		//	SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//	{
+		//		Content = $"ParticleLibrary Test 1",
+		//		HideOverflow = true
+		//	});
+		//	m++;
+		//	SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//	{
+		//		Content = $"ParticleLibrary Teeeeest 2",
+		//		HideOverflow = true
+		//	});
+		//	m++;
+		//	SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//	{
+		//		Content = $"ParticleLibrary Teeeeeeeeeeeeest 3",
+		//		HideOverflow = true
+		//	});
+		//	m++;
+		//	SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//	{
+		//		Content = $"ParticleLibrary Teeeeeeeeeeeeeeeeeeeeeeeeest 4",
+		//		HideOverflow = true
+		//	});
+		//	m++;
+		//	SearchList.Add(new Button(m % 2 == 0 ? Theme.Low : Theme.Low * c, Theme.Mid, Theme.LowAccent, Theme.HighAccent)
+		//	{
+		//		Content = $"ParticleLibrary AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		//		HideOverflow = true
+		//	});
+		//}
 	}
 }

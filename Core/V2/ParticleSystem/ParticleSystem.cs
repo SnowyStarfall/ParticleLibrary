@@ -246,9 +246,9 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, float scale, Layer layer = Layer.BeforeDust) where T : Particle
+		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, float scale, Layer layer = Layer.BeforeDust) where T : Particle, new()
 		{
-			Particle particle = Activator.CreateInstance<T>();
+			Particle particle = new T();
 			return NewParticle(position, velocity, particle, color, new Vector2(scale), layer);
 		}
 
@@ -261,9 +261,9 @@ namespace ParticleLibrary.Core
 		/// <param name="scale">The particle's size.</param>
 		/// <param name="layer">When the particle is drawn.</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, Vector2 scale, Layer layer = Layer.BeforeDust) where T : Particle
+		public static Particle NewParticle<T>(Vector2 position, Vector2 velocity, Color color, Vector2 scale, Layer layer = Layer.BeforeDust) where T : Particle, new()
 		{
-			Particle particle = Activator.CreateInstance<T>();
+			Particle particle = new T();
 			return NewParticle(position, velocity, particle, color, scale, layer);
 		}
 

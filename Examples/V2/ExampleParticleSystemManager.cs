@@ -32,34 +32,37 @@ namespace ParticleLibrary.Examples
 				return;
 			}
 
-			// Demonstrates creating a Quad particle system.
-			ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
-			ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);
-			ExampleQuadParticle = new()
+			Main.QueueMainThreadAction(() =>
 			{
-				StartColor = Color.White.WithAlpha(0f),
-				EndColor = Color.Black.WithAlpha(0f),
-				Scale = new Vector2(1f),
-				Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
-				RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-				Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-				DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
-			};
+				// Demonstrates creating a Quad particle system.
+				ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
+				ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);
+				ExampleQuadParticle = new()
+				{
+					StartColor = Color.White.WithAlpha(0f),
+					EndColor = Color.Black.WithAlpha(0f),
+					Scale = new Vector2(1f),
+					Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
+					RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
+				};
 
-			// Demonstrates creating a Point particle system.
-			ExamplePointSettings = new(500, 300);
-			ExamplePointSystem = new PointParticleSystem(ExamplePointSettings);
-			ExamplePointParticle = new()
-			{
-				StartColor = Color.White.WithAlpha(0f),
-				EndColor = Color.Black.WithAlpha(0f),
-				Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-				DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
-			};
+				// Demonstrates creating a Point particle system.
+				ExamplePointSettings = new(500, 300);
+				ExamplePointSystem = new PointParticleSystem(ExamplePointSettings);
+				ExamplePointParticle = new()
+				{
+					StartColor = Color.White.WithAlpha(0f),
+					EndColor = Color.Black.WithAlpha(0f),
+					Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
+					DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
+				};
 
-			// Demonstrates creating a wrapped particle system from a Quad particle system.
-			// This can be useful for implementing custom functionality, such as embedding your system into a RenderTarget2D.
-			ExampleWrappedQuadParticleSystem = new(ExampleQuadSystem, ExampleQuadSettings);
+				// Demonstrates creating a wrapped particle system from a Quad particle system.
+				// This can be useful for implementing custom functionality, such as embedding your system into a RenderTarget2D.
+				ExampleWrappedQuadParticleSystem = new(ExampleQuadSystem, ExampleQuadSettings);
+			});
 		}
 
 		public override void Unload()

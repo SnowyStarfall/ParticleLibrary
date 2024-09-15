@@ -32,11 +32,6 @@ namespace ParticleLibrary.Core
 		public int Lifespan { get; private set; }
 
 		/// <summary>
-		/// The size of the batching buffer. Unused for now
-		/// </summary>
-		public int BufferSize { get; }
-
-		/// <summary>
 		/// The layer the particles will draw on
 		/// </summary>
 		public Layer Layer { get; private set; }
@@ -267,7 +262,7 @@ namespace ParticleLibrary.Core
 		// Event
 		private void ResolutionChanged(Matrix transformationMatrix)
 		{
-			TransformMatrixParameter.SetValue(transformationMatrix);
+			TransformMatrixParameter?.SetValue(transformationMatrix);
 		}
 
 		// Disposing

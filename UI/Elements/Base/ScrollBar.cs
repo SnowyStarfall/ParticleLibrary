@@ -1,10 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.UI.Primitives.Complex;
+using ParticleLibrary.Utilities;
+using Terraria;
 using Terraria.UI;
 
 namespace ParticleLibrary.UI.Elements.Base
 {
 	public class ScrollBar : Panel
 	{
+		public Box Handle { get; protected set; }
+
 		public float ViewPosition
 		{
 			get
@@ -32,7 +38,34 @@ namespace ParticleLibrary.UI.Elements.Base
 			MaxWidth.Set(20f, 0f);
 			PaddingTop = 5f;
 			PaddingBottom = 5f;
+
+			CalculatedStyle newDimensions = GetDimensions();
+
+			Handle = new(newDimensions.Position(), new Vector2(_oldDimensions.Width, _oldDimensions.Height), ParticleLibraryConfig.CurrentTheme.Mid, ParticleLibraryConfig.CurrentTheme.MidAccent, cornerRadius, outlineThickness)
+			{
+				Soft = soft
+			};
 		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch)
+		{
+			CalculateResize();
+
+			if (!Visible)
+			{
+				return;
+			}
+
+			Primitive.SetOutlineColor(Outline);
+
+			spriteBatch.End();
+
+			Primitive.Draw();
+			Handle.Draw();
+
+			spriteBatch.Begin(LibUtilities.DefaultUISettings);
+		}
+
 		public void SetView(float viewSize, float maxViewSize)
 		{
 			viewSize = MathHelper.Clamp(viewSize, 0f, maxViewSize);
@@ -51,6 +84,10 @@ namespace ParticleLibrary.UI.Elements.Base
 
 				Primitive.SetPosition(_oldDimensions.Position());
 				Primitive.SetSize(new Vector2(_oldDimensions.Width, _oldDimensions.Height));
+
+				Rectangle handleRectangle = GetHandleRectangle();
+
+				Handle.SetSize(handleRectangle);
 
 				CalculateAreas(newDimensions);
 			}
@@ -96,6 +133,31 @@ namespace ParticleLibrary.UI.Elements.Base
 			}
 
 			return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
+		}
+
+		public override void DebugRender(Box box, ref float colorIntensity, float alpha)
+		{
+			base.DebugRender(box, ref colorIntensity, alpha);
+
+
+			colorIntensity += 0.025f;
+
+			Rectangle dimensions = GetDimensions().ToRectangle();
+			box.SetOutlineColor(Main.hslToRgb(colorIntensity, colorIntensity, 0.5f) * alpha);
+			box.SetSize(dimensions);
+			box.Draw();
+
+			Rectangle handle = GetHandleRectangle();
+			if (_dragging)
+			{
+				box.SetOutlineColor(new Color(0f, 1f, 0f, 1f) * alpha);
+			}
+			else
+			{	
+				box.SetOutlineColor(Color.Red * alpha);
+			}
+			box.SetSize(handle);
+			box.Draw();
 		}
 	}
 }

@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\tModLoader.targets" />
 	<PropertyGroup>
 		<AssemblyName>ParticleLibrary</AssemblyName>
-		<TargetFramework>net6.0</TargetFramework>
-		<PlatformTarget>AnyCPU</PlatformTarget>
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
@@ -34,6 +32,7 @@
 		<None Remove=".editorconfig" />
 		<None Remove=".gitattributes" />
 		<None Remove=".gitignore" />
+		<None Remove="Assets\Effects\InstancedParticle.fx" />
 		<None Remove="Assets\Effects\Particle.fx" />
 		<None Remove="Assets\Effects\Shape.fx" />
 		<None Remove="Assets\Textures\EmptyPixel.png" />
@@ -45,7 +44,6 @@
 		<None Remove="workshop.json" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="Resources.tt">

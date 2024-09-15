@@ -54,5 +54,17 @@ namespace ParticleLibrary.Core
 			Emitter e = Activator.CreateInstance(t, settings, particleSettings, colorSettings) as Emitter;
 			return new(e);
 		}
+
+		internal static Emitter CreateInstance<T>(EmitterSettings settings, EmitterParticleSettings particleSettings, EmitterColorSettings colorSettings) where T : Emitter, new()
+		{
+			var e = new T
+			{
+				EmitterSettings = settings,
+				ParticleSettings = particleSettings,
+				ColorSettings = colorSettings
+			};
+
+			return e;
+		}
 	}
 }

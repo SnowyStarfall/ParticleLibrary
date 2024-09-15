@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
 using ParticleLibrary.Core.Data;
+using ReLogic.Content;
 using ReLogic.Graphics;
 using System;
 using TerraCompendium.Core.Utilities;
 using Terraria.GameContent;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace ParticleLibrary.Utilities
@@ -51,6 +53,8 @@ namespace ParticleLibrary.Utilities
 		{
 			return Rectangle.Intersect(element.GetClippingRectangle(spriteBatch), spriteBatch.GraphicsDevice.ScissorRectangle);
 		}
+
+		public static Texture2D GetTexture(string path) => ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad).Value;
 
 		public static void Begin(this SpriteBatch spriteBatch, SpriteBatchSettings spriteBatchSettings, bool useMatrix = true)
 		{

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
 namespace ParticleLibrary.UI.Elements.Base
@@ -18,6 +19,7 @@ namespace ParticleLibrary.UI.Elements.Base
 		public StyleDimension ItemPadding { get; set; }
 
 		private readonly InnerList _innerList;
+		private readonly ScrollBar _scrollBar;
 
 		public List(Color fill, Color outline, float outlineThickness = 1, float cornerRadius = 0, bool soft = false) : base(fill, outline, outlineThickness, cornerRadius, soft)
 		{
@@ -34,6 +36,11 @@ namespace ParticleLibrary.UI.Elements.Base
 			_innerList.Width.Set(0f, 1f);
 			_innerList.Height.Set(0f, 1f);
 			Append(_innerList);
+
+			_scrollBar = new(ParticleLibraryConfig.CurrentTheme.Low, ParticleLibraryConfig.CurrentTheme.LowAccent);
+			_scrollBar.Width.Set(32f, 0f);
+			_scrollBar.Height.Set(0f, 1f);
+			Append(_scrollBar);
 
 			OverflowHidden = true;
 		}
@@ -82,6 +89,9 @@ namespace ParticleLibrary.UI.Elements.Base
 		public override void Recalculate()
 		{
 			base.Recalculate();
+
+			_scrollBar.Left.Set(-_scrollBar.Width.GetValue(_scrollBar.Parent.Width.Pixels), 1f);
+
 			//UpdateScrollbar();
 		}
 

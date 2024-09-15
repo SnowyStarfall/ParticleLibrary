@@ -14,6 +14,7 @@ namespace ParticleLibrary
 		{
 			public static class Effects
 			{
+				public const string InstancedParticle = @"ParticleLibrary/Assets/Effects/InstancedParticle";
 				public const string Particle = @"ParticleLibrary/Assets/Effects/Particle";
 				public const string Shape = @"ParticleLibrary/Assets/Effects/Shape";
 			}
@@ -55,14 +56,26 @@ namespace ParticleLibrary
 			public const string Devtool = @"ParticleLibrary/Content/Devtool";
 		}
 
-		public static class Examples
+		public static class Core
 		{
-			public const string ExampleParticle = @"ParticleLibrary/Examples/ExampleParticle";
+			public static class V1
+			{
+				public static class ParticleSystem
+				{
+					public const string GlowParticle = @"ParticleLibrary/Core/V1/ParticleSystem/GlowParticle";
+				}
+
+			}
+
 		}
 
-		public static class ParticleSystem
+		public static class Examples
 		{
-			public const string GlowParticle = @"ParticleLibrary/ParticleSystem/GlowParticle";
+			public static class V2
+			{
+				public const string ExampleParticle = @"ParticleLibrary/Examples/V2/ExampleParticle";
+			}
+
 		}
 
 		public const string Icon = @"ParticleLibrary/icon";

@@ -38,7 +38,7 @@ namespace ParticleLibrary.Core
 		public virtual Rectangle? Bounds { get; set; } = null;
 
 		/// <summary>
-		/// The visual position taking into account Main.screenPosition;
+		/// The visual position taking into account Main.screenPosition.
 		/// </summary>
 		public Vector2 VisualPosition => AnchorPosition + Position - Main.screenPosition;
 

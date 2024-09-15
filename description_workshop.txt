@@ -27,12 +27,13 @@ The 1.4 examples have been refurbished for the API 2.0 update. If you have more 
 Just subscribe <3 c:
 
 [h1] Modders & Installation [/h1]
-[b] This library is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Essentially this just means that if you use my code, you must open-source your code as well. [/b]
+[b] This library is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. A summary of what this means can be found at https://www.gnu.org/licenses/quick-guide-gplv3.en.html. [/b]
+[b] If you choose to use my code in your project, please adhere to the license and please credit me - SnowyStarfall - in your mod description and direct others to https://github.com/SnowyStarfall/ParticleLibrary/tree/main as the source for your implementation. [/b]
 [olist]
     [*]Subscribe to Particle Library
     [*]Go to the GitHub here: https://github.com/SnowyStarfall/ParticleLibrary/tree/main
-    [*]Download the Particle Library DLL and XML files
-    [*]Place them somewhere on your PC, or conventionally in a "lib" folder in your mod project
+    [*]Download the Particle Library DLL and XML files from the code repository, NOT the releases.
+    [*]Place them somewhere on your PC, or more conventionally in a "lib" folder in your mod project
     [*]In Visual Studio, right-click your csproj and hover over Add, then click Add COM Reference
     [*]Navigate to the DLL from before and select it
     [*]Open your mod's build.txt
@@ -54,3 +55,4 @@ Mods that use Particle Library:
 - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2893332653] Mod of Redemption [/url]
 - Shadows of Abaddon
 - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3019925104] Lunar Veil [/url]
+[quote=tModLoader]Developed By SnowyStarfall[/quote]

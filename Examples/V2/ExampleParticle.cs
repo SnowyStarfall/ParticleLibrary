@@ -24,7 +24,7 @@ namespace ParticleLibrary.Examples
 		/// The tool recreates the paths at compile time, meaning you will never have an incorrect path on accident.
 		/// See: <see href="https://github.com/prime31/Nez/blob/master/FAQs/ContentManagement.md#auto-generating-content-paths"/>
 		/// </summary>
-		public override string Texture => Resources.Examples.ExampleParticle;
+		public override string Texture => Resources.Examples.V2.ExampleParticle;
 		//public override string Texture => "ParticleLibrary/Examples/ExampleParticle";
 
 		/// <summary>

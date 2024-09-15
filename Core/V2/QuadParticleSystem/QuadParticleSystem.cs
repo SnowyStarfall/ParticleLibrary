@@ -11,6 +11,47 @@ namespace ParticleLibrary.Core
 	/// </summary>
 	public class QuadParticleSystem : GPUParticleSystem<QuadParticleSystemSettings, QuadParticle, QuadParticleVertex>, IDisposable
 	{
+		private static readonly VertexBuffer _geometryBuffer;
+		private static readonly IndexBuffer _indexBuffer;
+
+		private static readonly VertexElement[] _instanceElements;
+		private static readonly VertexDeclaration _instanceDeclaration;
+
+		static QuadParticleSystem()
+		{
+			// Create our static buffers. These represent our geometry (vertex quad) that will be used for all particle systems in the same way.
+			_geometryBuffer = new(Main.graphics.GraphicsDevice, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly);
+			_indexBuffer = new(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
+
+			_geometryBuffer.SetData(new VertexPositionTexture[4]
+{
+				new(new(-0.5f, -0.5f, 0f), Vector2.Zero),
+				new(new(0.5f, -0.5f, 0f), Vector2.UnitX),
+				new(new(-0.5f, 0.5f, 0f), Vector2.UnitY),
+				new(new(0.5f, -0.5f, 0f), Vector2.One)
+			});
+
+			_indexBuffer.SetData(new short[6]
+			{
+				0, 1, 3, 0, 3, 2
+			});
+
+			// Initialize our instancing vertex info
+			_instanceElements = new VertexElement[9];
+			_instanceElements[0] = new VertexElement(sizeof(float) * 0, VertexElementFormat.Vector4, VertexElementUsage.Normal, 0);
+			_instanceElements[1] = new VertexElement(sizeof(float) * 4, VertexElementFormat.Color, VertexElementUsage.Color, 0);
+			_instanceElements[2] = new VertexElement(sizeof(float) * 5, VertexElementFormat.Color, VertexElementUsage.Color, 0);
+			_instanceElements[3] = new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.Normal, 1);
+			_instanceElements[4] = new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector2, VertexElementUsage.Normal, 2);
+			_instanceElements[5] = new VertexElement(sizeof(float) * 12, VertexElementFormat.Vector2, VertexElementUsage.Normal, 3);
+			_instanceElements[6] = new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector4, VertexElementUsage.Normal, 4);
+			_instanceElements[7] = new VertexElement(sizeof(float) * 18, VertexElementFormat.Vector4, VertexElementUsage.Normal, 5);
+			_instanceElements[8] = new VertexElement(sizeof(float) * 22, VertexElementFormat.Vector4, VertexElementUsage.Normal, 6);
+
+			_instanceDeclaration = new(_instanceElements);
+		}
+
+
 		// Buffers
 		protected override DynamicVertexBuffer VertexBuffer { get; set; }
 		protected override DynamicIndexBuffer IndexBuffer { get; set; }
