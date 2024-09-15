@@ -96,8 +96,6 @@ namespace ParticleLibrary.Core.V3
 
 		private void Render(Layer layer)
 		{
-			//Main.spriteBatch.Draw(LibUtilities.GetTexture(Resources.Assets.Textures.Star), Vector2.Zero, Color.White);
-
 			Main.spriteBatch.End();
 
 			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))

@@ -73,7 +73,6 @@ namespace ParticleLibrary.Core.V3
 		/// </summary>
 		public void Update()
 		{
-			// TODO: remove
 			var sw = Stopwatch.StartNew();
 
 			for (int i = 0; i < _infos.Length; i++)
@@ -100,7 +99,6 @@ namespace ParticleLibrary.Core.V3
 				instance.Color = particle.Color;
 			}
 
-			// TODO: remove
 			sw.Stop();
 
 			ParticleLibrary.Log.Debug(sw.Elapsed.TotalMilliseconds + " ms");
