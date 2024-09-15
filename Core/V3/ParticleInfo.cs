@@ -12,13 +12,15 @@ namespace ParticleLibrary.Core.V3
 
         // Other
         public Color Color;
-        public int Time;
+        public int Time = int.MaxValue;
 
         // Readonly
         public readonly Vector2 InitialScale;
         public readonly Color InitialColor;
         public readonly int Duration;
         public readonly float[] Data;
+
+        internal bool Free = false;
 
         public ParticleInfo(Vector2 position, Vector2 velocity, float rotation, Vector2 scale, Color color, int duration, params float[] data)
         {

@@ -48,6 +48,13 @@ namespace ParticleLibrary.Core.V3
 			_infos = new ParticleInfo[_maxInstances];
 			_instances = new ParticleInstance[_maxInstances];
 			_inactiveInstances = new Stack<int>(_maxInstances);
+
+			for (int i = 0; i < _maxInstances; i++)
+			{
+				ref var info = ref _infos[i];
+				info.Free = true;
+			}
+
 			for (int i = _maxInstances - 1; i >= 0; i--)
 			{
 				_inactiveInstances.Push(i);
@@ -74,8 +81,9 @@ namespace ParticleLibrary.Core.V3
 				var particle = _infos[i];
 				if (particle.Time <= 0)
 				{
-					if (!_inactiveInstances.Contains(i))
+					if (!particle.Free)
 					{
+						particle.Free = true;
 						_inactiveInstances.Push(i);
 					}
 
