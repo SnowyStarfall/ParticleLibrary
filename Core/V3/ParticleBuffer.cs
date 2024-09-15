@@ -19,6 +19,8 @@ namespace ParticleLibrary.Core.V3
 		// Geometry
 		private static readonly VertexPositionTexture[] _vertices;
 		private static readonly short[] _indices;
+		private BlendState _blendState;
+		private SamplerState _samplerState;
 
 		// Data
 		private readonly TBehavior _behavior;
@@ -43,6 +45,9 @@ namespace ParticleLibrary.Core.V3
 
 		public ParticleBuffer(int maxInstances) : base(maxInstances)
 		{
+			_blendState = BlendState.AlphaBlend;
+			_samplerState = SamplerState.PointClamp;
+
 			_behavior = new TBehavior();
 			_maxInstances = GetMaxInstances();
 			_infos = new ParticleInfo[_maxInstances];
@@ -86,6 +91,9 @@ namespace ParticleLibrary.Core.V3
 					{
 						particle.Free = true;
 						_inactiveInstances.Push(i);
+
+						ref var inst = ref _instances[i];
+						inst.Color = Color.Black;
 					}
 
 					continue;
@@ -128,16 +136,16 @@ namespace ParticleLibrary.Core.V3
 			var texture = LibUtilities.GetTexture(_behavior.Texture);
 
 			// Set our variables
-			Main.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-			Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-			Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+			Main.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+			Main.graphics.GraphicsDevice.BlendState = _blendState;
+			Main.graphics.GraphicsDevice.SamplerStates[0] = _samplerState;
 			Main.graphics.GraphicsDevice.SetVertexBuffers(vertexBuffers);
 			Main.graphics.GraphicsDevice.Indices = indexBuffer;
 
 			// Apply effect and draw
 			Main.graphics.GraphicsDevice.Textures[0] = texture;
 			ParticleManagerV3.ParticleEffect.Apply();
-			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Length, 0, _vertices.Length / 2, Count);
+			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Length, 0, _vertices.Length / 2, _maxInstances);
 		}
 
 		/// <summary>
@@ -162,6 +170,26 @@ namespace ParticleLibrary.Core.V3
 
 			_infos[index] = info;
 			_instances[index] = instance;
+		}
+
+		public void SetBlendState(BlendState blendState)
+		{
+			if (blendState is null)
+			{
+				return;
+			}
+
+			_blendState = blendState;
+		}
+
+		public void SetSamplerState(SamplerState samplerState)
+		{
+			if(samplerState is null)
+			{
+				return;
+			}
+
+			_samplerState = samplerState;
 		}
 	}
 }
