@@ -1,5 +1,5 @@
-﻿using ParticleLibrary.Assets.Effects;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary.Assets.Effects;
 using ParticleLibrary.UI.Primitives;
 using ReLogic.Content;
 using Terraria;

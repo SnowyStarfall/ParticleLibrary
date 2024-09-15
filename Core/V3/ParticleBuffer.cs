@@ -73,6 +73,8 @@ namespace ParticleLibrary.Core.V3
 		/// </summary>
 		public void Update()
 		{
+			ParticleLibrary.Log.Debug("Particle count: " + (_maxInstances - _inactiveInstances.Count));
+
 			var sw = Stopwatch.StartNew();
 
 			for (int i = 0; i < _infos.Length; i++)
@@ -101,7 +103,7 @@ namespace ParticleLibrary.Core.V3
 
 			sw.Stop();
 
-			ParticleLibrary.Log.Debug(sw.Elapsed.TotalMilliseconds + " ms");
+			//ParticleLibrary.Log.Debug(sw.Elapsed.TotalMilliseconds + " ms");
 
 			// Active instances
 			if (_inactiveInstances.Count < _maxInstances)
@@ -135,7 +137,7 @@ namespace ParticleLibrary.Core.V3
 			// Apply effect and draw
 			Main.graphics.GraphicsDevice.Textures[0] = texture;
 			ParticleManagerV3.ParticleEffect.Apply();
-			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Length, 0, Count * 2, Count);
+			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Length, 0, _vertices.Length / 2, Count);
 		}
 
 		/// <summary>

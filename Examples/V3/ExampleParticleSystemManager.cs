@@ -22,14 +22,14 @@ namespace ParticleLibrary.Examples.V3
 				return;
 			}
 
-			ExampleParticleBuffer = new(8192);
+			ExampleParticleBuffer = new(262144);
 			ParticleManagerV3.RegisterUpdatable(ExampleParticleBuffer);
 			ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, ExampleParticleBuffer);
 		}
 
 		public override void PostUpdatePlayers()
 		{
-			for (int i = 0; i < 64; i++)
+			for (int i = 0; i < 2048; i++)
 			{
 				ExampleParticleBuffer.Create(new ParticleInfo(
 					position: Main.LocalPlayer.position,
