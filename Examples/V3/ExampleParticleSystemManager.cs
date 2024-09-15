@@ -29,7 +29,7 @@ namespace ParticleLibrary.Examples.V3
 
 		public override void PostUpdatePlayers()
 		{
-			for (int i = 0; i < 2048; i++)
+			for (int i = 0; i < 512; i++)
 			{
 				ExampleParticleBuffer.Create(new ParticleInfo(
 					position: Main.LocalPlayer.position,

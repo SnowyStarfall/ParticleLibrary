@@ -79,7 +79,7 @@ namespace ParticleLibrary.Core.V3
 
 			for (int i = 0; i < _infos.Length; i++)
 			{
-				var particle = _infos[i];
+				ref var particle = ref _infos[i];
 				if (particle.Time <= 0)
 				{
 					if (!particle.Free)
@@ -103,7 +103,7 @@ namespace ParticleLibrary.Core.V3
 
 			sw.Stop();
 
-			//ParticleLibrary.Log.Debug(sw.Elapsed.TotalMilliseconds + " ms");
+			ParticleLibrary.Log.Debug(sw.Elapsed.TotalMilliseconds + " ms");
 
 			// Active instances
 			if (_inactiveInstances.Count < _maxInstances)
