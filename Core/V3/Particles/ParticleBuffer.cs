@@ -5,6 +5,7 @@ using ParticleLibrary.Utilities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core.V3.Particles
@@ -146,8 +147,13 @@ namespace ParticleLibrary.Core.V3.Particles
         /// <param name="info">The info.</param>
         public void Create(in ParticleInfo info)
         {
-            // Active instances
-            if (Count == _maxInstances)
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
+			// Active instances
+			if (Count == _maxInstances)
             {
                 return;
             }

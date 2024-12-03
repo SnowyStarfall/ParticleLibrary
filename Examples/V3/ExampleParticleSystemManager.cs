@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Core;
+﻿using ParticleLibrary.Core;
 using ParticleLibrary.Core.V3;
 using ParticleLibrary.Core.V3.Particles;
-using ParticleLibrary.Utilities;
-using ReLogic.Content;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,9 +25,9 @@ namespace ParticleLibrary.Examples.V3
 			// Think about how many particles you expect to have at any given
 			// moment and make that the size your buffer.
 
-			//ExampleParticleBuffer = new(512);
-			//ParticleManagerV3.RegisterUpdatable(ExampleParticleBuffer);
-			//ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, ExampleParticleBuffer);
+			ExampleParticleBuffer = new(512);
+			ParticleManagerV3.RegisterUpdatable(ExampleParticleBuffer);
+			ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, ExampleParticleBuffer);
 		}
 
 		public override void PostUpdatePlayers()

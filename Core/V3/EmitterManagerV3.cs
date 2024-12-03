@@ -32,11 +32,21 @@ namespace ParticleLibrary.Core.V3
 
 		public override void Load()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			_emitters = new();
 		}
 
 		public override void Unload()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			_emitters = null;
 		}
 
@@ -74,24 +84,26 @@ namespace ParticleLibrary.Core.V3
 
 		public override void PreUpdateWorld()
 		{
-			if (Main.netMode != NetmodeID.Server)
+			if (Main.netMode is NetmodeID.Server)
 			{
-				foreach (var emitter in _emitters.Buffer)
+				return;
+			}
+
+			foreach (var emitter in _emitters.Buffer)
+			{
+				if (Main.LocalPlayer?.active != true)
 				{
-					if (Main.LocalPlayer?.active != true)
-					{
-						continue;
-					}
+					continue;
+				}
 
-					if (emitter is null)
-					{
-						return;
-					}
+				if (emitter is null)
+				{
+					return;
+				}
 
-					if (ScreenLocation.Intersects(new Rectangle((int)emitter.Position.X - emitter.Size.X / 2, (int)emitter.Position.Y - emitter.Size.Y / 2, emitter.Size.X, emitter.Size.Y)))
-					{
-						emitter.Update();
-					}
+				if (ScreenLocation.Intersects(new Rectangle((int)emitter.Position.X - emitter.Size.X / 2, (int)emitter.Position.Y - emitter.Size.Y / 2, emitter.Size.X, emitter.Size.Y)))
+				{
+					emitter.Update();
 				}
 			}
 		}

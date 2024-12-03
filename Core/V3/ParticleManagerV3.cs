@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ParticleLibrary.Core.V3
 {
@@ -19,6 +20,11 @@ namespace ParticleLibrary.Core.V3
 
 		public override void Load()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			Mod.Logger.Info("Initializing ParticleManagerV3...");
 
 			InstancedParticleEffect = new();
@@ -53,6 +59,11 @@ namespace ParticleLibrary.Core.V3
 
 		public override void Unload()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			Mod.Logger.Info("Unloading ParticleManagerV3...");
 
 			Main.QueueMainThreadAction(() =>
@@ -105,6 +116,11 @@ namespace ParticleLibrary.Core.V3
 
 		public override void PostUpdateDusts()
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			foreach (var updatable in _updateables)
 			{
 				updatable.Update();
@@ -136,6 +152,11 @@ namespace ParticleLibrary.Core.V3
 		/// <param name="updatable">The updatable.</param>
 		public static void RegisterUpdatable(IUpdatable updatable)
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			if (_updateables.Contains(updatable))
 			{
 				return;
@@ -150,6 +171,11 @@ namespace ParticleLibrary.Core.V3
 		/// <param name="updatable">The updatable.</param>
 		public static void UnregisterUpdatable(IUpdatable updatable)
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+
+			}
 			if (!_updateables.Contains(updatable))
 			{
 				return;
@@ -165,6 +191,11 @@ namespace ParticleLibrary.Core.V3
 		/// <param name="renderable">The renderable.</param>
 		public static void RegisterRenderable(Layer layer, IRenderable renderable)
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))
 			{
 				_renderables.Add(layer, [renderable]);
@@ -181,6 +212,11 @@ namespace ParticleLibrary.Core.V3
 		/// <param name="renderable">The renderable.</param>
 		public static void UnregisterRenderable(Layer layer, IRenderable renderable)
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return;
+			}
+
 			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))
 			{
 				return;
@@ -213,6 +249,11 @@ namespace ParticleLibrary.Core.V3
 			where TVertex : struct
 			where TInstance : struct
 		{
+			if (Main.netMode is NetmodeID.Server)
+			{
+				return 0;
+			}
+
 			if (_buffers.Contains(buffer))
 			{
 				return 0;
