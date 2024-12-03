@@ -63,7 +63,6 @@ namespace ParticleLibrary.Core.V3
 				{
 					if (buffer is IDisposable disposable)
 					{
-						var type = buffer.GetType();
 						Mod.Logger.Info("Disposing buffer...");
 
 						disposable?.Dispose();
