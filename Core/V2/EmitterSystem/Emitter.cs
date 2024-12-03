@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core.Data;
+using System;
 using Terraria;
 using Terraria.ModLoader.IO;
 
@@ -9,6 +10,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Base class for all emitters. Inherit this class to create your own emitter.
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public abstract class Emitter
 	{
 		/// <summary>

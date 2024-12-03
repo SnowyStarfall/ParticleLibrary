@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public abstract class GPUParticleSystem<TSettings, TParticle, TVertex> : IGPUParticleSystem<TParticle>, IDisposable
 		where TSettings : GPUParticleSystemSettings
 		where TParticle : GPUParticle
@@ -81,7 +82,7 @@ namespace ParticleLibrary.Core
 		public GPUParticleSystem(TSettings settings)
 		{
 			Texture = settings.Texture;
-			MaxParticles = settings.MaxParticles;
+			MaxParticles = GPUParticleManager.GetAdjustedMaxParticles(settings.MaxParticles);
 			Lifespan = settings.Lifespan;
 			Layer = settings.Layer;
 			BlendState = settings.BlendState;
@@ -109,11 +110,6 @@ namespace ParticleLibrary.Core
 				LoadEffect();
 				return;
 			}
-
-			//if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt))
-			//{
-			//	ReloadEffect();
-			//}
 
 			// Batched data transfer
 			if (SendBatch)
@@ -151,10 +147,7 @@ namespace ParticleLibrary.Core
 		/// <exception cref="ArgumentNullException"></exception>
 		public void SetTexture(Texture2D value)
 		{
-			if (value is null)
-			{
-				throw new ArgumentNullException(nameof(value));
-			}
+			ArgumentNullException.ThrowIfNull(value);
 
 			Texture = value;
 			TextureParameter.SetValue(value);
@@ -167,10 +160,7 @@ namespace ParticleLibrary.Core
 		/// <exception cref="ArgumentOutOfRangeException"></exception>
 		public void SetLifespan(int value)
 		{
-			if (value < -1)
-			{
-				throw new ArgumentOutOfRangeException(nameof(value));
-			}
+			ArgumentOutOfRangeException.ThrowIfLessThan(value, -1);
 
 			Lifespan = value;
 			LifespanParameter.SetValue(value);
@@ -194,10 +184,7 @@ namespace ParticleLibrary.Core
 		/// <exception cref="ArgumentNullException"></exception>
 		public void SetBlendState(BlendState value)
 		{
-			if (value is null)
-			{
-				throw new ArgumentNullException(nameof(value));
-			}
+			ArgumentNullException.ThrowIfNull(value);
 
 			BlendState = value;
 		}

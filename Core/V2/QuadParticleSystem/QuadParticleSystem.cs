@@ -9,6 +9,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents a Quad particle system. Do not forget to call <see cref="Dispose(bool)"/> when no longer using it
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class QuadParticleSystem : GPUParticleSystem<QuadParticleSystemSettings, QuadParticle, QuadParticleVertex>, IDisposable
 	{
 		private static readonly VertexBuffer _geometryBuffer;

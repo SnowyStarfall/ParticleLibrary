@@ -144,7 +144,7 @@ float4 PointParticle(GVertexShaderOutput input)
 
 float4 QuadDebug(GVertexShaderOutput input)
 {
-		// Quad debugging
+	// Quad debugging
 	if (input.TexCoords.x < 0.1 && input.TexCoords.y < 0.1)
 		return float4(1, 0, 0, 1);
 	if (input.TexCoords.x > 0.9 && input.TexCoords.y < 0.1)

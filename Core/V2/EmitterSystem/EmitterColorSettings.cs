@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Utilities;
+using System;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public class EmitterColorSettings
 	{
 		public bool UseHSLA { get; set; } = false;

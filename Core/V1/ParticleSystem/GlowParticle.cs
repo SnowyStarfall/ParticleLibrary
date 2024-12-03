@@ -4,7 +4,7 @@ using System;
 
 namespace ParticleLibrary.ParticleSystem
 {
-	[Obsolete("This type is obsolete")]
+	[Obsolete("This type is obsolete and WILL be removed in a future version")]
 	public class GlowParticle : Particle
 	{
 		public override void SetDefaults()

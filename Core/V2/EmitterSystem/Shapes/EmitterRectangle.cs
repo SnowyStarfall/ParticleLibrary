@@ -4,8 +4,9 @@ using Terraria;
 
 namespace ParticleLibrary.Core.Shapes
 {
-	public class EmitterRectangle : EmitterShape
+    public class EmitterRectangle : EmitterShape
 	{
+		[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 		public override Vector2 Solve(Vector2 center, EmitterOrigin origin, float width, float height)
 		{
 			if (origin is EmitterOrigin.Spread)

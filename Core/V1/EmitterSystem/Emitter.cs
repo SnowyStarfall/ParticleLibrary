@@ -8,7 +8,7 @@ namespace ParticleLibrary.EmitterSystem
 	/// <summary>
 	/// Base class for all emitters. Inherit this class to create your own emitter.
 	/// </summary>
-	[Obsolete("This type is obsolete, use ParticleLibrary.Core.Emitter instead")]
+	[Obsolete("This type is obsolete and WILL be removed in a future version, use ParticleLibrary.Core.V3.Emitter instead")]
 	public abstract class Emitter : Entity
 	{
 		/// <summary>

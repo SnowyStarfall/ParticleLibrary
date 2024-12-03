@@ -6,6 +6,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents the settings for a <see cref="PointParticleSystem"/>
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class PointParticleSystemSettings : GPUParticleSystemSettings
 	{
 		/// <summary>

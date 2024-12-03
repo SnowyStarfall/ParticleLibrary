@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 
 namespace ParticleLibrary.Core.Data
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public struct VisualParameters
 	{
 		public Color StartColor;

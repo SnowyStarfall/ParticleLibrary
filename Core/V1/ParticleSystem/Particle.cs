@@ -11,7 +11,7 @@ namespace ParticleLibrary
 	/// <summary>
 	/// Base class for all particles. Inherit this class to create your own particle.
 	/// </summary>
-	[Obsolete("This type is obsolete, use ParticleLibrary.Core.CParticle instead")]
+	[Obsolete("This type is obsolete and WILL be removed in a future version")]
 	public abstract class Particle : Entity
 	{
 		protected Particle()
@@ -29,7 +29,7 @@ namespace ParticleLibrary
 		/// </summary>
 		public override Vector2 VisualPosition => AnchorPosition + position - Main.screenPosition;
 
-		[Obsolete("This type is obsolete, use ParticleLibrary.Core.Layer instead")]
+		[Obsolete("This type is obsolete and WILL be removed in a future version, use ParticleLibrary.Core.Layer instead")]
 		public enum Layer
 		{
 			/// <summary>

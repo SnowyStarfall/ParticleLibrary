@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary
 {
-	[Obsolete("This type is obsolete, use ParticleLibrary.Core.EmitterManager instead")]
+	[Obsolete("This type is obsolete and WILL be removed in a future version, use ParticleLibrary.Core.V3.EmitterManager instead")]
 	public class EmitterManager : ModSystem
 	{
 		public delegate Emitter NewEmitterCreated(Vector2 Position, Emitter Emitter, string Data = null, float CullDistance = -1f);

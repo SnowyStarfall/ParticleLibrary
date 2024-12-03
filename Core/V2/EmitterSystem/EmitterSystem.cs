@@ -14,6 +14,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Manages the emitters in the world
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.EmitterManagerV3 instead")]
 	public class EmitterSystem : ModSystem
 	{
 		/// <summary>

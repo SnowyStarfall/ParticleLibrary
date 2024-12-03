@@ -30,13 +30,16 @@ namespace ParticleLibrary.Core.V3
 
 		public GeometryBuffer(int maxInstances)
 		{
+			ParticleLibrary.Log.Info("Registering new buffer...");
+
 			_maxInstances = ParticleManagerV3.RegisterBuffer(this, maxInstances);
+
+			ParticleLibrary.Log.Info("...Registered geometry buffer successfully");
 		}
 
 		/// <summary>
 		/// Initializes the vertex and index buffers. This must be called.
 		/// </summary>
-		/// <typeparam name="T">The vertex type to use.</typeparam>
 		/// <param name="vertices">The geometry.</param>
 		/// <param name="indices">The indices for the geometry.</param>
 		/// <param name="instanceElements">The elements describing the instance struct.</param>

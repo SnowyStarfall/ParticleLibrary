@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Core.Shapes;
+using System;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public class EmitterSettings
 	{
 		public static EmitterPoint Point { get; internal set; }

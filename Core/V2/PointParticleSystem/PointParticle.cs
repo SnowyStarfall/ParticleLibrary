@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace ParticleLibrary.Core
 {
 	/// <summary>
 	/// The base for a PointParticle
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class PointParticle : GPUParticle
 	{
 		/// <summary>

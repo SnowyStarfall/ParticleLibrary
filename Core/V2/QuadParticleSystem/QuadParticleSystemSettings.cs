@@ -8,6 +8,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Represents the settings for a <see cref="QuadParticleSystem"/>
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class QuadParticleSystemSettings : GPUParticleSystemSettings
 	{
 		/// <summary>

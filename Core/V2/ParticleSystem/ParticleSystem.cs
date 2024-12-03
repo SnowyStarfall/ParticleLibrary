@@ -12,6 +12,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// This class manages the CPU particle system.
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class ParticleSystem : ModSystem
 	{
 		/// <summary>

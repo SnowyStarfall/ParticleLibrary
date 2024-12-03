@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary.Core;
+using ParticleLibrary.Core.V3;
 using ParticleLibrary.UI.Elements.Base;
 using ParticleLibrary.UI.Themes;
 using System;
@@ -12,7 +13,7 @@ using Terraria.UI;
 
 namespace ParticleLibrary.UI.States
 {
-	internal class Debug : UIState
+    internal class Debug : UIState
 	{
 		public bool Visible => ParticleLibraryConfig.Instance.DebugUI;
 		public Theme Theme => ParticleLibraryConfig.CurrentTheme;

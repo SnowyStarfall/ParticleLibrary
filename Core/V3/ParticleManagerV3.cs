@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary.Core.V3.Particles;
 using ParticleLibrary.Core.V3.Interfaces;
 using ParticleLibrary.Utilities;
 using System;
@@ -10,7 +11,7 @@ namespace ParticleLibrary.Core.V3
 {
 	public class ParticleManagerV3 : ModSystem
 	{
-		public static InstancedParticleEffect ParticleEffect { get; private set; }
+		public static InstancedParticleEffect InstancedParticleEffect { get; private set; }
 
 		private static List<IBuffer> _buffers;
 		private static List<IUpdatable> _updateables;
@@ -18,11 +19,15 @@ namespace ParticleLibrary.Core.V3
 
 		public override void Load()
 		{
-			ParticleEffect = new();
+			Mod.Logger.Info("Initializing ParticleManagerV3...");
+
+			InstancedParticleEffect = new();
 
 			_buffers = [];
 			_updateables = [];
 			_renderables = [];
+
+			Mod.Logger.Info("Hooking into draw layers...");
 
 			DrawHooks.Hook(Layer.BeforeBackground, Render);
 			DrawHooks.Hook(Layer.BeforeWalls, Render);
@@ -42,17 +47,26 @@ namespace ParticleLibrary.Core.V3
 			DrawHooks.Hook(Layer.AfterInterface, Render);
 			DrawHooks.Hook(Layer.BeforeMainMenu, Render);
 			DrawHooks.Hook(Layer.AfterMainMenu, Render);
+
+			Mod.Logger.Info("...Initialization complete");
 		}
 
 		public override void Unload()
 		{
+			Mod.Logger.Info("Unloading ParticleManagerV3...");
+
 			Main.QueueMainThreadAction(() =>
 			{
+				Mod.Logger.Info("Disposing buffers...");
+
 				foreach (var buffer in _buffers)
 				{
 					if (buffer is IDisposable disposable)
 					{
-						disposable.Dispose();
+						var type = buffer.GetType();
+						Mod.Logger.Info("Disposing buffer...");
+
+						disposable?.Dispose();
 					}
 				}
 
@@ -65,6 +79,8 @@ namespace ParticleLibrary.Core.V3
 				_renderables.Clear();
 				_renderables = null;
 			});
+
+			Mod.Logger.Info("Unhooking from draw layers...");
 
 			DrawHooks.UnHook(Layer.BeforeBackground, Render);
 			DrawHooks.UnHook(Layer.BeforeWalls, Render);
@@ -84,6 +100,8 @@ namespace ParticleLibrary.Core.V3
 			DrawHooks.UnHook(Layer.AfterInterface, Render);
 			DrawHooks.UnHook(Layer.BeforeMainMenu, Render);
 			DrawHooks.UnHook(Layer.AfterMainMenu, Render);
+
+			Mod.Logger.Info("...Unloading complete");
 		}
 
 		public override void PostUpdateDusts()

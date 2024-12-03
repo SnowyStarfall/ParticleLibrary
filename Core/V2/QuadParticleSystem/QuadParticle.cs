@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace ParticleLibrary.Core
 {
 	/// <summary>
 	/// The base for a GParticle.
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class QuadParticle : GPUParticle
 	{
 		/// <summary>

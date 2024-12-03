@@ -1,6 +1,7 @@
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
+using ParticleLibrary.Core.V3.Emission;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary

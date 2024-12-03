@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParticleLibrary.Core.V3.Interfaces
 {
-	public interface IBuffer
+	public interface IBuffer : IDisposable
 	{
 	}
 }

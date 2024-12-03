@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 
-namespace ParticleLibrary.Core.V3
+namespace ParticleLibrary.Core.V3.Particles
 {
     public struct ParticleInstance
     {

@@ -1,4 +1,4 @@
-﻿using ParticleLibrary.Core.V3;
+﻿using ParticleLibrary.Core.V3.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using Terraria;
 
 namespace ParticleLibrary.Examples.V3
 {
-	public class ExampleParticleBehavior : Behavior<ParticleInfo>
+    public class ExampleParticleBehavior : Behavior<ParticleInfo>
 	{
 		// This is the texture that will be used for your particle.
 		public override string Texture { get; } = Resources.Assets.Textures.Star;

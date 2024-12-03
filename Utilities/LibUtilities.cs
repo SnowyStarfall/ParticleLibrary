@@ -5,10 +5,13 @@ using ParticleLibrary.Core.Data;
 using ReLogic.Content;
 using ReLogic.Graphics;
 using System;
+using System.Diagnostics;
 using TerraCompendium.Core.Utilities;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
+using SystemVector2 = System.Numerics.Vector2;
 
 namespace ParticleLibrary.Utilities
 {
@@ -29,6 +32,34 @@ namespace ParticleLibrary.Utilities
 				CullMode = CullMode.None,
 				ScissorTestEnable = true
 			};
+		}
+
+		public static SystemVector2 ToNumerics(this in Vector2 v) => new(v.X, v.Y);
+
+		public static SystemVector2 DirectionTo(this in SystemVector2 from, in SystemVector2 to)
+		{
+			return SystemVector2.Normalize(to - from);
+		}
+
+		public static float AngleTo(this in SystemVector2 from, in SystemVector2 to)
+		{
+			var v = to - from;
+			return (float)Math.Atan2(v.Y, v.X);
+		}
+
+		public static float ToRotation(this in SystemVector2 v)
+		{
+			return (float)Math.Atan2(v.Y, v.X);
+		}
+
+		public static SystemVector2 RotatedBy(this in SystemVector2 v, float radians)
+		{
+			float cos = MathF.Cos(radians);
+			float sin = MathF.Sin(radians);
+			return new SystemVector2(
+				v.X * cos - v.Y * sin,
+				v.X * sin + v.Y * cos
+			);
 		}
 
 		public static Vector4 Vec4From2Vec2(Vector2 xy, Vector2 zw) => new(xy, zw.X, zw.Y);

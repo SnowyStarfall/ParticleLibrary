@@ -1,27 +1,13 @@
-| With the release of API 2.0, any and all bug reports are very much appreciated! |
+| With the release of API 3.0, any and all bug reports are very much appreciated! |
 | I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF |
 | Note that this mod DOES NOT CHANGE GAMEPLAY unless explicitly used by other mods!! |
 
 | Particle Library |
-A library that provides a heavily customizable API to allow modders to create performant Particles - serving as an alternative to Terraria's Dust and Particles.
-
-| CPU Particles |
-CPU Particles are modeled to feel much like Projectiles. They have Update and Draw methods. They also have a Layer, which determines their place in the draw order. 
-Generally CPU Particles are limited by the power of the CPU. While they are much more customizable, the other Particle variants are more performant at the cost of control.
-
-| Quad Particles |
-Quad Particles live entirely on the GPU. They sacrifice control for very high performance. This comes at the cost of RAM usage, however.
-
-| Point Particles |
-Point Particles are much like Quad particles; they live entirely on the GPU and sacrifice control for performance gains. 
-The notable difference is Point Particles only render as a single pixel and are much more performant than Quad particles at the cost of texture customizability. They also cost less RAM, but still more RAM than CPU Particles.
-
-| Emitters |
-Emitters are designed to be customizable objects that provide functionality for spawning particles. They can be overridden for custom functionality or can be quickly created with the provided settings.
-They can save and load with the world. They also have Update and Draw methods, and by default can only render before Dust. They can also store data in the form of a string as well as a plethora of customization settings.
+A library that provides an API to allow modders to create performant, customizable particles - serving as an alternative to Terraria's dust and particles.
 
 | Examples |
-The 1.4 examples have been refurbished for the API 2.0 update. If you have more intricate questions or run into issues, please join my Discord server: https://discord.gg/bhCuppRdVF
+You may find examples at https://github.com/SnowyStarfall/ParticleLibrary/tree/main/Examples
+If you have more intricate questions or run into issues, please join my Discord server: https://discord.gg/bhCuppRdVF
 
 | Players & Installation |
 Just subscribe <3 c:
@@ -41,7 +27,7 @@ If you choose to use my code in your project, please adhere to the license and p
 - In your modReferences, add ParticleLibrary
     - modReferences = ParticleLibrary
     - (modReferences can be split by commas 'A, B, C')
-
+    - build.txt guide: https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties
 
 | Credits & Contribution |
 Icon by Maskano https://mobile.twitter.com/maskanomask, go check them out they're COOL!!!

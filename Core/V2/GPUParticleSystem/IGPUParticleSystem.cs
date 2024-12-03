@@ -4,6 +4,7 @@ using System;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public interface IGPUParticleSystem<T> where T : class
 	{
 		void Draw(Layer layer = Layer.None);

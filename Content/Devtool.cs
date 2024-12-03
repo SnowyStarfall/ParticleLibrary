@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ParticleLibrary.Core;
+using ParticleLibrary.Core.V3;
+using ParticleLibrary.Core.V3.Emission;
 using ParticleLibrary.Examples;
-using ParticleLibrary.Examples.V3;
 using ParticleLibrary.Utilities;
 using ReLogic.Graphics;
 using Terraria;
@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary.Content
 {
-	public class Devtool : ModItem
+    public class Devtool : ModItem
 	{
 		public int Width => Main.screenWidth;
 		public int Height => Main.screenHeight;
@@ -58,12 +58,6 @@ namespace ParticleLibrary.Content
 					return true;
 				}
 
-
-				Core.EmitterSystem.NewEmitter(new ExampleEmitter(new EmitterSettings()
-				{
-					Position = Main.MouseWorld
-				}));
-
 				return true;
 			}
 
@@ -71,62 +65,9 @@ namespace ParticleLibrary.Content
 			{
 				if (rightClick)
 				{
-					for (int i = 0; i < 10000; i++)
-					{
-						Vector2 shift = new Vector2(256f, 0f).RotatedBy(MathHelper.ToRadians(i * 36f));
-
-						for (int k = 0; k < 10; k++)
-						{
-							Vector2 position = Main.MouseWorld + shift;
-							Vector2 velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 4f);
-
-							QuadParticle settings = new()
-							{
-								StartColor = new(1f, 0f, 0f, 0f),
-								EndColor = new(0f, 1f, 0f, 0f),
-
-								Scale = new Vector2(0.5f),
-								ScaleVelocity = new Vector2(-0.5f / 120f),
-								Rotation = 0f,
-								RotationVelocity = -0.1f,
-
-								Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
-								DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
-							};
-
-							GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
-						}
-					}
 					return true;
 				}
 
-
-				for (int i = 0; i < 10; i++)
-				{
-					Vector2 shift = new Vector2(256f, 0f).RotatedBy(MathHelper.ToRadians(i * 36f));
-
-					for (int k = 0; k < 1; k++)
-					{
-						Vector2 position = Main.MouseWorld + shift;
-						Vector2 velocity = Vector2.Zero;
-
-						QuadParticle settings = new()
-						{
-							StartColor = new(1f, 0f, 0f, 0f),
-							EndColor = new(0f, 1f, 0f, 0f),
-
-							Scale = new Vector2(0.5f),
-							//ScaleVelocity = new Vector2(-0.5f / 120f),
-							Rotation = 0f,
-							RotationVelocity = -0.1f,
-
-							Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
-							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
-						};
-
-						GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
-					}
-				}
 				return true;
 			}
 
@@ -137,21 +78,6 @@ namespace ParticleLibrary.Content
 					return true;
 				}
 
-				Vector2 position = Main.MouseWorld;
-				Vector2 velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 4f);
-
-				QuadParticle settings = new()
-				{
-					StartColor = new(1f, 0f, 0f, 0f),
-					EndColor = new(0f, 1f, 0f, 0f),
-
-					Scale = new Vector2(0.125f),
-					Rotation = 0f,
-					RotationVelocity = -0.1f
-				};
-
-				GPUParticleManager.TestQuadParticleSystem.NewParticle(position, velocity, settings);
-
 				return true;
 			}
 
@@ -159,43 +85,20 @@ namespace ParticleLibrary.Content
 			{
 				if (rightClick)
 				{
-					Core.EmitterSystem.NewEmitter<ExampleEmitter>(new EmitterSettings
-					{
-						Position = Main.MouseWorld
-					});
 					return true;
-				}
-
-				float offset = 0f;
-				for (int i = 0; i < 100000; i++)
-				{
-					Vector2 shift = new Vector2(256f + (offset += 0.001f), 0f).RotatedBy(MathHelper.ToRadians(i * 36f));
-
-					for (int k = 0; k < 1; k++)
-					{
-						Vector2 position = Main.MouseWorld + shift;
-						Vector2 velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(1f, 4f);
-
-						PointParticle settings = new()
-						{
-							StartColor = new(1f, 0f, 0f, 0f),
-							EndColor = new(0f, 0f, 1f, 0f),
-
-							Depth = Main.rand.NextFloat(0.5f, 1.5f + float.Epsilon),
-							//DepthVelocity = Main.rand.NextFloat(-0.003f, 0.003f + float.Epsilon),
-						};
-
-						GPUParticleManager.TestPointParticleSystem.NewParticle(position, velocity, settings);
-					}
 				}
 
 				return true;
 			}
 
 			if (alt)
+			{
 				return Alt(player, rightClick);
+			}
 			else
+			{
 				return Normal(player, rightClick);
+			}
 		}
 
 		public bool Alt(Player player, bool rightClick)
@@ -284,33 +187,6 @@ namespace ParticleLibrary.Content
 
 				Point mouseTile = new((int)(Main.MouseWorld.X / 16f), (int)(Main.MouseWorld.Y / 16f));
 				float randDegrees = Main.rand.NextFloat(0f, 1f + float.Epsilon) * MathHelper.TwoPi;
-
-				QuadParticle quad = new()
-				{
-					StartColor = Color.White.WithAlpha(0f),
-					EndColor = Color.White.WithAlpha(0f),
-					//VelocityDeviation = new Vector2(-0.5f, 0f).RotatedBy(randDegrees),
-					//VelocityAcceleration = new Vector2(0.3f, 0.3f),
-					Scale = new Vector2(Main.rand.NextFloat(0.01f, 0.1f + float.Epsilon)),
-					//ScaleVelocity = new Vector2(0.1f),
-					//Rotation = Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi + float.Epsilon),
-					//RotationVelocity = Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
-				};
-
-
-				PointParticle point = new()
-				{
-					//StartColor = Color.Black.WithAlpha(0f),
-					//EndColor = Color.White.WithAlpha(0f),
-					StartColor = Color.White.WithAlpha(0f),
-					EndColor = Color.Black.WithAlpha(0f),
-					VelocityDeviation = new Vector2(1f, 0f),
-					VelocityAcceleration = new Vector2(1f, 1f),
-					//Depth = 1f + Main.rand.NextFloat(-0.1f, 0.1f + float.Epsilon),
-					//DepthVelocity = Main.rand.NextFloat(-0.001f, 0.001f + float.Epsilon)
-				};
 
 				//if (Main.tile[mouseTile].HasTile)
 				//{

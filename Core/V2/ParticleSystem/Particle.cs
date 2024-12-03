@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +10,7 @@ namespace ParticleLibrary.Core
 	/// <summary>
 	/// Base class for all particles. Inherit this class to create your own particle.
 	/// </summary>
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public abstract class Particle
 	{
 		/// <summary>

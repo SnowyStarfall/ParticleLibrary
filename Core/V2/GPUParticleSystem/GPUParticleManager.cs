@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class GPUParticleManager : ModSystem
 	{
 		/// <summary>
@@ -23,24 +24,6 @@ namespace ParticleLibrary.Core
 		/// </summary>
 		public static IReadOnlyCollection<PointParticleSystem> PointSystems { get => _pointSystems.Buffer.ToList().AsReadOnly(); }
 		private static FastList<PointParticleSystem> _pointSystems;
-
-		/// <summary>
-		/// The maximum amount of Quad particles allowed
-		/// </summary>
-		public static int MaximumQuadParticleBudget => Config.MaxQuadParticles;
-		/// <summary>
-		/// The current Quad particle budget, taking into account the requirements of all registered systems
-		/// </summary>
-		public static int FreeQuadParticleBudget { get; private set; } = Config.MaxQuadParticles;
-
-		/// <summary>
-		/// The maximum amount of Point particles allowed
-		/// </summary>
-		public static int MaximumPointParticleBudget => Config.MaxQuadParticles;
-		/// <summary>
-		/// The current Point particle budget, taking into account the requirements of all registered systems
-		/// </summary>
-		public static int FreePointParticleBudget { get; private set; } = Config.MaxQuadParticles;
 
 		internal static QuadParticleSystem TestQuadParticleSystem;
 		internal static PointParticleSystem TestPointParticleSystem;
@@ -79,46 +62,43 @@ namespace ParticleLibrary.Core
 
 		internal static void AddQuadSystem(QuadParticleSystem system)
 		{
-			if (system is null)
-			{
-				throw new ArgumentNullException(nameof(system));
-			}
+			ArgumentNullException.ThrowIfNull(system);
 
 			_quadSystems.Add(system);
-			FreeQuadParticleBudget -= system.MaxParticles;
 		}
 
 		internal static void RemoveQuadSystem(QuadParticleSystem system)
 		{
-			if (system is null)
-			{
-				throw new ArgumentNullException(nameof(system));
-			}
+			ArgumentNullException.ThrowIfNull(system);
 
 			_quadSystems.Remove(system);
-			FreeQuadParticleBudget += system.MaxParticles;
 		}
 
 		internal static void AddPointSystem(PointParticleSystem system)
 		{
-			if (system is null)
-			{
-				throw new ArgumentNullException(nameof(system));
-			}
+			ArgumentNullException.ThrowIfNull(system);
 
 			_pointSystems.Add(system);
-			FreePointParticleBudget -= system.MaxParticles;
 		}
 
 		internal static void RemovePointSystem(PointParticleSystem system)
 		{
-			if (system is null)
-			{
-				throw new ArgumentNullException(nameof(system));
-			}
+			ArgumentNullException.ThrowIfNull(system);
 
 			_pointSystems.Remove(system);
-			FreePointParticleBudget += system.MaxParticles;
+		}
+
+		internal static int GetAdjustedMaxParticles(int maxParticles)
+		{
+			return ParticleLibraryConfig.Instance.ParticleLimit switch
+			{
+				ParticleLimit.None => 0,
+				ParticleLimit.Low => maxParticles / 8,
+				ParticleLimit.Medium => maxParticles / 4,
+				ParticleLimit.High => maxParticles / 2,
+				ParticleLimit.Unlimited => maxParticles,
+				_ => maxParticles / 4
+			};
 		}
 	}
 }

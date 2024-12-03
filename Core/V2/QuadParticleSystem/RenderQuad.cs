@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace ParticleLibrary.Core
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Particles instead")]
 	public class RenderQuad
 	{
 		public Color TopLeft { get; set; }

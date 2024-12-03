@@ -1,6 +1,6 @@
 displayName = Particle Library
 author = SnowyStarfall
-version = 2.0.0.2
+version = 3.0.0.0
 homepage = https://github.com/SnowyStarfall/ParticleLibrary
 hideCode = false
 hideResources = true

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace ParticleLibrary.Core.Shapes
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public abstract class EmitterShape
 	{
 		/// <summary>

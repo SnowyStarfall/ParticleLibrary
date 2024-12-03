@@ -4,6 +4,7 @@ using Terraria;
 
 namespace ParticleLibrary.Core.Shapes
 {
+	[Obsolete("This type is obsolete, use ParticleLibrary.Core.V3.Emission instead")]
 	public class EmitterCircle : EmitterShape
 	{
 		public override Vector2 Solve(Vector2 center, EmitterOrigin origin, float width, float height)
