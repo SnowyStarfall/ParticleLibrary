@@ -37,6 +37,7 @@
 		<None Remove="Assets\Effects\Shape.fx" />
 		<None Remove="Assets\Textures\EmptyPixel.png" />
 		<None Remove="Assets\Textures\Star.png" />
+		<None Remove="changelog.txt" />
 		<None Remove="LICENSE" />
 		<None Remove="ParticleLibrary.dll" />
 		<None Remove="ParticleLibrary.xml" />

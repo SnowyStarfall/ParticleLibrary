@@ -1,0 +1,1 @@
+- FIxes a crash resulting from initializing geometry buffers with a size of 0.

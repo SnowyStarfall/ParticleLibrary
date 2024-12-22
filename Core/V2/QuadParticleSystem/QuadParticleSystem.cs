@@ -79,6 +79,11 @@ namespace ParticleLibrary.Core
 		// Function
 		public override void Draw(Layer layer = Layer.None)
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			// Safeguard
 			if (Effect is null)
 			{
@@ -125,6 +130,11 @@ namespace ParticleLibrary.Core
 		/// <param name="lifespan"></param>
 		public override void NewParticle(Vector2 position, Vector2 velocity, QuadParticle particle, int? lifespan = null)
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			Vector2 size = new(Texture.Width * particle.Scale.X, Texture.Height * particle.Scale.Y);
 			int lifeSpan = lifespan ?? Lifespan;
 
@@ -254,6 +264,11 @@ namespace ParticleLibrary.Core
 
 		public override void Clear()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			Main.QueueMainThreadAction(() =>
 			{
 				VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
@@ -264,6 +279,11 @@ namespace ParticleLibrary.Core
 		// Effect
 		protected override void CreateBuffers()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			VertexBuffer = new(Device, typeof(QuadParticleVertex), MaxParticles * 4, BufferUsage.WriteOnly);
 			IndexBuffer = new(Device, IndexElementSize.ThirtyTwoBits, MaxParticles * 6, BufferUsage.WriteOnly);
 
@@ -273,6 +293,11 @@ namespace ParticleLibrary.Core
 
 		protected override void SetBuffers()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			VertexBuffer.SetData(QuadParticleVertex.SizeInBytes * StartIndex * 4, Vertices, StartIndex, (CurrentParticleIndex - StartIndex) * 4, QuadParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
 			IndexBuffer.SetData(sizeof(int) * StartIndex * 6, Indices, StartIndex, (CurrentParticleIndex - StartIndex) * 6, SetDataOptions.NoOverwrite);
 
@@ -283,7 +308,7 @@ namespace ParticleLibrary.Core
 
 		protected override void SetPass()
 		{
-			Pass = Effect.CurrentTechnique.Passes["Quad"];
+			Pass = Effect?.CurrentTechnique.Passes["Quad"];
 		}
 
 		// Dispose

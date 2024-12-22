@@ -38,6 +38,11 @@ namespace ParticleLibrary.Core
 		// Function
 		public override void Draw(Layer layer = Layer.None)
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			// Safeguard
 			if (Effect is null)
 			{
@@ -77,6 +82,11 @@ namespace ParticleLibrary.Core
 
 		public override void NewParticle(Vector2 position, Vector2 velocity, PointParticle particle, int? lifespan = null)
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			int lifeSpan = lifespan ?? Lifespan;
 
 			Vertices[CurrentParticleIndex] = new PointParticleVertex()
@@ -120,6 +130,11 @@ namespace ParticleLibrary.Core
 
 		public override void Clear()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			Main.QueueMainThreadAction(() =>
 			{
 				VertexBuffer.SetData(Array.Empty<QuadParticleVertex>(), SetDataOptions.Discard);
@@ -129,12 +144,22 @@ namespace ParticleLibrary.Core
 		// Setters
 		protected override void CreateBuffers()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			VertexBuffer = new(Device, typeof(PointParticleVertex), MaxParticles, BufferUsage.WriteOnly);
 			Vertices = new PointParticleVertex[MaxParticles];
 		}
 
 		protected override void SetBuffers()
 		{
+			if (MaxParticles == 0)
+			{
+				return;
+			}
+
 			VertexBuffer.SetData(PointParticleVertex.SizeInBytes * StartIndex, Vertices, StartIndex, (CurrentParticleIndex - StartIndex), PointParticleVertex.SizeInBytes, SetDataOptions.NoOverwrite);
 
 			// Reset
@@ -144,7 +169,7 @@ namespace ParticleLibrary.Core
 
 		protected override void SetPass()
 		{
-			Pass = Effect.CurrentTechnique.Passes["Point"];
+			Pass = Effect?.CurrentTechnique.Passes["Point"];
 		}
 
 		// Disposing

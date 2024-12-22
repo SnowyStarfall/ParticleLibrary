@@ -34,7 +34,7 @@ namespace ParticleLibrary.Core.V3
 
 			_maxInstances = ParticleManagerV3.RegisterBuffer(this, maxInstances);
 
-			ParticleLibrary.Log.Info("...Registered geometry buffer successfully");
+			ParticleLibrary.Log.Info("...Registered geometry buffer of size " + maxInstances + " successfully");
 		}
 
 		/// <summary>
@@ -45,6 +45,11 @@ namespace ParticleLibrary.Core.V3
 		/// <param name="instanceElements">The elements describing the instance struct.</param>
 		public void Initialize(TVertex[] vertices, short[] indices, VertexElement[] instanceElements)
 		{
+			if (_maxInstances == 0)
+			{
+				return;
+			}
+
 			Main.QueueMainThreadAction(() =>
 			{
 				_vertices = vertices;
@@ -104,13 +109,13 @@ namespace ParticleLibrary.Core.V3
 
 		public void Dispose()
 		{
-			_geometryBuffer.Dispose();
+			_geometryBuffer?.Dispose();
 			_geometryBuffer = null;
-			_indexBuffer.Dispose();
+			_indexBuffer?.Dispose();
 			_indexBuffer = null;
-			_instanceBuffer.Dispose();
+			_instanceBuffer?.Dispose();
 			_instanceBuffer = null;
-			_instanceDeclaration.Dispose();
+			_instanceDeclaration?.Dispose();
 			_instanceDeclaration = null;
 			_bufferBindings = null;
 
