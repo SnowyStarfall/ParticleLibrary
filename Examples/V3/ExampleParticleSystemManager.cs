@@ -2,6 +2,8 @@
 using ParticleLibrary.Core;
 using ParticleLibrary.Core.V3;
 using ParticleLibrary.Core.V3.Particles;
+using ParticleLibrary.Utilities;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,7 +64,7 @@ namespace ParticleLibrary.Examples.V3
 			//		velocity: (Main.rand.NextVector2Unit() * Main.rand.NextFloat(2f, 4f + float.Epsilon)).ToNumerics(),
 			//		rotation: Main.rand.NextFloat(0f, MathF.Tau + float.Epsilon),
 			//		scale: new Vector2(32f).ToNumerics(),
-			//		color: new Color(1f,1f,1f,0f),
+			//		color: new Color(1f, 1f, 1f, 0f),
 			//		duration: 120
 			//	));
 			//}

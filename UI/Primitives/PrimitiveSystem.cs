@@ -4,7 +4,6 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static ReLogic.Content.Readers.XnbReader;
 
 namespace ParticleLibrary.UI.Primitives
 {
@@ -26,6 +25,7 @@ namespace ParticleLibrary.UI.Primitives
 				return;
 			}
 
+			Main.OnPreDraw += OnPreDraw;
 			Main.OnResolutionChanged += ResolutionChanged;
 
 			Main.QueueMainThreadAction(Load_MainThread);
@@ -68,9 +68,9 @@ namespace ParticleLibrary.UI.Primitives
 		}
 
 		private Matrix _oldZoomMatrix;
-		public override void PreUpdateEntities()
+		private void OnPreDraw(GameTime obj)
 		{
-			if (Main.netMode == NetmodeID.Server)
+			if (Main.netMode is NetmodeID.Server)
 			{
 				return;
 			}
@@ -97,8 +97,15 @@ namespace ParticleLibrary.UI.Primitives
 
 			WorldViewProjection = view * projection;
 
-			WorldEffect.Projection = WorldViewProjection;
-			InterfaceEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
+			if (WorldEffect is not null)
+			{
+				WorldEffect.Projection = WorldViewProjection;
+			}
+
+			if (InterfaceEffect is not null)
+			{
+				InterfaceEffect.Projection = Matrix.CreateOrthographicOffCenter(0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, 0, 0, 1);
+			}
 
 			Main.QueueMainThreadAction(OnResolutionChanged_MainThread);
 		}
