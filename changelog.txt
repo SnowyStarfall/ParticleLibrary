@@ -1,1 +1,1 @@
-- FIxes zoom issues
+- Removed devtool

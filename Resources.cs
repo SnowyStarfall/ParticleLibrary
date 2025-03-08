@@ -51,11 +51,6 @@ namespace ParticleLibrary
 
 		}
 
-		public static class Content
-		{
-			public const string Devtool = @"ParticleLibrary/Content/Devtool";
-		}
-
 		public static class Core
 		{
 			public static class V1
