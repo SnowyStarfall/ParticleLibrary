@@ -32,21 +32,11 @@ namespace ParticleLibrary.Core.V3
 
 		public override void Load()
 		{
-			if (Main.netMode is NetmodeID.Server)
-			{
-				return;
-			}
-
 			_emitters = new();
 		}
 
 		public override void Unload()
 		{
-			if (Main.netMode is NetmodeID.Server)
-			{
-				return;
-			}
-
 			_emitters = null;
 		}
 
@@ -84,11 +74,6 @@ namespace ParticleLibrary.Core.V3
 
 		public override void PreUpdateWorld()
 		{
-			if (Main.netMode is NetmodeID.Server)
-			{
-				return;
-			}
-
 			foreach (var emitter in _emitters.Buffer)
 			{
 				if (Main.LocalPlayer?.active != true)

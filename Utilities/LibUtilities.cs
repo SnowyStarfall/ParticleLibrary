@@ -64,6 +64,27 @@ namespace ParticleLibrary.Utilities
 
 		public static Vector4 Vec4From2Vec2(Vector2 xy, Vector2 zw) => new(xy, zw.X, zw.Y);
 
+		public static Color FromPackedValue(float packedValue)
+		{
+			uint packed = BitConverter.SingleToUInt32Bits(packedValue);
+			return new Color(
+			  r: (byte)(packed & 0xFF),
+			  g: (byte)((packed >> 8) & 0xFF),
+			  b: (byte)((packed >> 16) & 0xFF),
+			  alpha: (byte)((packed >> 24) & 0xFF)
+			);
+		}
+
+		public static Color FromPackedValue(uint packedValue)
+		{
+			return new Color(
+			  r: (byte)(packedValue & 0xFF),
+			  g: (byte)((packedValue >> 8) & 0xFF),
+			  b: (byte)((packedValue >> 16) & 0xFF),
+			  alpha: (byte)((packedValue >> 24) & 0xFF)
+			);
+		}
+
 		public static Color FromHex(uint packedValue)
 		{
 			return new Color()

@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using static ParticleLibrary.Particle;
 
 namespace ParticleLibrary.Core
 {
@@ -99,7 +97,7 @@ namespace ParticleLibrary.Core
 
 		public override void Load()
 		{
-			if (Main.netMode is NetmodeID.Server)
+			if (Main.dedServ)
 			{
 				return;
 			}

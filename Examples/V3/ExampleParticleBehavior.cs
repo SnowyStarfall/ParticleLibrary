@@ -1,4 +1,6 @@
-﻿using ParticleLibrary.Core.V3.Particles;
+﻿using MonoMod.Logs;
+using ParticleLibrary.Core.V3.Particles;
+using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace ParticleLibrary.Examples.V3
 			// This allows you to optimize for performance by only updating what you need.
 			info.Velocity *= 0.99f;
 			info.Position += info.Velocity;
+			info.Rotation = info.Position.AngleTo(Main.LocalPlayer.position.ToNumerics());
 
 			// This calculates the scalar (0~1) of the particle's lifetime.
 			// The value will be 1 at the beginning, then slowly interpolate to 0.
@@ -30,7 +33,7 @@ namespace ParticleLibrary.Examples.V3
 			info.Color = info.InitialColor * mult;
 			info.Scale = info.InitialScale * mult;
 
-			// The particle will be marked inactive when Time reaches 0.
+			// The particle will be marked inactive when Time <= 0.
 			info.Time--;
 		}
 	}
