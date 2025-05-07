@@ -74,7 +74,8 @@ VertexShaderOutput Vertex( VertexShaderInput input, Particle instance )
 	float4x4 scale = ScaleMatrix( instance.Position_Scale.zw );
 	float2 position = mul( mul( float4( input.Position, 0, 1 ), scale ), rotation );
 	
-	output.Position = mul( float4( position + instance.Position_Scale.xy + Offset, 0, instance.Rotation_Depth.y ), Transform );
+	output.Position = mul( float4( position + instance.Position_Scale.xy + Offset, 0, 1 ), Transform );
+	output.Position.w = instance.Rotation_Depth.y;
 	output.Color = instance.Color;
 	output.Texture = input.Texture;
 
