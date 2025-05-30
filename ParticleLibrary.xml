@@ -1435,11 +1435,92 @@
             Renders the particles.
             </summary>
         </member>
-        <member name="M:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.Create(ParticleLibrary.Core.V3.Particles.ParticleInfo@)">
+        <member name="M:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.Create(ParticleLibrary.Core.V3.Particles.ParticleInfo)">
             <summary>
             Creates a new particle from the given info.
             </summary>
             <param name="info">The info.</param>
+        </member>
+        <member name="T:ParticleLibrary.Core.V3.Particles.ParticleInfo">
+            <summary>
+            A struct representing a particle.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Position">
+            <summary>
+            The particle's position.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Velocity">
+            <summary>
+            The particle's velocity.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Rotation">
+            <summary>
+            The particle's rotation.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Scale">
+            <summary>
+            The particle's scale.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Depth">
+            <summary>
+            The particle's depth. Defaults to 1f. Depth is nonlinear and is achieved via perspective divide.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Color">
+            <summary>
+            The particle's color.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Time" -->
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.InitialScale">
+            <summary>
+            The particle's initial scale.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.InitialColor">
+            <summary>
+            The particle's initial color.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Duration">
+            <summary>
+            The particle's duration.
+            </summary>
+        </member>
+        <member name="F:ParticleLibrary.Core.V3.Particles.ParticleInfo.Data">
+            <summary>
+            An optional array of values. Can be <see langword="null"/> if no values are provided to the constructor.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Core.V3.Particles.ParticleInfo.#ctor(System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Numerics.Vector2,Microsoft.Xna.Framework.Color,System.Int32,System.Single[])">
+            <summary>
+            Creates a new instance of the <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleInfo"/> struct.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="velocity">The velocity.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="scale">The scale.</param>
+            <param name="color">The color.</param>
+            <param name="duration">The duration.</param>
+            <param name="data">Optional values.</param>
+        </member>
+        <member name="M:ParticleLibrary.Core.V3.Particles.ParticleInfo.#ctor(System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Numerics.Vector2,System.Nullable{System.Single},Microsoft.Xna.Framework.Color,System.Int32,System.Single[])">
+            <summary>
+            Creates a new instance of the <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleInfo"/> struct.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="velocity">The velocity.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="scale">The scale.</param>
+            <param name="depth">The depth. Scales nonlinearly. Does not represent world-space units.</param>
+            <param name="color">The color.</param>
+            <param name="duration">The duration.</param>
+            <param name="data">Optional values.</param>
         </member>
         <member name="T:ParticleLibrary.EmitterSystem.Emitter">
             <summary>
@@ -2112,6 +2193,69 @@
             <summary>
             Spawns particles on the edges of a circle
             </summary>
+        </member>
+        <member name="T:ParticleLibrary.Examples.V3.ParticleCollection">
+            <summary>
+            A container providing an easy way to store multiple buffers
+            under the same collection.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Examples.V3.ParticleCollection.ParticleBuffers">
+            <summary>
+            A readonly list of the contained buffers.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleCollection.#ctor">
+            <summary>
+            Creates a new instance of <see cref="T:ParticleLibrary.Examples.V3.ParticleCollection"/>.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleCollection.Add``1(``0,ParticleLibrary.Core.Layer)">
+            <summary>
+            Adds a buffer of type <typeparamref name="TBuffer"/> to the collection and registers it to <paramref name="layer"/>.
+            </summary>
+            <param name="buffer">The buffer to add to the collection.</param>
+            <param name="layer">The layer to register to.</param>
+            <returns>This collection.</returns>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleCollection.Create(ParticleLibrary.Core.V3.Particles.ParticleInfo)">
+            <summary>
+            Creates a new particle with all contained buffers in <see cref="P:ParticleLibrary.Examples.V3.ParticleCollection.ParticleBuffers"/> 
+            with the given <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleInfo"/>.
+            </summary>
+            <param name="info">The info.</param>
+        </member>
+        <member name="T:ParticleLibrary.Examples.V3.ParticleDictionary`1">
+            <summary>
+            A container providing an easy way to store multiple buffers under the same collection.
+            </summary>
+            <typeparam name="TKey">They key to use for the dictionary.</typeparam>
+        </member>
+        <member name="P:ParticleLibrary.Examples.V3.ParticleDictionary`1.ParticleBuffers">
+            <summary>
+            A readonly dictionary of the contained buffers.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleDictionary`1.#ctor">
+            <summary>
+            Creates a new instance of <see cref="T:ParticleLibrary.Examples.V3.ParticleDictionary`1"/>.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleDictionary`1.Add``1(`0,``0,ParticleLibrary.Core.Layer)">
+            <summary>
+            Adds a buffer of type <typeparamref name="TBuffer"/> to the collection and registers it to <paramref name="layer"/>.
+            </summary>
+            <param name="value">The key to add the buffer to.</param>
+            <param name="buffer">The buffer to add to the collection.</param>
+            <param name="layer">The layer to register to.</param>
+            <returns>This collection.</returns>
+        </member>
+        <member name="M:ParticleLibrary.Examples.V3.ParticleDictionary`1.Create(ParticleLibrary.Core.V3.Particles.ParticleInfo)">
+            <summary>
+            Creates a new particle with all contained buffers in <see cref="P:ParticleLibrary.Examples.V3.ParticleDictionary`1.ParticleBuffers"/> 
+            with the given <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleInfo"/>.
+            </summary>
+            <param name="info">The info.</param>
         </member>
         <member name="P:ParticleLibrary.ParticleLibrary.EmptyPixel">
             <summary>
