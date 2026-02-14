@@ -1,4 +1,1 @@
-- Safer and more robust system for DrawHooks using https://github.com/krafs/Publicizer
-- Minor performance adjustment for particle buffers
-- Some localization changes
-- Examples are now internal
+- Fix typo
