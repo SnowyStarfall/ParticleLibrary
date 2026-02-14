@@ -1,1 +1,1 @@
-- Fix typo
+- Fix particles not updating correctly
