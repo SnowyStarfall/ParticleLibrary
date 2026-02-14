@@ -84,7 +84,7 @@ namespace ParticleLibrary.Core.V3.Particles
 				{
 					if (!particle.Free)
 					{
-						particle.Free = true;
+						_infos[i].Free = true;
 						_inactiveInstances.Push(i);
 						_instances[i].Color = Color.Transparent;
 					}
@@ -92,8 +92,7 @@ namespace ParticleLibrary.Core.V3.Particles
 					continue;
 				}
 
-				_behavior.Update(ref particle);
-				_infos[i] = particle;
+				_behavior.Update(ref _infos[i]);
 
 				_instances[i].Position_Scale = new Vector4(particle.Position.X, particle.Position.Y, particle.Scale.X, particle.Scale.Y);
 				_instances[i].Rotation_Depth = new Vector2(particle.Rotation, particle.Depth);
