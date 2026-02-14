@@ -166,7 +166,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -181,7 +181,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -190,7 +190,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -202,7 +202,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -211,7 +211,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -223,7 +223,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -232,7 +232,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -244,7 +244,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -253,7 +253,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -265,7 +265,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -276,7 +276,7 @@ namespace ParticleLibrary.Core
 			if (behindTiles)
 			{
 				// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-				SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+				SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 				if (spriteBatchState.BeginCalled)
 				{
 					Main.spriteBatch.End();
@@ -288,13 +288,13 @@ namespace ParticleLibrary.Core
 
 				if (spriteBatchState.BeginCalled)
 				{
-					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+					SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 				}
 			}
 			else
 			{
 				// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-				SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+				SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 				if (spriteBatchState.BeginCalled)
 				{
 					Main.spriteBatch.End();
@@ -306,7 +306,7 @@ namespace ParticleLibrary.Core
 
 				if (spriteBatchState.BeginCalled)
 				{
-					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+					SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 				}
 			}
 
@@ -316,7 +316,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -328,7 +328,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -337,7 +337,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -349,7 +349,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -358,7 +358,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeItems(On_Main.orig_DrawItems orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -370,7 +370,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -379,7 +379,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeRain(On_Main.orig_DrawRain orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -391,7 +391,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -400,7 +400,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeGore(On_Main.orig_DrawGore orig, Main self)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -412,7 +412,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -421,7 +421,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeDust(On_Main.orig_DrawDust orig, Main self)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -433,7 +433,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self);
@@ -442,7 +442,7 @@ namespace ParticleLibrary.Core
 		private void Draw_BeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -454,7 +454,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self, isBackground);
@@ -463,7 +463,7 @@ namespace ParticleLibrary.Core
 		private void Draw_OnInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
 		{
 			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -475,7 +475,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self, gameTime);
@@ -493,14 +493,14 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 		}
 
 		private void Draw_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -512,7 +512,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
 			orig(self, gameTime);
@@ -530,7 +530,7 @@ namespace ParticleLibrary.Core
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 		}
 

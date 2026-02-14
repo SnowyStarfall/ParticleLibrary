@@ -117,7 +117,7 @@ namespace ParticleLibrary.Core.V3
 		private void Render(Layer layer)
 		{
 			// We don't know if SpriteBatch has began here, but this helps not break anything by being safe here
-			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
@@ -127,7 +127,7 @@ namespace ParticleLibrary.Core.V3
 			{
 				if (spriteBatchState.BeginCalled)
 				{
-					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+					SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 				}
 
 				return;
@@ -140,7 +140,7 @@ namespace ParticleLibrary.Core.V3
 
 			if (spriteBatchState.BeginCalled)
 			{
-				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 		}
 
