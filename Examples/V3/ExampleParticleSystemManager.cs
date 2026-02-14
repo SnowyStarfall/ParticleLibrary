@@ -2,26 +2,26 @@
 using ParticleLibrary.Core;
 using ParticleLibrary.Core.V3;
 using ParticleLibrary.Core.V3.Particles;
-using ParticleLibrary.Utilities;
 using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using SystemVector2 = System.Numerics.Vector2;
 
 namespace ParticleLibrary.Examples.V3
 {
-	public class ExampleParticleSystemManagerV3 : ModSystem
+	internal class ExampleParticleSystemManagerV3 : ModSystem
 	{
-		public static ParticleBuffer<ExampleParticleBehavior> ExampleParticleBuffer { get; private set; }
+		internal static ParticleBuffer<ExampleParticleBehavior> ExampleParticleBuffer { get; private set; }
 
 		private static ParticleBuffer<ExampleDataParticleBehavior> _dataParticleBuffer;
 
+		private static ParticleCollection _exampleMultiLayerParticleBuffer;
+
 		public override bool IsLoadingEnabled(Mod mod)
 		{
-			// Never create particle buffers on the server
-			return !Main.dedServ;
+			// Never create particle buffers on the server.
+			// Also, only create example stuff if we're debugging.
+			return !Main.dedServ && ParticleLibrary.Debug;
 		}
 
 		public override void OnModLoad()
@@ -50,6 +50,15 @@ namespace ParticleLibrary.Examples.V3
 			_dataParticleBuffer = new(256);
 			ParticleManagerV3.RegisterUpdatable(_dataParticleBuffer);
 			ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, _dataParticleBuffer);
+
+			_exampleMultiLayerParticleBuffer = new();
+			foreach (Layer value in Enum.GetValuesAsUnderlyingType<Layer>())
+			{
+				_exampleMultiLayerParticleBuffer.Add(
+					new ParticleBuffer<ExampleParticleBehavior>(32),
+					value
+				);
+			}
 		}
 
 		public override void PostUpdatePlayers()
@@ -65,7 +74,7 @@ namespace ParticleLibrary.Examples.V3
 			//		velocity: (Main.rand.NextVector2Unit() * Main.rand.NextFloat(2f, 4f + float.Epsilon)).ToNumerics(),
 			//		rotation: Main.GlobalTimeWrappedHourly,
 			//		scale: new Vector2(64f, 16f).ToNumerics(),
-			//		depth: 1f, 
+			//		depth: 1f,
 			//		color: new Color(1f, 1f, 1f, 0f),
 			//		duration: 120
 			//	));
@@ -84,16 +93,48 @@ namespace ParticleLibrary.Examples.V3
 			//		myOtherColor: new Color(107, 87, 210, 0)
 			//	);
 			//}
+
+			//var buffers = _exampleMultiLayerParticleBuffer.ParticleBuffers;
+			//var values = Enum.GetValuesAsUnderlyingType<Layer>();
+
+			//buffers[14].Create(new ParticleInfo(
+			//	position: Main.LocalPlayer.position.ToNumerics(),
+			//	velocity: Vector2.Zero.ToNumerics(),
+			//	rotation: Main.GlobalTimeWrappedHourly,
+			//	scale: new Vector2(64f, 64f).ToNumerics(),
+			//	depth: 1f,
+			//	color: new Color(1f, 1f, 1f, 0f),
+			//	duration: 120
+			//));
+
+			//for (int i = 0; i < buffers.Count; i++)
+			//{
+			//	if (i == 14)
+			//	{
+			//		for (int k = 0; k < 8; k++)
+			//		{
+			//			buffers[i].Create(new ParticleInfo(
+			//				position: Main.LocalPlayer.position.ToNumerics(),
+			//				velocity: Main.rand.NextVector2Unit().ToNumerics() * 0f,
+			//				rotation: Main.GlobalTimeWrappedHourly,
+			//				scale: new Vector2(64f, 64f).ToNumerics(),
+			//				depth: 1f,
+			//				color: new Color(1f, 1f, 1f, 0f),
+			//				duration: 120
+			//			));
+			//		}
+			//	}
+			//}
 		}
 
 		// We create this method to expose access to _dataParticleBuffer's Create() method.
 		// Here, we can assure that the particle's Data field is always instantiated and always
 		// has values. This ensure our code will never throw a null reference and will prevent
 		// unexpected behavior.
-		public static void CreateDataParticle(SystemVector2 position, SystemVector2 velocity, float rotation, SystemVector2 scale, float depth, Color color, int duration, Color myOtherColor)
+		internal static void CreateDataParticle(SystemVector2 position, SystemVector2 velocity, float rotation, SystemVector2 scale, float depth, Color color, int duration, Color myOtherColor)
 		{
 			// Never create particles on the server.
-			if(Main.dedServ)
+			if (Main.dedServ)
 			{
 				return;
 			}
