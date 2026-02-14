@@ -43,8 +43,8 @@ namespace ParticleLibrary.Examples.V3
 			// With all of that in mind, the logic is simple:
 			// For R, we simply take the lowest 8 bits of the uint.
 			// For G, we shift to the right by 8 bits (skipping over R), and then take the lowest 8 bits.
-			// For B, we shift to the right by 8 bits (skipping over RG), and then take the lowest 8 bits.
-			// For A, we shift to the right by 8 bits (skipping over RGB), and then take the lowest 8 bits.
+			// For B, we shift to the right by 16 bits (skipping over RG), and then take the lowest 8 bits.
+			// For A, we shift to the right by 24 bits (skipping over RGB), and then take the lowest 8 bits.
 			// Now we have our color values and have created our color.
 			// Whew...
 			// Now that we understand this, you can either use the below code or the utility
