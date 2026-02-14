@@ -1,16 +1,17 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\tModLoader.targets" />
+
+	<!-- Project configuration -->
 	<PropertyGroup>
 		<AssemblyName>ParticleLibrary</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	</PropertyGroup>
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
+
+	<!-- Don't include in build -->
 	<ItemGroup>
 	  <AdditionalFiles Remove=".vs\**" />
 	  <AdditionalFiles Remove="Properties\**" />
@@ -25,9 +26,13 @@
 	  <None Remove="Properties\**" />
 	  <None Remove="Textures\**" />
 	</ItemGroup>
+
+	<!-- Not needed anymore -->
 	<ItemGroup>
 	  <Compile Remove="UI\OldDebug.cs" />
 	</ItemGroup>
+
+	<!-- Remove clutter from solution view -->
 	<ItemGroup>
 		<None Remove=".editorconfig" />
 		<None Remove=".gitattributes" />
@@ -44,14 +49,16 @@
 		<None Remove="README.md" />
 		<None Remove="workshop.json" />
 	</ItemGroup>
-	<ItemGroup>
-	</ItemGroup>
+
+	<!-- Resource generator -->
 	<ItemGroup>
 		<None Update="Resources.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>Resources.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
+
+	<!-- Resource constants -->
 	<ItemGroup>
 		<Compile Update="Resources.cs">
 			<DesignTime>True</DesignTime>
@@ -59,11 +66,30 @@
 			<DependentUpon>Resources.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
+
+	<!-- Publicizing hidden members -->
+	<ItemGroup>
+	  <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+
+	<!-- Publicizing SpriteBatch members -->
+	<ItemGroup>
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.beginCalled" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.sortMode" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.blendState" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.samplerState" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.depthStencilState" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.rasterizerState" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.customEffect" />
+		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.transformMatrix" />
+	</ItemGroup>
+
+	<!-- ??? -->
 	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Assets\Textures\Examples\" />
-	  <Folder Include="UI\Elements\Custom\" />
-	</ItemGroup>
+	
 </Project>

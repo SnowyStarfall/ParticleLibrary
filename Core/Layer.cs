@@ -62,10 +62,6 @@
 		/// Water <b>After Dust.</b>  Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
 		/// </summary>
 		BeforeWater,
-		///// <summary>
-		///// After Water. Adjust draw position by new Vector2(Main.offScreenRange, Main.offScreenRange).
-		///// </summary>
-		//AfterWater,
 		/// <summary>
 		/// Before UI.
 		/// </summary>

@@ -149,6 +149,391 @@ namespace ParticleLibrary.Core
 			OnDraw_AfterMainMenu = null;
 		}
 
+		private void Update_BeforeDust(On_Dust.orig_UpdateDust orig)
+		{
+			OnUpdateDust?.Invoke();
+
+			orig();
+		}
+
+		private void Update_BeforeMenu(On_Main.orig_UpdateMenu orig)
+		{
+			OnUpdateMenu?.Invoke();
+
+			orig();
+		}
+
+		private void Draw_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+
+			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
+			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);
+			OnDraw_BeforeBackground?.Invoke(Layer.BeforeBackground);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeWalls?.Invoke(Layer.BeforeWalls);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeNonSolidTiles?.Invoke(Layer.BeforeNonSolidTiles);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeSolidTiles?.Invoke(Layer.BeforeSolidTiles);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforePlayersBehindNPCs?.Invoke(Layer.BeforePlayersBehindNPCs);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeNPCs(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+		{
+			if (behindTiles)
+			{
+				// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+				SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+				if (spriteBatchState.BeginCalled)
+				{
+					Main.spriteBatch.End();
+				}
+
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+				OnDraw_BeforeNPCsBehindTiles?.Invoke(Layer.BeforeNPCsBehindTiles);
+				Main.spriteBatch.End();
+
+				if (spriteBatchState.BeginCalled)
+				{
+					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				}
+			}
+			else
+			{
+				// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+				SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+				if (spriteBatchState.BeginCalled)
+				{
+					Main.spriteBatch.End();
+				}
+
+				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+				OnDraw_BeforeNPCs?.Invoke(Layer.BeforeNPCs);
+				Main.spriteBatch.End();
+
+				if (spriteBatchState.BeginCalled)
+				{
+					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				}
+			}
+
+			orig(self, behindTiles);
+		}
+
+		private void Draw_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeProjectiles?.Invoke(Layer.BeforeProjectiles);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforePlayers?.Invoke(Layer.BeforePlayers);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeItems(On_Main.orig_DrawItems orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeItems?.Invoke(Layer.BeforeItems);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeRain(On_Main.orig_DrawRain orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeRain?.Invoke(Layer.BeforeRain);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeGore(On_Main.orig_DrawGore orig, Main self)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeGore?.Invoke(Layer.BeforeGore);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeDust(On_Main.orig_DrawDust orig, Main self)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeDust?.Invoke(Layer.BeforeDust);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self);
+		}
+
+		private void Draw_BeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeWater?.Invoke(Layer.BeforeWater);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self, isBackground);
+		}
+
+		private void Draw_OnInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
+		{
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeInterface?.Invoke(Layer.BeforeInterface);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self, gameTime);
+
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_AfterInterface?.Invoke(Layer.AfterInterface);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+		}
+
+		private void Draw_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
+		{
+			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_BeforeMainMenu?.Invoke(Layer.BeforeMainMenu);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+
+			orig(self, gameTime);
+
+			// Usually SpriteBatch has NOT began here, but if another mod changes this, then we won't break anything by being safe here
+			spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
+
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+			OnDraw_AfterMainMenu?.Invoke(Layer.AfterMainMenu);
+			Main.spriteBatch.End();
+
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
+		}
+
 		public static void Hook(Layer layer, Draw method)
 		{
 			ArgumentNullException.ThrowIfNull(method);
@@ -285,287 +670,6 @@ namespace ParticleLibrary.Core
 		{
 			Main.graphics.GraphicsDevice.ScissorRectangle = rectangle;
 			Main.graphics.GraphicsDevice.RasterizerState = rasterizer;
-		}
-
-		private void Update_BeforeDust(On_Dust.orig_UpdateDust orig)
-		{
-			OnUpdateDust?.Invoke();
-
-			orig();
-		}
-
-		private void Update_BeforeMenu(On_Main.orig_UpdateMenu orig)
-		{
-			OnUpdateMenu?.Invoke();
-
-			orig();
-		}
-
-		private void Draw_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
-			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);
-
-			OnDraw_BeforeBackground?.Invoke(Layer.BeforeBackground);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, matrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeWalls?.Invoke(Layer.BeforeWalls);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeNonSolidTiles(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeNonSolidTiles?.Invoke(Layer.BeforeNonSolidTiles);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeSolidTiles(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeSolidTiles?.Invoke(Layer.BeforeSolidTiles);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self);
-		}
-
-		private void Draw_BeforePlayersBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforePlayersBehindNPCs?.Invoke(Layer.BeforePlayersBehindNPCs);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeNPCs(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
-		{
-			if (behindTiles)
-			{
-				Main.spriteBatch.End();
-
-				GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-				OnDraw_BeforeNPCsBehindTiles?.Invoke(Layer.BeforeNPCsBehindTiles);
-
-				Main.spriteBatch.End();
-				SetClip(rectangle, rasterizer);
-
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-			}
-			else
-			{
-				Main.spriteBatch.End();
-
-				GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-				OnDraw_BeforeNPCs?.Invoke(Layer.BeforeNPCs);
-
-				Main.spriteBatch.End();
-				SetClip(rectangle, rasterizer);
-
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-			}
-
-			orig(self, behindTiles);
-		}
-
-		private void Draw_BeforeProjectiles(On_Main.orig_DrawProjectiles orig, Main self)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeProjectiles?.Invoke(Layer.BeforeProjectiles);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self);
-		}
-
-		private void Draw_BeforePlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforePlayers?.Invoke(Layer.BeforePlayers);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeItems(On_Main.orig_DrawItems orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeItems?.Invoke(Layer.BeforeItems);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeRain(On_Main.orig_DrawRain orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeRain?.Invoke(Layer.BeforeRain);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeGore(On_Main.orig_DrawGore orig, Main self)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeGore?.Invoke(Layer.BeforeGore);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeDust(On_Main.orig_DrawDust orig, Main self)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeDust?.Invoke(Layer.BeforeDust);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self);
-		}
-
-		private void Draw_BeforeWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeWater?.Invoke(Layer.BeforeWater);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin();
-
-			orig(self, isBackground);
-		}
-
-		private void Draw_OnInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
-		{
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeInterface?.Invoke(Layer.BeforeInterface);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			orig(self, gameTime);
-
-			GetClip(out rectangle, out rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_AfterInterface?.Invoke(Layer.AfterInterface);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-		}
-
-		private void Draw_OnMainMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
-		{
-			Main.spriteBatch.End();
-
-			GetClip(out Rectangle rectangle, out RasterizerState rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_BeforeMainMenu?.Invoke(Layer.BeforeMainMenu);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
-
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
-
-			orig(self, gameTime);
-
-			GetClip(out rectangle, out rasterizer);
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
-
-			OnDraw_AfterMainMenu?.Invoke(Layer.AfterMainMenu);
-
-			Main.spriteBatch.End();
-			SetClip(rectangle, rasterizer);
 		}
 	}
 }

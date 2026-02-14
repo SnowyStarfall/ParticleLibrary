@@ -1,12 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using ParticleLibrary.Core.V3.Particles;
+﻿using ParticleLibrary.Core.V3.Particles;
 using ParticleLibrary.Core.V3.Interfaces;
-using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.ID;
 
 namespace ParticleLibrary.Core.V3
 {
@@ -119,11 +116,19 @@ namespace ParticleLibrary.Core.V3
 
 		private void Render(Layer layer)
 		{
-			Main.spriteBatch.End();
+			// We don't know if SpriteBatch has began here, but this helps not break anything by being safe here
+			SpriteBatcState spriteBatchState = new(Main.spriteBatch);
+			if (spriteBatchState.BeginCalled)
+			{
+				Main.spriteBatch.End();
+			}
 
 			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))
 			{
-				Main.spriteBatch.Begin();
+				if (spriteBatchState.BeginCalled)
+				{
+					SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+				}
 
 				return;
 			}
@@ -133,7 +138,10 @@ namespace ParticleLibrary.Core.V3
 				renderable.Render();
 			}
 
-			Main.spriteBatch.Begin();
+			if (spriteBatchState.BeginCalled)
+			{
+				SpriteBatcState.Apply(Main.spriteBatch, spriteBatchState);
+			}
 		}
 
 		/// <summary>
