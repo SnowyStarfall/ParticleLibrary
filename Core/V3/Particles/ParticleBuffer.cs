@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core.V3.Interfaces;
 using ParticleLibrary.Utilities;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core.V3.Particles
 {
@@ -81,16 +79,14 @@ namespace ParticleLibrary.Core.V3.Particles
 		{
 			for (int i = 0; i < _infos.Length; i++)
 			{
-				ref var particle = ref _infos[i];
+				var particle = _infos[i];
 				if (particle.Time <= 0)
 				{
 					if (!particle.Free)
 					{
 						particle.Free = true;
 						_inactiveInstances.Push(i);
-
-						ref var inst = ref _instances[i];
-						inst.Color = Color.Transparent;
+						_instances[i].Color = Color.Transparent;
 					}
 
 					continue;
@@ -99,11 +95,9 @@ namespace ParticleLibrary.Core.V3.Particles
 				_behavior.Update(ref particle);
 				_infos[i] = particle;
 
-				ref var instance = ref _instances[i];
-
-				instance.Position_Scale = new Vector4(particle.Position.X, particle.Position.Y, particle.Scale.X, particle.Scale.Y);
-				instance.Rotation_Depth = new Vector2(particle.Rotation, particle.Depth);
-				instance.Color = particle.Color;
+				_instances[i].Position_Scale = new Vector4(particle.Position.X, particle.Position.Y, particle.Scale.X, particle.Scale.Y);
+				_instances[i].Rotation_Depth = new Vector2(particle.Rotation, particle.Depth);
+				_instances[i].Color = particle.Color;
 			}
 
 			// Active instances
@@ -170,24 +164,26 @@ namespace ParticleLibrary.Core.V3.Particles
 			_instances[index] = instance;
 		}
 
-		public void SetBlendState(BlendState blendState)
+		public ParticleBuffer<TBehavior> SetBlendState(BlendState blendState)
 		{
 			if (blendState is null)
 			{
-				return;
+				return this;
 			}
 
 			_blendState = blendState;
+			return this;
 		}
 
-		public void SetSamplerState(SamplerState samplerState)
+		public ParticleBuffer<TBehavior> SetSamplerState(SamplerState samplerState)
 		{
 			if (samplerState is null)
 			{
-				return;
+				return this;
 			}
 
 			_samplerState = samplerState;
+			return this;
 		}
 	}
 }
