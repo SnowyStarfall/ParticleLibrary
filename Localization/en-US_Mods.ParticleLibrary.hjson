@@ -65,28 +65,28 @@ Configs: {
 		Tooltip: Sets the maximum amount of particles to allow.
 
 		None: {
-			Label: None - no particles.
-			Tooltip: "No particles will be rendered."
+			Label: None
+			Tooltip: No particles will be rendered.
 		}
 
 		Low: {
-			Label: Low - 1/8 the amount of particles.
-			Tooltip: "Only 1/8 the amount of particles will be rendered."
+			Label: Low
+			Tooltip: Only 1/8 the amount of particles will be rendered.
 		}
 
 		Medium: {
-			Label: Medium - 1/4 the amount of particles.
-			Tooltip: "Only 1/4 the amount of particles will be rendered."
+			Label: Medium
+			Tooltip: Only 1/4 the amount of particles will be rendered.
 		}
 
 		High: {
-			Label: High - 1/2 the amount of particles.
-			Tooltip: "Only 1/2 the amount of particles will be rendered."
+			Label: High
+			Tooltip: Only 1/2 the amount of particles will be rendered.
 		}
 
 		Unlimited: {
-			Label: Unlimited - any amount of particles.
-			Tooltip: "All particles will be rendered."
+			Label: Unlimited
+			Tooltip: All particles will be rendered.
 		}
 	}
 }
