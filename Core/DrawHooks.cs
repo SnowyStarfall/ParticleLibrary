@@ -172,7 +172,6 @@ namespace ParticleLibrary.Core
 				Main.spriteBatch.End();
 			}
 
-
 			Matrix matrix = Main.BackgroundViewMatrix.TransformationMatrix;
 			matrix.Translation -= Main.BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, Main.BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, matrix);

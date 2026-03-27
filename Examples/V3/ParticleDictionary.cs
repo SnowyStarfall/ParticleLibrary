@@ -10,7 +10,7 @@ namespace ParticleLibrary.Examples.V3
 	/// <summary>
 	/// A container providing an easy way to store multiple buffers under the same collection.
 	/// </summary>
-	/// <typeparam name="TKey">They key to use for the dictionary.</typeparam>
+	/// <typeparam name="TKey">The key to use for the dictionary.</typeparam>
 	public class ParticleDictionary<TKey>
 	{
 		/// <summary>

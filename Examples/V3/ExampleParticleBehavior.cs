@@ -13,8 +13,14 @@ namespace ParticleLibrary.Examples.V3
     public class ExampleParticleBehavior : Behavior<ParticleInfo>
 	{
 		// This is the texture that will be used for your particle.
-		public override string Texture { get; } = Resources.Assets.Textures.Star;
+		public override string Texture => Resources.Assets.Textures.Star;
 
+		public override void Initialize(ref ParticleInfo info)
+		{
+			// Set our initial particle values before they can be rendered.
+			info.Rotation = info.Position.AngleTo(Main.LocalPlayer.position.ToNumerics());
+		}
+		
 		public override void Update(ref ParticleInfo info)
 		{
 			// Particle Library no longer updates values for you.

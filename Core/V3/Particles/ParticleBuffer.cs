@@ -15,14 +15,26 @@ namespace ParticleLibrary.Core.V3.Particles
 	public class ParticleBuffer<TBehavior> : GeometryBuffer<VertexPositionTexture, ParticleInstance>, IUpdatable, ICreatable<ParticleInfo>
 		where TBehavior : Behavior<ParticleInfo>, new()
 	{
+		/// <summary>
+		/// The <see cref="BlendState"/> of this <see cref="ParticleBuffer{TBehavior}"/>.
+		/// </summary>
+		public BlendState BlendState { get; private set; }
+
+		/// <summary>
+		/// The <see cref="SamplerState"/> of this <see cref="ParticleBuffer{TBehavior}"/>.
+		/// </summary>
+		public SamplerState SamplerState { get; private set; }
+
+		/// <summary>
+		/// The <typeparamref name="TBehavior"/> associated with this <see cref="ParticleBuffer{TBehavior}"/>.
+		/// </summary>
+		public TBehavior Behavior { get; private set; }
+
 		// Geometry
 		private static readonly VertexPositionTexture[] _vertices;
 		private static readonly short[] _indices;
-		private BlendState _blendState;
-		private SamplerState _samplerState;
 
 		// Data
-		private readonly TBehavior _behavior;
 		private readonly int _maxInstances;
 		private readonly ParticleInfo[] _infos;
 		private readonly ParticleInstance[] _instances;
@@ -44,10 +56,10 @@ namespace ParticleLibrary.Core.V3.Particles
 
 		public ParticleBuffer(int maxInstances = 256) : base(maxInstances)
 		{
-			_blendState = BlendState.AlphaBlend;
-			_samplerState = SamplerState.PointClamp;
+			BlendState = BlendState.AlphaBlend;
+			SamplerState = SamplerState.PointClamp;
 
-			_behavior = new TBehavior();
+			Behavior = new TBehavior();
 			_maxInstances = GetMaxInstances();
 			_infos = new ParticleInfo[_maxInstances];
 			_instances = new ParticleInstance[_maxInstances];
@@ -92,7 +104,7 @@ namespace ParticleLibrary.Core.V3.Particles
 					continue;
 				}
 
-				_behavior.Update(ref _infos[i]);
+				Behavior.Update(ref _infos[i]);
 
 				_instances[i].Position_Scale = new Vector4(particle.Position.X, particle.Position.Y, particle.Scale.X, particle.Scale.Y);
 				_instances[i].Rotation_Depth = new Vector2(particle.Rotation, particle.Depth);
@@ -119,12 +131,12 @@ namespace ParticleLibrary.Core.V3.Particles
 
 			// Retrieve buffers
 			GetBuffers(out VertexBufferBinding[] vertexBuffers, out IndexBuffer indexBuffer);
-			var texture = LibUtilities.GetTexture(_behavior.Texture);
+			var texture = LibUtilities.GetTexture(Behavior.Texture);
 
 			// Set our variables
 			Main.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-			Main.graphics.GraphicsDevice.BlendState = _blendState;
-			Main.graphics.GraphicsDevice.SamplerStates[0] = _samplerState;
+			Main.graphics.GraphicsDevice.BlendState = BlendState;
+			Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState;
 			Main.graphics.GraphicsDevice.SetVertexBuffers(vertexBuffers);
 			Main.graphics.GraphicsDevice.Indices = indexBuffer;
 
@@ -140,17 +152,19 @@ namespace ParticleLibrary.Core.V3.Particles
 		/// <param name="info">The info.</param>
 		public void Create(ParticleInfo info)
 		{
+			// Don't create particles on the server.
 			if (Main.netMode is NetmodeID.Server)
 			{
 				return;
 			}
 
-			// Active instances
+			// Active instances.
 			if (Count == _maxInstances)
 			{
 				return;
 			}
 
+			// Create instance.
 			int index = _inactiveInstances.Pop();
 			var instance = new ParticleInstance
 			{
@@ -158,7 +172,11 @@ namespace ParticleLibrary.Core.V3.Particles
 				Rotation_Depth = new Vector2(info.Rotation, info.Depth),
 				Color = info.InitialColor
 			};
+			
+			// Initialize info.
+			Behavior.Initialize(ref info);
 
+			// Add to buffer.
 			_infos[index] = info;
 			_instances[index] = instance;
 		}
@@ -170,7 +188,7 @@ namespace ParticleLibrary.Core.V3.Particles
 				return this;
 			}
 
-			_blendState = blendState;
+			BlendState = blendState;
 			return this;
 		}
 
@@ -181,7 +199,7 @@ namespace ParticleLibrary.Core.V3.Particles
 				return this;
 			}
 
-			_samplerState = samplerState;
+			SamplerState = samplerState;
 			return this;
 		}
 	}
