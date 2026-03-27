@@ -1,1 +1,1 @@
-- Fix particles not updating correctly
+- Add Initialize method for Behaviors. This fixes problems with particles that are rendered before their first frame of data is calculated by their Update method.

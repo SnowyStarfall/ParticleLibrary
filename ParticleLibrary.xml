@@ -1441,11 +1441,43 @@
             <param name="maxInstances">The maxiumum expected instances.</param>
             <returns>The actual value of instances to use, given the initial value and calculated depending on <see cref="F:ParticleLibrary.ParticleLibraryConfig.ParticleLimit"/>.</returns>
         </member>
+        <member name="P:ParticleLibrary.Core.V3.Particles.Behavior`1.Texture">
+            <summary>
+            The texture for this behavior.
+            </summary>
+        </member>
+        <member name="M:ParticleLibrary.Core.V3.Particles.Behavior`1.Initialize(`0@)">
+            <summary>
+            Called once upon creation.
+            </summary>
+            <param name="info">The <see cref="!:TInfo"/>'s data.</param>
+        </member>
+        <member name="M:ParticleLibrary.Core.V3.Particles.Behavior`1.Update(`0@)">
+            <summary>
+            Called every frame.
+            </summary>
+            <param name="info">The <see cref="!:TInfo"/>'s data.</param>
+        </member>
         <member name="T:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1">
             <summary>
             Creates a new buffer of particles.
             </summary>
             <typeparam name="TBehavior"></typeparam>
+        </member>
+        <member name="P:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.BlendState">
+            <summary>
+            The <see cref="P:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.BlendState"/> of this <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1"/>.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.SamplerState">
+            <summary>
+            The <see cref="P:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.SamplerState"/> of this <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1"/>.
+            </summary>
+        </member>
+        <member name="P:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.Behavior">
+            <summary>
+            The <typeparamref name="TBehavior"/> associated with this <see cref="T:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1"/>.
+            </summary>
         </member>
         <member name="M:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1.Update">
             <summary>
@@ -2251,7 +2283,7 @@
             <summary>
             A container providing an easy way to store multiple buffers under the same collection.
             </summary>
-            <typeparam name="TKey">They key to use for the dictionary.</typeparam>
+            <typeparam name="TKey">The key to use for the dictionary.</typeparam>
         </member>
         <member name="P:ParticleLibrary.Examples.V3.ParticleDictionary`1.ParticleBuffers">
             <summary>
