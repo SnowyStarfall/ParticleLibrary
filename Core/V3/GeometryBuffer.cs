@@ -107,7 +107,7 @@ namespace ParticleLibrary.Core.V3
 
 		public abstract void Render();
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			_geometryBuffer?.Dispose();
 			_geometryBuffer = null;
@@ -118,6 +118,8 @@ namespace ParticleLibrary.Core.V3
 			_instanceDeclaration?.Dispose();
 			_instanceDeclaration = null;
 			_bufferBindings = null;
+			_vertices = null;
+			_indices = null;
 
 			GC.SuppressFinalize(this);
 		}

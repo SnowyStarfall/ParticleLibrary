@@ -8,3 +8,4 @@ Properties/launchSettings.json
 /Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.dll
 /Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll
 /Assets/Effects/fxcompiler_reach.exe
+*.user

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core.V3.Interfaces;
 using ParticleLibrary.Utilities;
@@ -31,31 +32,31 @@ namespace ParticleLibrary.Core.V3.Particles
 		public TBehavior Behavior { get; private set; }
 
 		// Geometry
-		private static readonly VertexPositionTexture[] _vertices;
-		private static readonly short[] _indices;
-
+		private readonly int _vertexCount;
+		private readonly int _primitiveCount;
+		
 		// Data
 		private readonly int _maxInstances;
-		private readonly ParticleInfo[] _infos;
-		private readonly ParticleInstance[] _instances;
-		private readonly Stack<int> _inactiveInstances;
+		private ParticleInfo[] _infos;
+		private ParticleInstance[] _instances;
+		private Stack<int> _inactiveInstances;
 
 		private int Count => _maxInstances - _inactiveInstances.Count;
 
-		static ParticleBuffer()
+		public ParticleBuffer(int maxInstances = 256) : base(maxInstances)
 		{
-			_vertices = [
+			VertexPositionTexture[] vertices = [
 				new(new(-0.5f, -0.5f, 0f), Vector2.Zero),
 				new(new(-0.5f, 0.5f, 0f), Vector2.UnitY),
 				new(new(0.5f, -0.5f, 0f), Vector2.UnitX),
 				new(new(0.5f, 0.5f, 0f), Vector2.One)
 			];
 
-			_indices = [0, 2, 3, 0, 3, 1];
-		}
+			short[] indices = [0, 2, 3, 0, 3, 1];
 
-		public ParticleBuffer(int maxInstances = 256) : base(maxInstances)
-		{
+			_vertexCount = vertices.Length;
+			_primitiveCount = vertices.Length / 2;
+			
 			BlendState = BlendState.AlphaBlend;
 			SamplerState = SamplerState.PointClamp;
 
@@ -81,7 +82,7 @@ namespace ParticleLibrary.Core.V3.Particles
 			instanceElements[1] = new VertexElement(sizeof(float) * 4, VertexElementFormat.Vector2, VertexElementUsage.Normal, 1);
 			instanceElements[2] = new VertexElement(sizeof(float) * 6, VertexElementFormat.Color, VertexElementUsage.Color, 0);
 
-			Initialize(_vertices, _indices, instanceElements);
+			Initialize(vertices, indices, instanceElements);
 		}
 
 		/// <summary>
@@ -134,7 +135,7 @@ namespace ParticleLibrary.Core.V3.Particles
 			var texture = LibUtilities.GetTexture(Behavior.Texture);
 
 			// Set our variables
-			Main.graphics.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+			Main.graphics.GraphicsDevice.RasterizerState = Main.LocalPlayer.gravDir == -1 ? RasterizerState.CullClockwise : RasterizerState.CullCounterClockwise;
 			Main.graphics.GraphicsDevice.BlendState = BlendState;
 			Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState;
 			Main.graphics.GraphicsDevice.SetVertexBuffers(vertexBuffers);
@@ -143,7 +144,7 @@ namespace ParticleLibrary.Core.V3.Particles
 			// Apply effect and draw
 			Main.graphics.GraphicsDevice.Textures[0] = texture;
 			ParticleManagerV3.InstancedParticleEffect.Apply();
-			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Length, 0, _vertices.Length / 2, _maxInstances);
+			Main.graphics.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertexCount, 0, _primitiveCount, _maxInstances);
 		}
 
 		/// <summary>
@@ -201,6 +202,17 @@ namespace ParticleLibrary.Core.V3.Particles
 
 			SamplerState = samplerState;
 			return this;
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			_infos = null;
+			_instances = null;
+			_inactiveInstances = null;
+			
+			GC.SuppressFinalize(this);
 		}
 	}
 }

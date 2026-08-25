@@ -135,6 +135,10 @@ namespace ParticleLibrary.Core.V3
 
 			foreach (var renderable in value)
 			{
+				if (layer == Layer.BeforeWater)
+				{
+					InstancedParticleEffect.UseOffScreenRange = true;
+				}
 				renderable.Render();
 			}
 

@@ -94,9 +94,7 @@ namespace ParticleLibrary.Examples.V3
 			//	);
 			//}
 
-			//var buffers = _exampleMultiLayerParticleBuffer.ParticleBuffers;
 			//var values = Enum.GetValuesAsUnderlyingType<Layer>();
-
 			//buffers[14].Create(new ParticleInfo(
 			//	position: Main.LocalPlayer.position.ToNumerics(),
 			//	velocity: Vector2.Zero.ToNumerics(),
@@ -107,24 +105,26 @@ namespace ParticleLibrary.Examples.V3
 			//	duration: 120
 			//));
 
-			//for (int i = 0; i < buffers.Count; i++)
-			//{
-			//	if (i == 14)
-			//	{
-			//		for (int k = 0; k < 8; k++)
-			//		{
-			//			buffers[i].Create(new ParticleInfo(
-			//				position: Main.LocalPlayer.position.ToNumerics(),
-			//				velocity: Main.rand.NextVector2Unit().ToNumerics() * 0f,
-			//				rotation: Main.GlobalTimeWrappedHourly,
-			//				scale: new Vector2(64f, 64f).ToNumerics(),
-			//				depth: 1f,
-			//				color: new Color(1f, 1f, 1f, 0f),
-			//				duration: 120
-			//			));
-			//		}
-			//	}
-			//}
+			// TODO: something is wrong with index 2, 3, and 4. why?
+			// var buffers = _exampleMultiLayerParticleBuffer.ParticleBuffers;
+			// float angleStep = MathF.Tau / buffers.Count;
+			// for (int i = 0; i < buffers.Count; i++)
+			// {
+			// 	float angle = (i - 1) * angleStep;
+			// 	Vector2 position = new Vector2(MathF.Cos(angle) * 64f, MathF.Sin(angle) * 64f) + Main.LocalPlayer.position;
+			// 	for (int k = 0; k < 8; k++)
+			// 	{
+			// 		buffers[i].Create(new ParticleInfo(
+			// 			position: position.ToNumerics(),
+			// 			velocity: Main.rand.NextVector2Unit().ToNumerics() * 0f,
+			// 			rotation: Main.GlobalTimeWrappedHourly,
+			// 			scale: new Vector2(64f, 8f).ToNumerics(),
+			// 			depth: 1f,
+			// 			color: new Color(1f, 1f, 1f, 0f),
+			// 			duration: 120
+			// 		));
+			// 	}
+			// }
 		}
 
 		// We create this method to expose access to _dataParticleBuffer's Create() method.
@@ -143,7 +143,7 @@ namespace ParticleLibrary.Examples.V3
 			// To understand what we're doing, we only need to understand a bit about bits.
 			// A color is made up of 4 bytes: R, G, B, and A. Each byte is 8 bits.
 			// A float is a 32-bit value type. This means it's made up of 4 bytes.
-			// Since a Color is exactly 32 bits in size like a Color, we can store a Color into a float's data structure.
+			// Since a Color is exactly 32 bits in size like a float, we can store a Color into a float's data structure.
 			// We use the BitConverter here for ease of conversion. Color already contains a
 			// PackedValue uint32 property that contains each color channel stored in its 32 bits.
 			// All we have to do is convert this to a single (float) and pass it in as one of our data values.

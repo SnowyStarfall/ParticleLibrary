@@ -1458,6 +1458,11 @@
             </summary>
             <param name="info">The <see cref="!:TInfo"/>'s data.</param>
         </member>
+        <member name="P:ParticleLibrary.Core.V3.Particles.InstancedParticleEffect.UseOffScreenRange">
+            <summary>
+            Whether to offset by <see cref="F:Terraria.Main.offScreenRange"/>
+            </summary>
+        </member>
         <member name="T:ParticleLibrary.Core.V3.Particles.ParticleBuffer`1">
             <summary>
             Creates a new buffer of particles.

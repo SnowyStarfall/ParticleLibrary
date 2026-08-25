@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Assets.Effects;
-using ParticleLibrary.UI.Primitives;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
@@ -19,6 +19,11 @@ namespace ParticleLibrary.Core.V3.Particles
                 }
             }
         }
+
+        /// <summary>
+        /// Whether to offset by <see cref="Main.offScreenRange"/>
+        /// </summary>
+        public bool UseOffScreenRange { get; set; }
 
         private Effect _effect;
         private EffectParameter _textureParameter;
@@ -39,11 +44,18 @@ namespace ParticleLibrary.Core.V3.Particles
                 _watcher.OnUpdate += Update;
             }
         }
-
+        
         public void Apply()
         {
-            _transformParameter.SetValue(PrimitiveSystem.WorldViewProjection);
-            _offsetParameter.SetValue(-Main.screenPosition);
+            Vector2 offset = -Main.screenPosition;
+            if (UseOffScreenRange)
+            {
+	            offset += new Vector2(Main.offScreenRange);
+	            UseOffScreenRange = false;
+            }
+            
+            _transformParameter.SetValue(Main.GameViewMatrix.NormalizedTransformationmatrix);
+            _offsetParameter.SetValue(offset);
             _effect.CurrentTechnique.Passes[0].Apply();
         }
 

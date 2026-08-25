@@ -1,1 +1,3 @@
-- Add Initialize method for Behaviors. This fixes problems with particles that are rendered before their first frame of data is calculated by their Update method.
+- Fix particles not drawing when under the effect of a screen flip, such as gravitation potions.
+- Fix particles not having correct position when rendered before water.
+- Fix some data not being unloaded completely when mod is unloaded.
