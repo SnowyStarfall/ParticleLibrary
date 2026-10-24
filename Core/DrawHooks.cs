@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary.Core
@@ -163,7 +164,7 @@ namespace ParticleLibrary.Core
 			orig();
 		}
 
-		private void Draw_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self)
+		private void Draw_BeforeBackground(On_Main.orig_DrawSurfaceBG orig, Main self, SpriteBatchBeginner parentSpriteBatchBeginner, float? verticalParallaxOverride)
 		{
 			// Usually SpriteBatch has began here, but if another mod changes this, then we won't break anything by being safe here
 			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
@@ -183,7 +184,7 @@ namespace ParticleLibrary.Core
 				SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
 			}
 
-			orig(self);
+			orig(self, parentSpriteBatchBeginner, verticalParallaxOverride);
 		}
 
 		private void Draw_BeforeWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)

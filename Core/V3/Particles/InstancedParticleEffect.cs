@@ -54,7 +54,7 @@ namespace ParticleLibrary.Core.V3.Particles
 	            UseOffScreenRange = false;
             }
             
-            _transformParameter.SetValue(Main.GameViewMatrix.NormalizedTransformationmatrix);
+            _transformParameter.SetValue(Main.GameViewMatrix.NormalizedTransformationMatrix);
             _offsetParameter.SetValue(offset);
             _effect.CurrentTechnique.Passes[0].Apply();
         }

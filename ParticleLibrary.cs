@@ -1,7 +1,10 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Core;
-using ParticleLibrary.Core.V3.Emission;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ParticleLibrary
@@ -22,7 +25,8 @@ namespace ParticleLibrary
 
 		public static bool Debug
 		{
-			get {
+			get
+			{
 #if DEBUG
 				return true;
 #else
@@ -51,7 +55,6 @@ namespace ParticleLibrary
 			WhitePixel = null;
 
 			EmitterSettings.Unload();
-			ParticleLibraryConfig.Unload();
 		}
 	}
 }
