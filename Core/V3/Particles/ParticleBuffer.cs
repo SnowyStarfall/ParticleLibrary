@@ -34,7 +34,7 @@ namespace ParticleLibrary.Core.V3.Particles
 		// Geometry
 		private readonly int _vertexCount;
 		private readonly int _primitiveCount;
-		
+
 		// Data
 		private readonly int _maxInstances;
 		private ParticleInfo[] _infos;
@@ -45,7 +45,8 @@ namespace ParticleLibrary.Core.V3.Particles
 
 		public ParticleBuffer(int maxInstances = 256) : base(maxInstances)
 		{
-			VertexPositionTexture[] vertices = [
+			VertexPositionTexture[] vertices =
+			[
 				new(new(-0.5f, -0.5f, 0f), Vector2.Zero),
 				new(new(-0.5f, 0.5f, 0f), Vector2.UnitY),
 				new(new(0.5f, -0.5f, 0f), Vector2.UnitX),
@@ -55,8 +56,8 @@ namespace ParticleLibrary.Core.V3.Particles
 			short[] indices = [0, 2, 3, 0, 3, 1];
 
 			_vertexCount = vertices.Length;
-			_primitiveCount = vertices.Length / 2;
-			
+			_primitiveCount = indices.Length / 3;
+
 			BlendState = BlendState.AlphaBlend;
 			SamplerState = SamplerState.PointClamp;
 
@@ -68,8 +69,7 @@ namespace ParticleLibrary.Core.V3.Particles
 
 			for (int i = 0; i < _maxInstances; i++)
 			{
-				ref var info = ref _infos[i];
-				info.Free = true;
+				_infos[i].Free = true;
 			}
 
 			for (int i = _maxInstances - 1; i >= 0; i--)
@@ -90,6 +90,11 @@ namespace ParticleLibrary.Core.V3.Particles
 		/// </summary>
 		public void Update()
 		{
+			if (Count == 0)
+			{
+				return;
+			}
+
 			for (int i = 0; i < _infos.Length; i++)
 			{
 				var particle = _infos[i];
@@ -112,11 +117,7 @@ namespace ParticleLibrary.Core.V3.Particles
 				_instances[i].Color = particle.Color;
 			}
 
-			// Active instances
-			if (Count > 0)
-			{
-				SetData(_instances);
-			}
+			SetData(_instances);
 		}
 
 		/// <summary>
@@ -173,7 +174,7 @@ namespace ParticleLibrary.Core.V3.Particles
 				Rotation_Depth = new Vector2(info.Rotation, info.Depth),
 				Color = info.InitialColor
 			};
-			
+
 			// Initialize info.
 			Behavior.Initialize(ref info);
 
@@ -211,7 +212,7 @@ namespace ParticleLibrary.Core.V3.Particles
 			_infos = null;
 			_instances = null;
 			_inactiveInstances = null;
-			
+
 			GC.SuppressFinalize(this);
 		}
 	}

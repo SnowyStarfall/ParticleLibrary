@@ -24,10 +24,6 @@ namespace ParticleLibrary.Core.V3
 		private VertexDeclaration _instanceDeclaration;
 		private readonly int _maxInstances;
 
-		// Geometry
-		private TVertex[] _vertices;
-		private short[] _indices;
-
 		public GeometryBuffer(int maxInstances)
 		{
 			ParticleLibrary.Log.Info("Registering new buffer...");
@@ -52,14 +48,11 @@ namespace ParticleLibrary.Core.V3
 
 			Main.QueueMainThreadAction(() =>
 			{
-				_vertices = vertices;
-				_indices = indices;
-
 				// Create our static buffers.
-				_geometryBuffer = new(Main.graphics.GraphicsDevice, typeof(TVertex), _vertices.Length, BufferUsage.WriteOnly);
-				_indexBuffer = new(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, _indices.Length, BufferUsage.WriteOnly);
-				_geometryBuffer.SetData(_vertices);
-				_indexBuffer.SetData(_indices);
+				_geometryBuffer = new(Main.graphics.GraphicsDevice, typeof(TVertex), vertices.Length, BufferUsage.WriteOnly);
+				_indexBuffer = new(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, indices.Length, BufferUsage.WriteOnly);
+				_geometryBuffer.SetData(vertices);
+				_indexBuffer.SetData(indices);
 
 				// Initialize our instance buffer - which holds our instance data - and our buffer bindings.
 				_instanceDeclaration = new(instanceElements);
@@ -118,8 +111,6 @@ namespace ParticleLibrary.Core.V3
 			_instanceDeclaration?.Dispose();
 			_instanceDeclaration = null;
 			_bufferBindings = null;
-			_vertices = null;
-			_indices = null;
 
 			GC.SuppressFinalize(this);
 		}
