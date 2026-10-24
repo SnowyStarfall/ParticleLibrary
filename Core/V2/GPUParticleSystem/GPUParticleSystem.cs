@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.UI.Primitives;
 using ReLogic.Content;
 using System;
 using System.IO;

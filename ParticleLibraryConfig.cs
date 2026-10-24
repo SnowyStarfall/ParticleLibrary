@@ -1,5 +1,4 @@
-﻿using ParticleLibrary.UI.Themes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
 namespace ParticleLibrary
@@ -30,29 +29,6 @@ namespace ParticleLibrary
 		[DrawTicks]
 		[ReloadRequired]
 		public ParticleLimit ParticleLimit;
-
-		[Header("Debug")]
-		[DefaultValue(false)]
-		[ReloadRequired]
-		public bool DebugUI;
-
-		[DefaultValue(typeof(DarkTheme))]
-		public static Theme CurrentTheme { get; private set; } = new DarkTheme();
-
-		public override void OnLoaded()
-		{
-			Instance = this;
-			CurrentTheme = new DarkTheme();
-		}
-
-		public override void OnChanged()
-		{
-		}
-
-		public static void Unload()
-		{
-			CurrentTheme = null;
-		}
 	}
 
 	public enum ParticleLimit

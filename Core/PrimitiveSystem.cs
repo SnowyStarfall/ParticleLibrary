@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ParticleLibrary.UI.Primitives
+namespace ParticleLibrary.Core
 {
 	public class PrimitiveSystem : ModSystem
 	{
