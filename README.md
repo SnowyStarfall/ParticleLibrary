@@ -1,9 +1,9 @@
-## With the release of API 3.0, any and all bug reports are very much appreciated!
-## I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF
-## Note that this mod DOES NOT CHANGE GAMEPLAY unless explicitly used by other mods!!
-___
+# Important!
+This mod DOES NOT DO ANYTHING unless explicitly used by other mods.</br>
+I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF
+
 # Particle Library
-A library that provides an API to allow modders to create performant, customizable particles - serving as an alternative to Terraria's dust and particles.
+A library that provides an API to allow mod creators to create performant, customizable particles - an alternative to Terraria's own implementations.
 
 ## Examples
 You may find examples at https://github.com/SnowyStarfall/ParticleLibrary/tree/main/Examples
@@ -42,7 +42,6 @@ It must be a released mod. A Steam Workshop link will suffice.
 Mods that use Particle Library:
 - [Mod of Redemption](https://steamcommunity.com/sharedfiles/filedetails/?id=2893332653)
 - Shadows of Abaddon
-- [Lunar Veil](https://steamcommunity.com/sharedfiles/filedetails/?id=3019925104)
 
 <a href="https://discord.gg/bhCuppRdVF">
    <img src="https://discordapp.com/api/guilds/757480831886426282/widget.png?style=banner2" alt="Discord Banner 3"/>

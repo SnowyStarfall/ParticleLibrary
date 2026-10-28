@@ -1,9 +1,9 @@
-| With the release of API 3.0, any and all bug reports are very much appreciated! |
-| I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF |
-| Note that this mod DOES NOT CHANGE GAMEPLAY unless explicitly used by other mods!! |
+| Important! |
+Note that this mod DOES NOT DO ANYTHING unless explicitly used by other mods.
+I can usually respond faster in my Discord server: https://discord.gg/bhCuppRdVF
 
 | Particle Library |
-A library that provides an API to allow modders to create performant, customizable particles - serving as an alternative to Terraria's dust and particles.
+A library that provides an API to allow mod creators to create performant, customizable particles - an alternative to Terraria's own implementations.
 
 | Examples |
 You may find examples at https://github.com/SnowyStarfall/ParticleLibrary/tree/main/Examples

@@ -1,3 +1,6 @@
-- Fix particles not drawing when under the effect of a screen flip, such as gravitation potions.
-- Fix particles not having correct position when rendered before water.
-- Fix some data not being unloaded completely when mod is unloaded.
+- Removed version 1 API (deprecated for 3 years)
+  - Note: Version 2 API will be removed in 1 year
+- Removed unused UI code
+- Compatibility with 1.4.5
+- Some performance optimizations
+- Fix single frame delay in particle update
