@@ -116,21 +116,16 @@ namespace ParticleLibrary.Core.V3
 
 		private void Render(Layer layer)
 		{
+			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))
+			{
+				return;
+			}
+			
 			// We don't know if SpriteBatch has began here, but this helps not break anything by being safe here
 			SpriteBatchState spriteBatchState = new(Main.spriteBatch);
 			if (spriteBatchState.BeginCalled)
 			{
 				Main.spriteBatch.End();
-			}
-
-			if (!_renderables.TryGetValue(layer, out List<IRenderable> value))
-			{
-				if (spriteBatchState.BeginCalled)
-				{
-					SpriteBatchState.Apply(Main.spriteBatch, spriteBatchState);
-				}
-
-				return;
 			}
 
 			foreach (var renderable in value)
