@@ -54,6 +54,11 @@ namespace ParticleLibrary.Core.V3
 			Mod.Logger.Info("...Initialization complete");
 		}
 
+		public override void PostSetupRecipes()
+		{
+			InstancedParticleEffect.Setup();
+		}
+
 		public override void Unload()
 		{
 			Mod.Logger.Info("Unloading ParticleManagerV3...");

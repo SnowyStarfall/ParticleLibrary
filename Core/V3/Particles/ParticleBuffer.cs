@@ -125,7 +125,7 @@ namespace ParticleLibrary.Core.V3.Particles
 		public override void Render()
 		{
 			// No active instances
-			if (Count == 0)
+			if (Count == 0 || !ParticleManagerV3.InstancedParticleEffect.IsLoaded)
 			{
 				return;
 			}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -129,7 +130,7 @@ namespace ParticleLibrary.Core
 				}
 				catch
 				{
-					Sprite = ParticleLibrary.EmptyPixel;
+					Sprite = Asset<Texture2D>.DefaultValue;
 				}
 			}
 		}

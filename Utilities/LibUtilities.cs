@@ -205,7 +205,7 @@ namespace ParticleLibrary.Utilities
 
 		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 start, float radians, float length, Color color, float thickness)
 		{
-			spriteBatch.Draw(ParticleLibrary.WhitePixel, start, ParticleLibrary.WhitePixel.Bounds, color, radians, new Vector2(0f, 0.5f), new Vector2(length, thickness), SpriteEffects.None, 0);
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, start, new Rectangle(0, 0, 1, 1), color, radians, new Vector2(0f, 0.5f), new Vector2(length, thickness), SpriteEffects.None, 0);
 		}
 
 		public static QuadParticle FromEmitter(this QuadParticle particle, SpatialParameters spatial, VisualParameters visual)

@@ -10,30 +10,30 @@ namespace ParticleLibrary.Core.V3.Particles
     {
         public Texture2D Texture
         {
-            set
-            {
-                if (value is not null)
-                {
-                    _textureParameter.SetValue(value);
-                }
-            }
+            set => _textureParameter.SetValue(value);
         }
-
+        
         /// <summary>
         /// Whether to offset by <see cref="Main.offScreenRange"/>
         /// </summary>
         public bool UseOffScreenRange { get; set; }
-
-        private Effect _effect;
+        
+        private Asset<Effect> _effect;
         private EffectParameter _textureParameter;
         private EffectParameter _transformParameter;
         private EffectParameter _offsetParameter;
         
+        public bool IsLoaded => _effect.IsLoaded;
+        
         public InstancedParticleEffect()
         {
-            _effect = ModContent.Request<Effect>(Resources.Assets.Effects.InstancedParticle, AssetRequestMode.ImmediateLoad).Value;
-            _transformParameter = _effect.Parameters["Transform"];
-            _offsetParameter = _effect.Parameters["Offset"];
+            _effect = ModContent.Request<Effect>(Resources.Assets.Effects.InstancedParticle);
+        }
+        
+        internal void Setup()
+        {
+            _transformParameter = _effect.Value.Parameters["Transform"];
+            _offsetParameter = _effect.Value.Parameters["Offset"];
         }
         
         public void Apply()
@@ -48,7 +48,7 @@ namespace ParticleLibrary.Core.V3.Particles
             
             _transformParameter.SetValue(Main.GameViewMatrix.NormalizedTransformationMatrix);
             _offsetParameter.SetValue(offset);
-            _effect.CurrentTechnique.Passes[0].Apply();
+            _effect.Value.CurrentTechnique.Passes[0].Apply();
         }
     }
 }
