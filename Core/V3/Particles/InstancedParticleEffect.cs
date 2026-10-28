@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary.Assets.Effects;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
@@ -29,20 +28,12 @@ namespace ParticleLibrary.Core.V3.Particles
         private EffectParameter _textureParameter;
         private EffectParameter _transformParameter;
         private EffectParameter _offsetParameter;
-
-        private readonly EffectWatcher _watcher;
-
+        
         public InstancedParticleEffect()
         {
             _effect = ModContent.Request<Effect>(Resources.Assets.Effects.InstancedParticle, AssetRequestMode.ImmediateLoad).Value;
             _transformParameter = _effect.Parameters["Transform"];
             _offsetParameter = _effect.Parameters["Offset"];
-
-            if (ParticleLibrary.Debug)
-            {
-                _watcher = new("", "InstancedParticle");
-                _watcher.OnUpdate += Update;
-            }
         }
         
         public void Apply()
@@ -50,20 +41,14 @@ namespace ParticleLibrary.Core.V3.Particles
             Vector2 offset = -Main.screenPosition;
             if (UseOffScreenRange)
             {
-	            offset += new Vector2(Main.offScreenRange);
+	            // TODO: Breaks positioning
+	            // offset += new Vector2(Main.offScreenRange);
 	            UseOffScreenRange = false;
             }
             
             _transformParameter.SetValue(Main.GameViewMatrix.NormalizedTransformationMatrix);
             _offsetParameter.SetValue(offset);
             _effect.CurrentTechnique.Passes[0].Apply();
-        }
-
-        private void Update(Effect obj)
-        {
-            _effect = obj;
-            _transformParameter = obj.Parameters["Transform"];
-            _offsetParameter = obj.Parameters["Offset"];
         }
     }
 }

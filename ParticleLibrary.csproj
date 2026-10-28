@@ -1,29 +1,32 @@
 ﻿
-<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\tModLoader.targets" />
+<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.2">
 
 	<!-- Project configuration -->
 	<PropertyGroup>
 		<AssemblyName>ParticleLibrary</AssemblyName>
-		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TmlBuildIncludeSourceGenerators>false</TmlBuildIncludeSourceGenerators>
+        <TmlBuildUseLocalizationCompiler>false</TmlBuildUseLocalizationCompiler>
+        <TmlVersion>steam</TmlVersion>
+        <TargetFramework>net10.0</TargetFramework>
 	</PropertyGroup>
 
+    <!-- Launch plugins -->
+    <PropertyGroup>
+        <TmlBuildBootstrapFeatures>tomat.environmentmodlist;tomat.enablemod;lolxd87.splashskip;tomat.assethotreloading;ppeb.netcoredbg</TmlBuildBootstrapFeatures>
+    </PropertyGroup>
+    
 	<!-- Don't include in build -->
 	<ItemGroup>
 	  <AdditionalFiles Remove=".vs\**" />
-	  <AdditionalFiles Remove="Properties\**" />
 	  <AdditionalFiles Remove="Textures\**" />
 	  <Compile Remove=".vs\**" />
-	  <Compile Remove="Properties\**" />
 	  <Compile Remove="Textures\**" />
 	  <EmbeddedResource Remove=".vs\**" />
-	  <EmbeddedResource Remove="Properties\**" />
 	  <EmbeddedResource Remove="Textures\**" />
 	  <None Remove=".vs\**" />
-	  <None Remove="Properties\**" />
 	  <None Remove="Textures\**" />
 	</ItemGroup>
 
@@ -65,15 +68,7 @@
 			<DependentUpon>Resources.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
-
-	<!-- Publicizing hidden members -->
-	<ItemGroup>
-	  <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
+    
 	<!-- Publicizing SpriteBatch members -->
 	<ItemGroup>
 		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.beginCalled" />
@@ -90,5 +85,8 @@
 	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
-	
+	<ItemGroup>
+	  <Content Include="Properties\launchSettings.json" />
+	  <Content Include="Properties\Settings.settings" />
+	</ItemGroup>
 </Project>

@@ -41,5 +41,4 @@ If your mod uses Particle Library, feel free to contact me via my Discord server
 Mods that use Particle Library:
 - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2893332653] Mod of Redemption [/url]
 - Shadows of Abaddon
-- [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3019925104] Lunar Veil [/url]
 [quote=tModLoader]Developed By SnowyStarfall[/quote]
