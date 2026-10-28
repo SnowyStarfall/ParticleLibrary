@@ -106,7 +106,7 @@ namespace ParticleLibrary.Core.V3
 			Mod.Logger.Info("...Unloading complete");
 		}
 
-		public override void PostUpdateDusts()
+		public override void PostUpdateEverything()
 		{
 			foreach (var updatable in _updateables)
 			{

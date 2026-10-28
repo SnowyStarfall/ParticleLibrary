@@ -97,10 +97,9 @@ namespace ParticleLibrary.Core.V3.Particles
 
 			for (int i = 0; i < _infos.Length; i++)
 			{
-				var particle = _infos[i];
-				if (particle.Time <= 0)
+				if (_infos[i].Time <= 0)
 				{
-					if (!particle.Free)
+					if (!_infos[i].Free)
 					{
 						_infos[i].Free = true;
 						_inactiveInstances.Push(i);
@@ -112,9 +111,9 @@ namespace ParticleLibrary.Core.V3.Particles
 
 				Behavior.Update(ref _infos[i]);
 
-				_instances[i].Position_Scale = new Vector4(particle.Position.X, particle.Position.Y, particle.Scale.X, particle.Scale.Y);
-				_instances[i].Rotation_Depth = new Vector2(particle.Rotation, particle.Depth);
-				_instances[i].Color = particle.Color;
+				_instances[i].Position_Scale = new Vector4(_infos[i].Position.X, _infos[i].Position.Y, _infos[i].Scale.X, _infos[i].Scale.Y);
+				_instances[i].Rotation_Depth = new Vector2(_infos[i].Rotation, _infos[i].Depth);
+				_instances[i].Color = _infos[i].Color;
 			}
 
 			SetData(_instances);
