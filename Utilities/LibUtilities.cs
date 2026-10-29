@@ -12,6 +12,8 @@ using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
 using SystemVector2 = System.Numerics.Vector2;
+using SystemVector3 = System.Numerics.Vector3;
+using SystemVector4 = System.Numerics.Vector4;
 
 namespace ParticleLibrary.Utilities
 {
@@ -35,6 +37,8 @@ namespace ParticleLibrary.Utilities
 		}
 
 		public static SystemVector2 ToNumerics(this in Vector2 v) => new(v.X, v.Y);
+		public static SystemVector3 ToNumerics(this in Vector3 v) => new(v.X, v.Y, v.Z);
+		public static SystemVector4 ToNumerics(this in Vector4 v) => new(v.X, v.Y, v.Z, v.W);
 
 		public static SystemVector2 DirectionTo(this in SystemVector2 from, in SystemVector2 to)
 		{

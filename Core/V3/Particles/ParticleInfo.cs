@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using SystemVector2 = System.Numerics.Vector2;
 
 namespace ParticleLibrary.Core.V3.Particles
@@ -83,10 +82,8 @@ namespace ParticleLibrary.Core.V3.Particles
 			Rotation = rotation;
 			Scale = scale;
 			InitialScale = scale;
-
 			Color = color;
 			InitialColor = color;
-
 			Time = duration;
 			Duration = duration;
 			Data = data;
@@ -108,15 +105,11 @@ namespace ParticleLibrary.Core.V3.Particles
 			Position = position;
 			Velocity = velocity;
 			Rotation = rotation;
-
 			Scale = scale;
 			InitialScale = scale;
-
 			Depth = depth ?? 1f;
-
 			Color = color;
 			InitialColor = color;
-
 			Time = duration;
 			Duration = duration;
 			Data = data;

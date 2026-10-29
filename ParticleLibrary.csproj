@@ -4,7 +4,6 @@
 	<!-- Project configuration -->
 	<PropertyGroup>
 		<AssemblyName>ParticleLibrary</AssemblyName>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TmlBuildIncludeSourceGenerators>false</TmlBuildIncludeSourceGenerators>
