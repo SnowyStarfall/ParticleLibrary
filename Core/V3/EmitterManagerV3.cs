@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using EmitterV3 = ParticleLibrary.Core.V3.Emission.Emitter;
 using EmitterSerializerV3 = ParticleLibrary.Core.V3.Emission.EmitterSerializer;
+using FNARectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ParticleLibrary.Core.V3
 {
@@ -28,7 +27,7 @@ namespace ParticleLibrary.Core.V3
 		/// <summary>
 		/// Shorthand for screen location as rectangle
 		/// </summary>
-		public Rectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+		public FNARectangle ScreenLocation => new((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 
 		public override void Load()
 		{
@@ -86,7 +85,7 @@ namespace ParticleLibrary.Core.V3
 					return;
 				}
 
-				if (ScreenLocation.Intersects(new Rectangle((int)emitter.Position.X - emitter.Size.X / 2, (int)emitter.Position.Y - emitter.Size.Y / 2, emitter.Size.X, emitter.Size.Y)))
+				if (ScreenLocation.Intersects(new FNARectangle((int)emitter.Position.X - emitter.Size.X / 2, (int)emitter.Position.Y - emitter.Size.Y / 2, emitter.Size.X, emitter.Size.Y)))
 				{
 					emitter.Update();
 				}

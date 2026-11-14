@@ -35,7 +35,7 @@ namespace ParticleLibrary.Examples
 			Main.QueueMainThreadAction(() =>
 			{
 				// Demonstrates creating a Quad particle system.
-				ExampleQuadSettings = new(ModContent.Request<Texture2D>(Resources.Assets.Textures.Star, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
+				ExampleQuadSettings = new(ModContent.Request<Texture2D>(Assets.Textures.Star.KEY, AssetRequestMode.ImmediateLoad).Value, 500, 300, blendState: BlendState.AlphaBlend);
 				ExampleQuadSystem = new QuadParticleSystem(ExampleQuadSettings);
 				ExampleQuadParticle = new()
 				{

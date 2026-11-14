@@ -201,7 +201,7 @@ namespace ParticleLibrary.Core
 		// Effect
 		protected void LoadEffect()
 		{
-			Effect = ModContent.Request<Effect>(Resources.Assets.Effects.Particle, AssetRequestMode.ImmediateLoad).Value.Clone();
+			Effect = ModContent.Request<Effect>(Assets.Effects.Particle.KEY, AssetRequestMode.ImmediateLoad).Value.Clone();
 		}
 
 		protected void ReloadEffect()
@@ -234,7 +234,7 @@ namespace ParticleLibrary.Core
 			TransformMatrixParameter.SetValue(PrimitiveSystem.WorldViewProjection);
 			TextureParameter.SetValue(Texture);
 			FadeParameter.SetValue(Fade);
-			CurveParameter.SetValue(ModContent.Request<Texture2D>(Resources.Assets.Textures.ExponentCurve, AssetRequestMode.ImmediateLoad).Value);
+			CurveParameter.SetValue(ModContent.Request<Texture2D>(Assets.Textures.ExponentCurve.KEY, AssetRequestMode.ImmediateLoad).Value);
 			// TODO: Implement curve support
 			//UseCurveParameter.SetValue(true);
 		}

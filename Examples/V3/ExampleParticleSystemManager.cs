@@ -3,6 +3,7 @@ using ParticleLibrary.Core;
 using ParticleLibrary.Core.V3;
 using ParticleLibrary.Core.V3.Particles;
 using System;
+using ParticleLibrary.Utilities;
 using Terraria;
 using Terraria.ModLoader;
 using SystemVector2 = System.Numerics.Vector2;
@@ -12,9 +13,9 @@ namespace ParticleLibrary.Examples.V3
 	internal class ExampleParticleSystemManagerV3 : ModSystem
 	{
 		internal static ParticleBuffer<ExampleParticleBehavior> ExampleParticleBuffer { get; private set; }
+		internal static SourceParticleBuffer<ExampleSourceParticleBehavior> ExampleSourceParticleBuffer { get; private set; }
 
 		private static ParticleBuffer<ExampleDataParticleBehavior> _dataParticleBuffer;
-
 		private static ParticleCollection _exampleMultiLayerParticleBuffer;
 
 		public override bool IsLoadingEnabled(Mod mod)
@@ -35,6 +36,10 @@ namespace ParticleLibrary.Examples.V3
 			ExampleParticleBuffer = new(256);
 			ParticleManagerV3.RegisterUpdatable(ExampleParticleBuffer);
 			ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, ExampleParticleBuffer);
+			
+			ExampleSourceParticleBuffer = new(256);
+			ParticleManagerV3.RegisterUpdatable(ExampleSourceParticleBuffer);
+			ParticleManagerV3.RegisterRenderable(Layer.BeforeSolidTiles, ExampleSourceParticleBuffer);
 
 			// ParticleInfo has an undeclared field of an array of floats named Data.
 			// We'll use _dataParticleBuffer to showcase how we can safely handle
@@ -79,6 +84,18 @@ namespace ParticleLibrary.Examples.V3
 			//		duration: 120
 			//	));
 			//}
+			
+			// for (int i = 0; i < 2; i++)
+			// {
+			// 	ExampleSourceParticleBuffer.Create(new SourceParticleInfo(
+			// 		position: Main.LocalPlayer.position.ToNumerics(),
+			// 		velocity: (Main.rand.NextVector2Unit() * Main.rand.NextFloat(2f, 4f + float.Epsilon)).ToNumerics(),
+			// 		rotation: 0f,
+			// 		scale: new Vector2(64f, 64f).ToNumerics(),
+			// 		color: new Color(1f, 1f, 1f, 0f),
+			// 		duration: 120
+			// 	));
+			// }
 
 			//for (int i = 0; i < 2; i++)
 			//{

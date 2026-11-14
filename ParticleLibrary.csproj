@@ -6,7 +6,7 @@
 		<AssemblyName>ParticleLibrary</AssemblyName>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <TmlBuildIncludeSourceGenerators>false</TmlBuildIncludeSourceGenerators>
+        <TmlBuildIncludeSourceGenerators>true</TmlBuildIncludeSourceGenerators>
         <TmlBuildUseLocalizationCompiler>false</TmlBuildUseLocalizationCompiler>
         <TmlVersion>steam</TmlVersion>
         <TargetFramework>net10.0</TargetFramework>
@@ -52,21 +52,8 @@
 	</ItemGroup>
 
 	<!-- Resource generator -->
-	<ItemGroup>
-		<None Update="Resources.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>Resources.cs</LastGenOutput>
-		</None>
-	</ItemGroup>
 
 	<!-- Resource constants -->
-	<ItemGroup>
-		<Compile Update="Resources.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.tt</DependentUpon>
-		</Compile>
-	</ItemGroup>
     
 	<!-- Publicizing SpriteBatch members -->
 	<ItemGroup>
@@ -78,14 +65,5 @@
 		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.rasterizerState" />
 		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.customEffect" />
 		<Publicize Include="FNA:Microsoft.Xna.Framework.Graphics.SpriteBatch.transformMatrix" />
-	</ItemGroup>
-
-	<!-- ??? -->
-	<ItemGroup>
-		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="Properties\launchSettings.json" />
-	  <Content Include="Properties\Settings.settings" />
 	</ItemGroup>
 </Project>

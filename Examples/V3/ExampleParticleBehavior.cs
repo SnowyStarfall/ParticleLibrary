@@ -13,7 +13,7 @@ namespace ParticleLibrary.Examples.V3
     public class ExampleParticleBehavior : Behavior<ParticleInfo>
 	{
 		// This is the texture that will be used for your particle.
-		public override string Texture => Resources.Assets.Textures.Star;
+		public override string Texture => Assets.Textures.Star.KEY;
 
 		public override void Initialize(ref ParticleInfo info)
 		{

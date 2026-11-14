@@ -10,6 +10,7 @@ namespace ParticleLibrary.Core.V3
 	public class ParticleManagerV3 : ModSystem
 	{
 		public static InstancedParticleEffect InstancedParticleEffect { get; private set; }
+		public static SourceParticleEffect SourceParticleeffect { get; private set; }
 
 		private static List<IBuffer> _buffers;
 		private static List<IUpdatable> _updateables;
@@ -24,7 +25,8 @@ namespace ParticleLibrary.Core.V3
 		{
 			Mod.Logger.Info("Initializing ParticleManagerV3...");
 
-			InstancedParticleEffect = new();
+			InstancedParticleEffect = new InstancedParticleEffect();
+			SourceParticleeffect = new SourceParticleEffect();
 
 			_buffers = [];
 			_updateables = [];
@@ -53,12 +55,7 @@ namespace ParticleLibrary.Core.V3
 
 			Mod.Logger.Info("...Initialization complete");
 		}
-
-		public override void PostSetupRecipes()
-		{
-			InstancedParticleEffect.Setup();
-		}
-
+		
 		public override void Unload()
 		{
 			Mod.Logger.Info("Unloading ParticleManagerV3...");
